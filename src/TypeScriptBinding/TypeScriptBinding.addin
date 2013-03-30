@@ -34,4 +34,8 @@
 			extensions=".ts"
 			resource="TypeScript.ProjectBrowser.File"/>
 	</Path>
+
+	<Path name="/SharpDevelop/BackendBindings/Templates">
+		<Directory id="TypeScript" path="./Templates" />
+	</Path>
 </AddIn>

@@ -69,11 +69,15 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\ImageResources.resx" />
     <EmbeddedResource Include="Resources\TypeScript.xshd" />
+    <None Include="Templates\TypeScript.EmptyFile.xft">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="TypeScriptBinding.addin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Templates" />
     <Folder Include="Resources" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
