@@ -21,4 +21,17 @@
 			name="TypeScript"
 			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.xshd"/>
 	</Path>
+
+	<Path name="/Workspace/Autostart">
+		<Class
+			id="ICSharpCode.TypeScriptBinding.RegisterIcons"
+			class="ICSharpCode.TypeScriptBinding.RegisterIconsCommand"/>
+	</Path>
+
+	<Path name="/Workspace/Icons">
+		<Icon
+			id="TypeScript.File"
+			extensions=".ts"
+			resource="TypeScript.ProjectBrowser.File"/>
+	</Path>
 </AddIn>
