@@ -1,0 +1,24 @@
+﻿<AddIn
+	name="TypeScript Binding"
+	author="Matt Ward"
+	copyright="MIT"
+	description="Language binding for TypeScript"
+	addInManagerHidden="preinstalled">
+	
+	<Manifest>
+		<Identity name="ICSharpCode.TypeScript"/>
+	</Manifest>
+	
+	<Runtime>
+		<Import assembly=":ICSharpCode.SharpDevelop"/>
+		<Import assembly="TypeScriptBinding.dll"/>
+	</Runtime>
+
+	<Path name="/SharpDevelop/ViewContent/AvalonEdit/SyntaxModes">
+		<SyntaxMode
+			id="TypeScript.SyntaxMode"
+			extensions=".ts"
+			name="TypeScript"
+			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.xshd"/>
+	</Path>
+</AddIn>
