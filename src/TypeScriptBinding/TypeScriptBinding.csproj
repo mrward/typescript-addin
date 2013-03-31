@@ -62,6 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
+    <Compile Include="Hosting\StandardOutputTextWriter.cs" />
+    <Compile Include="Hosting\TextFileWriter.cs" />
+    <Compile Include="Hosting\TypeScriptCompilerIOHost.cs" />
+    <Compile Include="Hosting\IIO.cs" />
+    <Compile Include="Hosting\IResolvedFile.cs" />
+    <Compile Include="Hosting\ITextWriter.cs" />
+    <Compile Include="Hosting\TypeScriptCompiler.cs" />
+    <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
     <Compile Include="Hosting\CompletionInfo.cs" />
     <Compile Include="Hosting\CompletionResult.cs" />
@@ -76,6 +85,9 @@
     <Compile Include="TypeScriptCodeCompletionBinding.cs" />
     <Compile Include="TypeScriptCompletionItem.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
+    <Compile Include="TypeScriptFileExtensions.cs" />
+    <Compile Include="TypeScriptOptions.cs" />
+    <Compile Include="TypeScriptService.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ImageResources.resx" />
@@ -83,7 +95,13 @@
     <None Include="Scripts\completion.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Scripts\lib.d.ts">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Scripts\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\tsc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\TypeScript-License.txt">

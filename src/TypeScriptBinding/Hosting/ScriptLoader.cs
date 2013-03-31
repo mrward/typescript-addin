@@ -38,13 +38,30 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string typeScriptServicesFileName;
 		string mainScriptFileName;
 		string memberCompletionScriptFileName;
+		string typeScriptCompilerFileName;
 		
 		public ScriptLoader()
 		{
 			root = Path.Combine(StringParser.Parse("${addinpath:ICSharpCode.TypeScriptBinding}"), "Scripts");
-			typeScriptServicesFileName = Path.Combine(root, "typescriptServices.js");
-			mainScriptFileName = Path.Combine(root, "main.js");
-			memberCompletionScriptFileName = Path.Combine(root, "completion.js");
+			root = Path.GetFullPath(root);
+			
+			typeScriptServicesFileName = GetFullPath("typescriptServices.js");
+			mainScriptFileName = GetFullPath("main.js");
+			memberCompletionScriptFileName = GetFullPath("completion.js");
+			typeScriptCompilerFileName = GetFullPath("tsc.js");
+		}
+		
+		public string RootFolder {
+			get { return root; }
+		}
+		
+		public string TypeScriptCompilerFileName {
+			get { return typeScriptCompilerFileName; }
+		}
+
+		string GetFullPath(string fileName)
+		{
+			return Path.Combine(root, fileName);
 		}
 		
 		public string GetTypeScriptServicesScript()
@@ -65,6 +82,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string GetMemberCompletionScript()
 		{
 			return ReadScript(memberCompletionScriptFileName);
+		}
+		
+		public string GetTypeScriptCompilerScript()
+		{
+			return ReadScript(typeScriptCompilerFileName);
 		}
 	}
 }
