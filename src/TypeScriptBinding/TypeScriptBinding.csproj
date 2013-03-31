@@ -86,6 +86,9 @@
     <None Include="Scripts\main.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Scripts\TypeScript-License.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Scripts\typescriptServices.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
