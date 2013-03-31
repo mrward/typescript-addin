@@ -1,5 +1,5 @@
 ﻿// 
-// ConfigSettingsFileSystem.cs
+// ILogger.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -29,9 +29,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public interface ILogger
 	{
+		bool information();
+		bool debug();
+		bool warning();
+		bool error();
+		bool fatal();
+		void log(string s);
 	}
 }

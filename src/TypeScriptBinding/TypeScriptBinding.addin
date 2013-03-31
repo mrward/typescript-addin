@@ -6,7 +6,7 @@
 	addInManagerHidden="preinstalled">
 	
 	<Manifest>
-		<Identity name="ICSharpCode.TypeScript"/>
+		<Identity name="ICSharpCode.TypeScriptBinding"/>
 	</Manifest>
 	
 	<Runtime>
@@ -37,5 +37,12 @@
 
 	<Path name="/SharpDevelop/BackendBindings/Templates">
 		<Directory id="TypeScript" path="./Templates" />
+	</Path>
+
+	<Path name="/AddIns/DefaultTextEditor/CodeCompletion">
+		<CodeCompletionBinding
+			id="TypeScript"
+			extensions=".ts"
+			class="ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionBinding"/>
 	</Path>
 </AddIn>

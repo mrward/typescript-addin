@@ -62,13 +62,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ILogger.cs" />
+    <Compile Include="Hosting\CompletionEntry.cs" />
+    <Compile Include="Hosting\CompletionInfo.cs" />
+    <Compile Include="Hosting\CompletionResult.cs" />
+    <Compile Include="Hosting\ScriptLoader.cs" />
+    <Compile Include="Hosting\ILanguageServiceShimHost.cs" />
+    <Compile Include="Hosting\ILogger.cs" />
+    <Compile Include="Hosting\LanguageServiceShimHost.cs" />
+    <Compile Include="Hosting\Script.cs" />
+    <Compile Include="Hosting\TypeScriptContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterIconsCommand.cs" />
+    <Compile Include="TypeScriptCodeCompletionBinding.cs" />
+    <Compile Include="TypeScriptCompletionItem.cs" />
+    <Compile Include="TypeScriptCompletionItemProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ImageResources.resx" />
     <EmbeddedResource Include="Resources\TypeScript.xshd" />
+    <None Include="Scripts\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\memberCompletion.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\typescriptServices.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Templates\TypeScript.EmptyFile.xft">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -77,6 +97,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Hosting" />
+    <Folder Include="Scripts" />
     <Folder Include="Templates" />
     <Folder Include="Resources" />
   </ItemGroup>
