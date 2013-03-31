@@ -63,6 +63,7 @@ namespace TypeScriptHosting
 		
 		public int position { get; set; }
 		public string fileName { get; set; }
+		public bool isMemberCompletion { get; set; }
 		
 		public bool information()
 		{

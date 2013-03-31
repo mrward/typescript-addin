@@ -44,7 +44,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			root = Path.Combine(StringParser.Parse("${addinpath:ICSharpCode.TypeScriptBinding}"), "Scripts");
 			typeScriptServicesFileName = Path.Combine(root, "typescriptServices.js");
 			mainScriptFileName = Path.Combine(root, "main.js");
-			memberCompletionScriptFileName = Path.Combine(root, "memberCompletion.js");
+			memberCompletionScriptFileName = Path.Combine(root, "completion.js");
 		}
 		
 		public string GetTypeScriptServicesScript()

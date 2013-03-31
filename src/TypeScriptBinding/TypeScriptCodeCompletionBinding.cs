@@ -45,19 +45,23 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			if (ch == '.') {
 				editor.Document.Insert(editor.Caret.Offset, ch.ToString());
-				
-				context.UpdateFile(editor.FileName, editor.Document.Text);
-				
-				var completionProvider = new TypeScriptCompletionItemProvider(context);
-				completionProvider.ShowCompletion(editor);
+				ShowCompletion(editor, true);
 				return CodeCompletionKeyPressResult.EatKey;
 			}
 			return CodeCompletionKeyPressResult.None;
 		}
 		
+		bool ShowCompletion(ITextEditor editor, bool memberCompletion)
+		{
+			context.UpdateFile(editor.FileName, editor.Document.Text);
+				
+			var completionProvider = new TypeScriptCompletionItemProvider(context);
+			return completionProvider.ShowCompletion(editor, memberCompletion);
+		}
+		
 		public bool CtrlSpace(ITextEditor editor)
 		{
-			return false;
+			return ShowCompletion(editor, false);
 		}
 	}
 }

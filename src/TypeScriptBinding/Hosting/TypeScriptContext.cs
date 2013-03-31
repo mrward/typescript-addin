@@ -70,10 +70,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 		}
 		
-		public CompletionInfo GetCompletionItems(FileName fileName, int offset, string text)
+		public CompletionInfo GetCompletionItems(FileName fileName, int offset, string text, bool memberCompletion)
 		{
 			host.position = offset;
 			host.fileName = fileName.ToString();
+			host.isMemberCompletion = memberCompletion;
 			
 			context.Run(scriptLoader.GetMemberCompletionScript());
 			

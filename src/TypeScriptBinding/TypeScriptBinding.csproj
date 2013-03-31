@@ -80,10 +80,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\ImageResources.resx" />
     <EmbeddedResource Include="Resources\TypeScript.xshd" />
-    <None Include="Scripts\main.js">
+    <None Include="Scripts\completion.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Scripts\memberCompletion.js">
+    <None Include="Scripts\main.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\typescriptServices.js">

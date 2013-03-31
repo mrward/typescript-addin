@@ -37,15 +37,32 @@ namespace ICSharpCode.TypeScriptBinding
 	public class TypeScriptCompletionItemProvider : AbstractCompletionItemProvider
 	{
 		TypeScriptContext context;
+		bool memberCompletion;
 		
 		public TypeScriptCompletionItemProvider(TypeScriptContext context)
 		{
 			this.context = context;
 		}
 		
+		public bool ShowCompletion(ITextEditor editor, bool memberCompletion)
+		{
+			this.memberCompletion = memberCompletion;
+			ICompletionItemList list = GenerateCompletionList(editor);
+			if (list.Items.Any()) {
+				editor.ShowCompletionWindow(list);
+				return true;
+			}
+			return false;
+		}
+		
 		public override ICompletionItemList GenerateCompletionList(ITextEditor editor)
 		{
-			CompletionInfo result = context.GetCompletionItems(editor.FileName, editor.Caret.Offset - 1, editor.Document.Text);
+			CompletionInfo result = context.GetCompletionItems(
+				editor.FileName,
+				editor.Caret.Offset - 1,
+				editor.Document.Text,
+				memberCompletion);
+			
 			var itemList = new DefaultCompletionItemList();
 			itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry)));
 			return itemList;
