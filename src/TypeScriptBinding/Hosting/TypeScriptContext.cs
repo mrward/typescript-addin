@@ -78,8 +78,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			context.Run(scriptLoader.GetMemberCompletionScript());
 			
-			Console.WriteLine("text=" + text);
-			
 			return host.CompletionResult.result;
 		}
 	}
