@@ -27,6 +27,7 @@
 //
 
 using System;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -40,7 +41,36 @@ namespace ICSharpCode.TypeScriptBinding
 			: base(entry.name)
 		{
 			this.entry = entry;
-			base.Description = entry.docComment;
+			Description = entry.docComment;
+			Image = GetImage(entry);
+		}
+		
+		IImage GetImage(CompletionEntry entry)
+		{
+			switch (entry.kind) {
+				case "property":
+					return ClassBrowserIconService.Property;
+				case "constructor":
+				case "getter":
+				case "setter":
+				case "method":
+				case "function":
+				case "local function":
+					return ClassBrowserIconService.Method;
+				case "keyword":
+					return ClassBrowserIconService.Keyword;
+				case "class":
+					return ClassBrowserIconService.Class;
+				case "var":
+				case "local var":
+					return ClassBrowserIconService.LocalVariable;
+				case "interface":
+					return ClassBrowserIconService.Interface;
+				case "module":
+					return ClassBrowserIconService.Namespace;
+				default:
+					return null;
+			}
 		}
 	}
 }
