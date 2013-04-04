@@ -63,6 +63,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
+    <Compile Include="FileNameExtensions.cs" />
+    <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
     <Compile Include="Hosting\TextFileWriter.cs" />
     <Compile Include="Hosting\TypeScriptCompilerIOHost.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Hosting\IResolvedFile.cs" />
     <Compile Include="Hosting\ITextWriter.cs" />
     <Compile Include="Hosting\TypeScriptCompiler.cs" />
+    <Compile Include="Hosting\TypeScriptCompilerResult.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
     <Compile Include="Hosting\CompletionInfo.cs" />
@@ -87,6 +90,7 @@
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptOptions.cs" />
+    <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptService.cs" />
   </ItemGroup>
   <ItemGroup>

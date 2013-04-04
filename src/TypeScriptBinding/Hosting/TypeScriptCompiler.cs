@@ -42,11 +42,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 		}
 		
-		public void Compile(FileName fileName)
+		public TypeScriptCompilerResult Compile(FileName fileName)
 		{
 			host = new TypeScriptCompilerIOHost(fileName.ToString());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptCompilerScript());
+			
+			var result = new TypeScriptCompilerResult();
+			result.AddGeneratedFile(fileName, fileName.ChangeExtension(".js"));
+			return result;
 		}
 		
 		public void Dispose()

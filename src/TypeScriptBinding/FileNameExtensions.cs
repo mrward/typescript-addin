@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// FileNameExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,22 +27,16 @@
 //
 
 using System;
+using System.IO;
 using ICSharpCode.Core;
-using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction
+	public static class FileNameExtensions
 	{
-		public void Compile(FileName fileName)
+		public static FileName ChangeExtension(this FileName fileName, string extension)
 		{
-			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
-			
-			if (TypeScriptService.IsProjectOpen) {
-				TypeScriptProject project = TypeScriptService.GetCurrentTypeScriptProject();
-				project.AddMissingFiles(result.GeneratedFiles);
-			}
+			return new FileName(Path.ChangeExtension(fileName, extension));
 		}
 	}
 }

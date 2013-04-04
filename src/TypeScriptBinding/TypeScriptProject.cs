@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// TypeScriptProject.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,22 +27,40 @@
 //
 
 using System;
-using ICSharpCode.Core;
+using System.Collections.Generic;
+using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction
+	public class TypeScriptProject
 	{
-		public void Compile(FileName fileName)
+		IProject project;
+		
+		public TypeScriptProject(IProject project)
 		{
-			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
-			
-			if (TypeScriptService.IsProjectOpen) {
-				TypeScriptProject project = TypeScriptService.GetCurrentTypeScriptProject();
-				project.AddMissingFiles(result.GeneratedFiles);
+			this.project = project;
+		}
+		
+		public void AddMissingFiles(IEnumerable<GeneratedTypeScriptFile> filesGenerated)
+		{
+			foreach (GeneratedTypeScriptFile file in filesGenerated) {
+				AddMissingFile(file);
 			}
+			project.Save();
+		}
+		
+		void AddMissingFile(GeneratedTypeScriptFile file)
+		{
+			if (project.IsFileInProject(file.FileName)) {
+				return;
+			}
+			
+			var projectItem = new FileProjectItem(project, ItemType.None);
+			projectItem.FileName = file.FileName;
+			projectItem.DependentUpon = file.GetDependentUpon();
+			
+			ProjectService.AddProjectItem(project, projectItem);
 		}
 	}
 }

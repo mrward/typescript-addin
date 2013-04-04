@@ -27,6 +27,7 @@
 //
 
 using System;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -36,6 +37,18 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public static TypeScriptOptions Options {
 			get { return options; }
+		}
+		
+		public static bool IsProjectOpen {
+			get { return ProjectService.CurrentProject != null; }
+		}
+		
+		public static TypeScriptProject GetCurrentTypeScriptProject()
+		{
+			if (IsProjectOpen) {
+				return new TypeScriptProject(ProjectService.CurrentProject);
+			}
+			return null;
 		}
 	}
 }

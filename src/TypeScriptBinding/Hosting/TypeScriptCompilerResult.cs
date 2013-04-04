@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// TypeScriptCompilerResult.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,22 +27,23 @@
 //
 
 using System;
+using System.Collections.Generic;
 using ICSharpCode.Core;
-using ICSharpCode.TypeScriptBinding.Hosting;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompileTypeScriptOnSaveFileAction
+	public class TypeScriptCompilerResult
 	{
-		public void Compile(FileName fileName)
+		List<GeneratedTypeScriptFile> generatedFiles = new List<GeneratedTypeScriptFile>();
+		
+		public IEnumerable<GeneratedTypeScriptFile> GeneratedFiles {
+			get { return generatedFiles; }
+		}
+		
+		public void AddGeneratedFile(FileName parentFileName, FileName fileName)
 		{
-			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
-			
-			if (TypeScriptService.IsProjectOpen) {
-				TypeScriptProject project = TypeScriptService.GetCurrentTypeScriptProject();
-				project.AddMissingFiles(result.GeneratedFiles);
-			}
+			var file = new GeneratedTypeScriptFile(parentFileName, fileName);
+			generatedFiles.Add(file);
 		}
 	}
 }
