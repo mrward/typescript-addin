@@ -38,5 +38,10 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			return new FileName(Path.ChangeExtension(fileName, extension));
 		}
+		
+		public static string GetFileNameWithoutPath(this FileName fileName)
+		{
+			return Path.GetFileName(fileName);
+		}
 	}
 }

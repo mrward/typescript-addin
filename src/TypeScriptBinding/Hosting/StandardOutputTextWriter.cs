@@ -2,6 +2,8 @@
 // This code is distributed under the GNU LGPL (for details please see \doc\license.txt)
 
 using System;
+using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Gui;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -9,17 +11,20 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		public void Write(string s)
 		{
-			Console.WriteLine("TextWriter.Write: {0}", s);
+			BuildMessageView.AppendText(s);
+		}
+		
+		MessageViewCategory BuildMessageView {
+			get { return TaskService.BuildMessageViewCategory; }
 		}
 		
 		public void WriteLine(string s)
 		{
-			Console.WriteLine("TextWriter.WriteLine: {0}", s);
+			BuildMessageView.AppendLine(s);
 		}
 		
 		public void Close()
 		{
-			Console.WriteLine("TextWriter.Close");
 		}
 	}
 }

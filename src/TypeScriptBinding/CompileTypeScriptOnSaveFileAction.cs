@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -37,12 +38,32 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public void Compile(FileName fileName)
 		{
+			ReportCompileStarting(fileName);
 			var compiler = new TypeScriptCompiler();
 			TypeScriptCompilerResult result = compiler.Compile(fileName);
 			
 			if (TypeScriptService.IsProjectOpen) {
 				UpdateProject(result.GeneratedFiles);
 			}
+			
+			ReportCompileFinished();
+		}
+		
+		void ReportCompileStarting(FileName fileName)
+		{
+			TaskService.BuildMessageViewCategory.ClearText();
+			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
+		}
+		
+		void Report(string format, params object[] args)
+		{
+			string message = String.Format(format, args);
+			TaskService.BuildMessageViewCategory.AppendLine(message);
+		}
+		
+		void ReportCompileFinished()
+		{
+			Report("TypeScript compile finished.");
 		}
 		
 		void UpdateProject(IEnumerable<GeneratedTypeScriptFile> generatedFiles)
