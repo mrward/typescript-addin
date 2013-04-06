@@ -80,5 +80,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			return host.CompletionResult.result;
 		}
+		
+		public SignatureInfo GetSignature(FileName fileName, int offset)
+		{
+			host.position = offset;
+			host.fileName = fileName;
+			
+			context.Run(scriptLoader.GetFunctionSignatureScript());
+			
+			return host.SignatureResult.result;
+		}
 	}
 }

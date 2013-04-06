@@ -66,7 +66,11 @@
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
     <Compile Include="FileNameExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
+    <Compile Include="Hosting\ActualSignatureInfo.cs" />
+    <Compile Include="Hosting\FormalSignatureInfo.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
+    <Compile Include="Hosting\SignatureInfo.cs" />
+    <Compile Include="Hosting\SignatureResult.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
     <Compile Include="Hosting\TextFileWriter.cs" />
     <Compile Include="Hosting\TypeScriptCompilerIOHost.cs" />
@@ -92,6 +96,9 @@
     <Compile Include="TypeScriptCompletionItem.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
+    <Compile Include="TypeScriptInsightWindowHandler.cs" />
+    <Compile Include="TypeScriptFunctionInsightItem.cs" />
+    <Compile Include="TypeScriptFunctionInsightProvider.cs" />
     <Compile Include="TypeScriptOptions.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptService.cs" />
@@ -107,6 +114,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\signature.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\tsc.js">

@@ -39,6 +39,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string mainScriptFileName;
 		string memberCompletionScriptFileName;
 		string typeScriptCompilerFileName;
+		string signatureScriptFileName;
 		
 		public ScriptLoader()
 		{
@@ -48,6 +49,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			typeScriptServicesFileName = GetFullPath("typescriptServices.js");
 			mainScriptFileName = GetFullPath("main.js");
 			memberCompletionScriptFileName = GetFullPath("completion.js");
+			signatureScriptFileName = GetFullPath("signature.js");
 			typeScriptCompilerFileName = GetFullPath("tsc.js");
 		}
 		
@@ -87,6 +89,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string GetTypeScriptCompilerScript()
 		{
 			return ReadScript(typeScriptCompilerFileName);
+		}
+		
+		public string GetFunctionSignatureScript()
+		{
+			return ReadScript(signatureScriptFileName);
 		}
 	}
 }

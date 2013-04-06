@@ -65,6 +65,22 @@ namespace TypeScriptHosting
 		public string fileName { get; set; }
 		public bool isMemberCompletion { get; set; }
 		
+		public void updateCompletionInfoAtCurrentPosition(string completionInfo)
+		{
+			log(completionInfo);
+			CompletionResult = JsonConvert.DeserializeObject<CompletionResult>(completionInfo);
+		}
+		
+		internal CompletionResult CompletionResult { get; private set; }
+		
+		public void updateSignatureAtPosition(string signature)
+		{
+			log(signature);
+			SignatureResult = JsonConvert.DeserializeObject<SignatureResult>(signature);
+		}
+		
+		internal SignatureResult SignatureResult { get; private set; }
+		
 		public bool information()
 		{
 			return true;
@@ -99,14 +115,6 @@ namespace TypeScriptHosting
 		{
 			log(String.Format(format, args));
 		}
-		
-		public void updateCompletionInfoAtCurrentPosition(string completionInfo)
-		{
-			log(completionInfo);
-			CompletionResult = JsonConvert.DeserializeObject<CompletionResult>(completionInfo);
-		}
-		
-		public CompletionResult CompletionResult { get; private set; }
 		
 		public string getCompilationSettings()
 		{

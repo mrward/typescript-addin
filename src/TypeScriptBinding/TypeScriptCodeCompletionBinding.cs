@@ -36,32 +36,56 @@ namespace ICSharpCode.TypeScriptBinding
 	public class TypeScriptCodeCompletionBinding : ICodeCompletionBinding
 	{
 		static TypeScriptContext context = new TypeScriptContext();
-		
-		public TypeScriptCodeCompletionBinding()
-		{
-		}
+		TypeScriptInsightWindowHandler insightHandler = new TypeScriptInsightWindowHandler();
 		
 		public CodeCompletionKeyPressResult HandleKeyPress(ITextEditor editor, char ch)
 		{
 			if (ch == '.') {
-				editor.Document.Insert(editor.Caret.Offset, ch.ToString());
+				InsertCharacter(editor, ch);
 				ShowCompletion(editor, true);
+				return CodeCompletionKeyPressResult.EatKey;
+			} else if (ch == '(') {
+				InsertCharacter(editor, ch);
+				ShowMethodInsight(editor);
 				return CodeCompletionKeyPressResult.EatKey;
 			}
 			return CodeCompletionKeyPressResult.None;
 		}
 		
+		void InsertCharacter(ITextEditor editor, char ch)
+		{
+			editor.Document.Insert(editor.Caret.Offset, ch.ToString());
+		}
+		
 		bool ShowCompletion(ITextEditor editor, bool memberCompletion)
 		{
-			context.UpdateFile(editor.FileName, editor.Document.Text);
-				
+			UpdateContext(editor);
+			
 			var completionProvider = new TypeScriptCompletionItemProvider(context);
 			return completionProvider.ShowCompletion(editor, memberCompletion);
+		}
+		
+		void UpdateContext(ITextEditor editor)
+		{
+			context.UpdateFile(editor.FileName, editor.Document.Text);
 		}
 		
 		public bool CtrlSpace(ITextEditor editor)
 		{
 			return ShowCompletion(editor, false);
+		}
+		
+		void ShowMethodInsight(ITextEditor editor)
+		{
+			UpdateContext(editor);
+			
+			var provider = new TypeScriptFunctionInsightProvider(context);
+			IInsightItem[] items = provider.ProvideInsight(editor);
+			IInsightWindow insightWindow = editor.ShowInsightWindow(items);
+			if (insightWindow != null) {
+				insightHandler.InitializeOpenedInsightWindow(editor, insightWindow);
+				insightHandler.HighlightParameter(insightWindow, 0);
+			}
 		}
 	}
 }
