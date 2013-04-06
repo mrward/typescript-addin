@@ -46,7 +46,7 @@ namespace ICSharpCode.TypeScriptBinding
 				UpdateProject(result.GeneratedFiles);
 			}
 			
-			ReportCompileFinished();
+			ReportCompileFinished(result.HasErrors);
 		}
 		
 		void ReportCompileStarting(FileName fileName)
@@ -61,9 +61,13 @@ namespace ICSharpCode.TypeScriptBinding
 			TaskService.BuildMessageViewCategory.AppendLine(message);
 		}
 		
-		void ReportCompileFinished()
+		void ReportCompileFinished(bool error)
 		{
-			Report("TypeScript compile finished.");
+			if (error) {
+				Report("TypeScript compilation failed.");
+			} else {
+				Report("TypeScript compilation finished successfully.");
+			}
 		}
 		
 		void UpdateProject(IEnumerable<GeneratedTypeScriptFile> generatedFiles)

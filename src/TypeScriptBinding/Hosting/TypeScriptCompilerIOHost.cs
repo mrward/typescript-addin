@@ -117,6 +117,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public void quit(int exitCode)
 		{
+			QuitExitCode = exitCode;
 			LogFormat("quit {0}", exitCode);
 		}
 		
@@ -124,5 +125,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			Console.WriteLine(format, args);
 		}
+		
+		internal int QuitExitCode { get; set; }
 	}
 }

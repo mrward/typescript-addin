@@ -34,6 +34,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptCompiler : IDisposable
 	{
+		const int SuccessExitCode = 0;
+		const int ErrorExitCode = 1;
+		
 		JavascriptContext context = new JavascriptContext();
 		ScriptLoader scriptLoader = new ScriptLoader();
 		TypeScriptCompilerIOHost host;
@@ -48,7 +51,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptCompilerScript());
 			
-			var result = new TypeScriptCompilerResult();
+			var result = new TypeScriptCompilerResult {
+				HasErrors = host.QuitExitCode != SuccessExitCode
+			};
 			result.AddGeneratedFile(fileName, fileName.ChangeExtension(".js"));
 			return result;
 		}

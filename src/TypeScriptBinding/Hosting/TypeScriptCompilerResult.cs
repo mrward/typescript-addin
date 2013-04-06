@@ -40,6 +40,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			get { return generatedFiles; }
 		}
 		
+		public bool HasErrors { get; set; }
+		
 		public void AddGeneratedFile(FileName parentFileName, FileName fileName)
 		{
 			var file = new GeneratedTypeScriptFile(parentFileName, fileName);
