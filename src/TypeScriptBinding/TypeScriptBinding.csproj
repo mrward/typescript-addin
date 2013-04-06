@@ -59,11 +59,13 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
     <Compile Include="FileNameExtensions.cs" />
+    <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
     <Compile Include="Hosting\TextFileWriter.cs" />
@@ -73,6 +75,7 @@
     <Compile Include="Hosting\ITextWriter.cs" />
     <Compile Include="Hosting\TypeScriptCompiler.cs" />
     <Compile Include="Hosting\TypeScriptCompilerResult.cs" />
+    <Compile Include="ProjectBrowserUpdater.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
     <Compile Include="Hosting\CompletionInfo.cs" />
@@ -92,6 +95,7 @@
     <Compile Include="TypeScriptOptions.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptService.cs" />
+    <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\ImageResources.resx" />

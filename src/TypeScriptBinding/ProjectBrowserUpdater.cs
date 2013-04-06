@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// ProjectBrowserUpdater.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,30 +27,43 @@
 //
 
 using System;
-using System.Collections.Generic;
-using ICSharpCode.Core;
-using ICSharpCode.TypeScriptBinding.Hosting;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction
+	public class ProjectBrowserUpdater : IDisposable
 	{
-		public void Compile(FileName fileName)
+		ProjectBrowserControl projectBrowser;
+		
+		public ProjectBrowserUpdater()
+			: this(ProjectBrowserPad.Instance.ProjectBrowserControl)
 		{
-			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
-			
-			if (TypeScriptService.IsProjectOpen) {
-				UpdateProject(result.GeneratedFiles);
+		}
+		
+		public ProjectBrowserUpdater(ProjectBrowserControl projectBrowser)
+		{
+			this.projectBrowser = projectBrowser;
+			ProjectService.ProjectItemAdded += ProjectItemAdded;
+		}
+
+		protected virtual void ProjectItemAdded(object sender, ProjectItemEventArgs e)
+		{
+			if (e.ProjectItem is FileProjectItem) {
+				AddFileProjectItemToProjectBrowser(e);
 			}
 		}
 		
-		void UpdateProject(IEnumerable<GeneratedTypeScriptFile> generatedFiles)
+		void AddFileProjectItemToProjectBrowser(ProjectItemEventArgs e)
 		{
-			using (var updater = new ProjectBrowserUpdater()) {
-				TypeScriptProject project = TypeScriptService.GetCurrentTypeScriptProject();
-				project.AddMissingFiles(generatedFiles);
+			var visitor = new UpdateProjectBrowserFileNodesVisitor(e);
+			foreach (AbstractProjectBrowserTreeNode node in projectBrowser.TreeView.Nodes) {
+				node.AcceptVisitor(visitor, null);
 			}
+		}
+		
+		public void Dispose()
+		{
+			ProjectService.ProjectItemAdded -= ProjectItemAdded;
 		}
 	}
 }

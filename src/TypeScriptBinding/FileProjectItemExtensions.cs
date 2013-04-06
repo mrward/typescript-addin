@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// FileProjectItemExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -26,31 +26,35 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+
 using System;
-using System.Collections.Generic;
+using System.IO;
 using ICSharpCode.Core;
-using ICSharpCode.TypeScriptBinding.Hosting;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction
+	public static class FileProjectItemExtensions
 	{
-		public void Compile(FileName fileName)
+		public static bool IsDependentUponAnotherFile(this FileProjectItem projectItem)
 		{
-			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
-			
-			if (TypeScriptService.IsProjectOpen) {
-				UpdateProject(result.GeneratedFiles);
-			}
+			return !String.IsNullOrEmpty(projectItem.DependentUpon);
 		}
 		
-		void UpdateProject(IEnumerable<GeneratedTypeScriptFile> generatedFiles)
+		public static bool IsDependentUpon(this FileProjectItem projectItem, FileProjectItem otherProjectItem)
 		{
-			using (var updater = new ProjectBrowserUpdater()) {
-				TypeScriptProject project = TypeScriptService.GetCurrentTypeScriptProject();
-				project.AddMissingFiles(generatedFiles);
-			}
+			return projectItem.DependentUpon == otherProjectItem.Include;
+		}
+		
+		public static bool IsDependentUponFileName(this FileProjectItem projectItem, string fileName)
+		{
+			return FileUtility.IsEqualFileName(projectItem.GetDependentUponFileName(), fileName);
+		}
+		
+		public static string GetDependentUponFileName(this FileProjectItem projectItem)
+		{
+			string directory = Path.GetDirectoryName(projectItem.FileName);
+			return Path.Combine(directory, projectItem.DependentUpon);
 		}
 	}
 }
