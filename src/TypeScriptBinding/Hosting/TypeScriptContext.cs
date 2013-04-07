@@ -40,9 +40,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		JavascriptContext context = new JavascriptContext();
 		LanguageServiceShimHost host = new LanguageServiceShimHost();
 		ScriptLoader scriptLoader = new ScriptLoader();
+		bool runInitialization = true;
 		
 		public TypeScriptContext()
 		{
+			host.AddDefaultLibScript("lib.d.ts", scriptLoader.GetLibScript());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptServicesScript());
 		}
@@ -56,14 +58,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			host.AddFile(fileName.ToString(), text);
 			
-			if (host.getScriptCount() == 1) {
+			if (runInitialization) {
+				runInitialization = false;
 				context.Run(scriptLoader.GetMainScript());
 			}
 		}
 		
 		public void UpdateFile(FileName fileName, string text)
 		{
-			if (host.getScriptCount() == 0) {
+			if (host.getScriptCount() == 1) {
 				AddFile(fileName, text);
 			} else {
 				host.UpdateFile(fileName.ToString(), text);

@@ -36,17 +36,24 @@ namespace TypeScriptHosting
 	public class LanguageServiceShimHost : ILanguageServiceShimHost
 	{
 		List<Script> scripts = new List<Script>();
+		int defaultLibScriptIndex = -1;
 		
 		public LanguageServiceShimHost()
 		{
 		}
 		
-		public void AddFile(string fileName, string text)
+		internal void AddDefaultLibScript(string fileName, string text)
+		{
+			AddFile(fileName, text);
+			defaultLibScriptIndex = scripts.Count - 1;
+		}
+		
+		internal void AddFile(string fileName, string text)
 		{
 			scripts.Add(new Script(fileName, text));
 		}
 		
-		public void UpdateFile(string fileName, string text)
+		internal void UpdateFile(string fileName, string text)
 		{
 			Script script = scripts.Find(s => s.Id == fileName);
 			if (script != null) {
@@ -56,7 +63,7 @@ namespace TypeScriptHosting
 			}
 		}
 		
-		public void UpdateFile(int index, string text)
+		internal void UpdateFile(int index, string text)
 		{
 			scripts[index].Update(text);
 		}
@@ -150,7 +157,7 @@ namespace TypeScriptHosting
 		public bool getScriptIsResident(int scriptIndex)
 		{
 			log("Host.getScriptIsResident: " + scriptIndex);
-			return false;
+			return scriptIndex == defaultLibScriptIndex;
 		}
 		
 		public int getScriptVersion(int scriptIndex)
