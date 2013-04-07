@@ -41,8 +41,25 @@ namespace ICSharpCode.TypeScriptBinding
 			: base(entry.name)
 		{
 			this.entry = entry;
-			Description = entry.docComment;
+			Description = GetDescription(entry);
 			Image = GetImage(entry);
+		}
+		
+		string GetDescription(CompletionEntry entry)
+		{
+			return String.Format(
+				"{0}: {1}{2}",
+				entry.name,
+				entry.type,
+				GetDocCommentPrecededByNewLine(entry));
+		}
+		
+		string GetDocCommentPrecededByNewLine(CompletionEntry entry)
+		{
+			if (String.IsNullOrEmpty(entry.docComment))
+				return String.Empty;
+			
+			return String.Format("\r\n{0}", entry.docComment);
 		}
 		
 		IImage GetImage(CompletionEntry entry)
