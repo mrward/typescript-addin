@@ -1,5 +1,5 @@
 ﻿// 
-// FileProjectItemExtensions.cs
+// ReferenceInfo.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,33 +27,25 @@
 //
 
 using System;
-using System.IO;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Project;
+using System.Linq;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public static class FileProjectItemExtensions
+	public class ReferenceInfo
 	{
-		public static bool IsDependentUponAnotherFile(this FileProjectItem projectItem)
+		public ReferenceInfo(string referenceInfo)
 		{
-			return !String.IsNullOrEmpty(projectItem.DependentUpon);
+			ParseReferenceInfo(referenceInfo);
 		}
 		
-		public static bool IsDependentUpon(this FileProjectItem projectItem, FileProjectItem otherProjectItem)
+		void ParseReferenceInfo(string referenceInfo)
 		{
-			return projectItem.DependentUpon == otherProjectItem.Include;
+			entries = referenceInfo
+				.Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries)
+				.Select(entryInfo => new ReferenceEntry(entryInfo))
+				.ToArray();
 		}
 		
-		public static bool IsDependentUponFileName(this FileProjectItem projectItem, string fileName)
-		{
-			return FileUtility.IsEqualFileName(projectItem.GetDependentUponFileName(), fileName);
-		}
-		
-		public static string GetDependentUponFileName(this FileProjectItem projectItem)
-		{
-			string directory = Path.GetDirectoryName(projectItem.FileName);
-			return Path.Combine(directory, projectItem.DependentUpon);
-		}
+		public ReferenceEntry[] entries { get; set; }
 	}
 }

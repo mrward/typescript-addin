@@ -88,6 +88,14 @@ namespace TypeScriptHosting
 		
 		internal SignatureResult SignatureResult { get; private set; }
 		
+		public void updateReferencesAtPosition(string references)
+		{
+			log(references);
+			ReferenceInfo = new ReferenceInfo(references);
+		}
+		
+		internal ReferenceInfo ReferenceInfo { get; private set; }
+		
 		public bool information()
 		{
 			return true;

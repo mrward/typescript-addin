@@ -49,6 +49,10 @@
       <HintPath>..\..\lib\SharpDevelop\ICSharpCode.SharpDevelop.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ICSharpCode.SharpDevelop.Dom">
+      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -66,9 +70,12 @@
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
     <Compile Include="FileNameExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
+    <Compile Include="FindTypeScriptReferencesCommand.cs" />
     <Compile Include="Hosting\ActualSignatureInfo.cs" />
     <Compile Include="Hosting\FormalSignatureInfo.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
+    <Compile Include="Hosting\ReferenceEntry.cs" />
+    <Compile Include="Hosting\ReferenceInfo.cs" />
     <Compile Include="Hosting\SignatureInfo.cs" />
     <Compile Include="Hosting\SignatureResult.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
@@ -108,6 +115,9 @@
     <EmbeddedResource Include="Resources\ImageResources.resx" />
     <EmbeddedResource Include="Resources\TypeScript.xshd" />
     <None Include="Scripts\completion.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\references.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\lib.d.ts">

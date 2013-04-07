@@ -1,5 +1,5 @@
 ﻿// 
-// FileProjectItemExtensions.cs
+// ReferenceEntry.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,33 +27,46 @@
 //
 
 using System;
-using System.IO;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Project;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public static class FileProjectItemExtensions
+	public class ReferenceEntry
 	{
-		public static bool IsDependentUponAnotherFile(this FileProjectItem projectItem)
+		public ReferenceEntry(string entryInfo)
 		{
-			return !String.IsNullOrEmpty(projectItem.DependentUpon);
+			ParseEntryInfo(entryInfo);
 		}
 		
-		public static bool IsDependentUpon(this FileProjectItem projectItem, FileProjectItem otherProjectItem)
+		//unitIndex + " " + entry.ast.minChar + " " + entry.ast.limChar + " " + entry.isWriteAccess + "\n";
+		
+		void ParseEntryInfo(string entryInfo)
 		{
-			return projectItem.DependentUpon == otherProjectItem.Include;
+			string[] items = entryInfo.Split(' ');
+			if (items.Length == 4) {
+				unitIndex = ParseInt(items[0]);
+				minChar = ParseInt(items[1]);
+				limChar = ParseInt(items[2]);
+				isWriteAccess = ParseBool(items[3]);
+			}
 		}
 		
-		public static bool IsDependentUponFileName(this FileProjectItem projectItem, string fileName)
+		bool ParseBool(string text)
 		{
-			return FileUtility.IsEqualFileName(projectItem.GetDependentUponFileName(), fileName);
+			return bool.Parse(text);
 		}
 		
-		public static string GetDependentUponFileName(this FileProjectItem projectItem)
+		int ParseInt(string text)
 		{
-			string directory = Path.GetDirectoryName(projectItem.FileName);
-			return Path.Combine(directory, projectItem.DependentUpon);
+			return Int32.Parse(text);
+		}
+		
+		public int unitIndex { get; set; }
+		public int minChar { get; set; }
+		public int limChar { get; set; }
+		public bool isWriteAccess { get; set; }
+		
+		internal int length {
+			get { return limChar - minChar; }
 		}
 	}
 }

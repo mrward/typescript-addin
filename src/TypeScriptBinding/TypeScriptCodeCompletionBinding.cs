@@ -27,8 +27,13 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
+using ICSharpCode.SharpDevelop.Editor.Search;
+using ICSharpCode.SharpDevelop.Refactoring;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -65,7 +70,7 @@ namespace ICSharpCode.TypeScriptBinding
 			return completionProvider.ShowCompletion(editor, memberCompletion);
 		}
 		
-		void UpdateContext(ITextEditor editor)
+		static void UpdateContext(ITextEditor editor)
 		{
 			context.UpdateFile(editor.FileName, editor.Document.Text);
 		}
@@ -86,6 +91,31 @@ namespace ICSharpCode.TypeScriptBinding
 				insightHandler.InitializeOpenedInsightWindow(editor, insightWindow);
 				insightHandler.HighlightParameter(insightWindow, 0);
 			}
+		}
+		
+		public static void FindReferences(ITextEditor editor)
+		{
+			UpdateContext(editor);
+			ReferenceInfo referenceInfo = context.FindReferences(editor.FileName, editor.Caret.Offset);
+			
+			List<Reference> references = referenceInfo
+				.entries
+				.Select(entry => CreateReference(editor, entry))
+				.ToList();
+			
+			FindReferencesAndRenameHelper.ShowAsSearchResults("References", references);
+		}
+		
+		static Reference CreateReference(ITextEditor editor, ReferenceEntry entry)
+		{
+			string expression = editor.Document.GetText(entry.minChar, entry.length);
+			return new Reference(editor.FileName, entry.minChar, entry.length, expression, null);
+		}
+		
+		static void ShowSearchResults(List<SearchResultMatch> searchResults)
+		{
+			SearchResultsPad.Instance.ShowSearchResults("References", searchResults);
+			SearchResultsPad.Instance.BringToFront();
 		}
 	}
 }

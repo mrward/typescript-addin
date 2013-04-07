@@ -48,4 +48,38 @@
 			extensions=".ts"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionBinding"/>
 	</Path>
+
+	<Path name="/Addins/TypeScript/TextEditor/ContextMenu">
+		<MenuItem
+			id="FindTypeScriptReferences"
+			label="Find TypeScript References"
+			icon="Icons.16x16.SelectionArrow"
+			class="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommand"/>
+	</Path>
+	
+	<Path name="/SharpDevelop/ViewContent/TextEditor/ContextMenu">
+		<Include
+			id="TypeScript"
+			insertafter="Refactoring"
+			insertbefore="Cut"
+			item="/Addins/TypeScript/TextEditor/ContextMenu/FindTypeScriptReferences"/>
+		<MenuItem
+			id="TypeScriptSeparator"
+			insertafter="TypeScript"
+			insertbefore="Cut"
+			type="Separator"/>
+	</Path>
+
+	<Path name="/SharpDevelop/Workbench/MainMenu/Search">
+		<Include
+			id="TypeScript"
+			insertafter="Separator2"
+			insertbefore="GotoLineNr"
+			item="/Addins/TypeScript/TextEditor/ContextMenu/FindTypeScriptReferences"/>
+		<MenuItem
+			id="TypeScriptSeparator"
+			insertafter="TypeScript"
+			insertbefore="GotoLineNr"
+			type="Separator"/>
+	</Path>
 </AddIn>

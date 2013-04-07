@@ -93,5 +93,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			return host.SignatureResult.result;
 		}
+		
+		public ReferenceInfo FindReferences(FileName fileName, int offset)
+		{
+			host.position = offset;
+			host.fileName = fileName;
+			
+			context.Run(scriptLoader.GetFindReferencesScript());
+			
+			return host.ReferenceInfo;
+		}
 	}
 }

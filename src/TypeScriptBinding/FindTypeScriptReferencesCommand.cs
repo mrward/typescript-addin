@@ -1,5 +1,5 @@
 ﻿// 
-// FileProjectItemExtensions.cs
+// FindTypeScriptReferences.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,33 +27,21 @@
 //
 
 using System;
-using System.IO;
 using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Project;
+using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.SharpDevelop.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public static class FileProjectItemExtensions
+	public class FindTypeScriptReferencesCommand : AbstractCommand
 	{
-		public static bool IsDependentUponAnotherFile(this FileProjectItem projectItem)
+		public override void Run()
 		{
-			return !String.IsNullOrEmpty(projectItem.DependentUpon);
-		}
-		
-		public static bool IsDependentUpon(this FileProjectItem projectItem, FileProjectItem otherProjectItem)
-		{
-			return projectItem.DependentUpon == otherProjectItem.Include;
-		}
-		
-		public static bool IsDependentUponFileName(this FileProjectItem projectItem, string fileName)
-		{
-			return FileUtility.IsEqualFileName(projectItem.GetDependentUponFileName(), fileName);
-		}
-		
-		public static string GetDependentUponFileName(this FileProjectItem projectItem)
-		{
-			string directory = Path.GetDirectoryName(projectItem.FileName);
-			return Path.Combine(directory, projectItem.DependentUpon);
+			var editorProvider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
+			if (editorProvider != null) {
+				TypeScriptCodeCompletionBinding.FindReferences(editorProvider.TextEditor);
+			}
 		}
 	}
 }
