@@ -30,6 +30,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using ICSharpCode.NRefactory;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.SharpDevelop.Editor.Search;
@@ -116,6 +118,16 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			SearchResultsPad.Instance.ShowSearchResults("References", searchResults);
 			SearchResultsPad.Instance.BringToFront();
+		}
+		
+		public static void GoToDefinition(ITextEditor editor)
+		{
+			UpdateContext(editor);
+			DefinitionInfo definitionInfo = context.GetDefinition(editor.FileName, editor.Caret.Offset);
+			if (definitionInfo.IsValid) {
+				Location location = editor.Document.OffsetToPosition(definitionInfo.minChar);
+				FileService.JumpToFilePosition(editor.FileName, location.Line, location.Column);
+			}
 		}
 	}
 }

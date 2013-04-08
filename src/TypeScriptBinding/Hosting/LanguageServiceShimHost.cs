@@ -96,6 +96,14 @@ namespace TypeScriptHosting
 		
 		internal ReferenceInfo ReferenceInfo { get; private set; }
 		
+		public void updateDefinitionAtPosition(string definition)
+		{
+			log(definition);
+			DefinitionInfo = new DefinitionInfo(definition);
+		}
+		
+		internal DefinitionInfo DefinitionInfo { get; private set; }
+		
 		public bool information()
 		{
 			return true;

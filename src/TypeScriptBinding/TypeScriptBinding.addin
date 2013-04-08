@@ -55,9 +55,19 @@
 			label="Find TypeScript References"
 			icon="Icons.16x16.SelectionArrow"
 			class="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommand"/>
+		<MenuItem
+			id="GoToTypeScriptDefinition"
+			label="Go To TypeScript Definition"
+			icon="Icons.16x16.SelectionArrow"
+			class="ICSharpCode.TypeScriptBinding.GoToTypeScriptDefinitionCommand"/>
 	</Path>
 	
 	<Path name="/SharpDevelop/ViewContent/TextEditor/ContextMenu">
+		<Include
+			id="TypeScript"
+			insertafter="Refactoring"
+			insertbefore="Cut"
+			item="/Addins/TypeScript/TextEditor/ContextMenu/GoToTypeScriptDefinition"/>
 		<Include
 			id="TypeScript"
 			insertafter="Refactoring"
@@ -71,6 +81,11 @@
 	</Path>
 
 	<Path name="/SharpDevelop/Workbench/MainMenu/Search">
+		<Include
+			id="TypeScript"
+			insertafter="Separator2"
+			insertbefore="GotoLineNr"
+			item="/Addins/TypeScript/TextEditor/ContextMenu/GoToTypeScriptDefinition"/>
 		<Include
 			id="TypeScript"
 			insertafter="Separator2"

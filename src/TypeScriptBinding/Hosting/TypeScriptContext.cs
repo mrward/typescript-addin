@@ -103,5 +103,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			return host.ReferenceInfo;
 		}
+		
+		public DefinitionInfo GetDefinition(FileName fileName, int offset)
+		{
+			host.position = offset;
+			host.fileName = fileName;
+			
+			context.Run(scriptLoader.GetDefinitionScript());
+			
+			return host.DefinitionInfo;
+		}
 	}
 }

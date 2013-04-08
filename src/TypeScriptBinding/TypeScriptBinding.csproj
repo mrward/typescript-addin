@@ -45,6 +45,10 @@
       <HintPath>..\..\lib\SharpDevelop\ICSharpCode.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.NRefactory.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ICSharpCode.SharpDevelop">
       <HintPath>..\..\lib\SharpDevelop\ICSharpCode.SharpDevelop.dll</HintPath>
       <Private>False</Private>
@@ -71,7 +75,9 @@
     <Compile Include="FileNameExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommand.cs" />
+    <Compile Include="GoToTypeScriptDefinitionCommand.cs" />
     <Compile Include="Hosting\ActualSignatureInfo.cs" />
+    <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\FormalSignatureInfo.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
     <Compile Include="Hosting\ReferenceEntry.cs" />
@@ -115,6 +121,9 @@
     <EmbeddedResource Include="Resources\ImageResources.resx" />
     <EmbeddedResource Include="Resources\TypeScript.xshd" />
     <None Include="Scripts\completion.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\definition.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\references.js">

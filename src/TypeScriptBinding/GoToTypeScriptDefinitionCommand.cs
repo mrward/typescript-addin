@@ -1,5 +1,5 @@
 ﻿// 
-// ReferenceEntry.cs
+// GoToTypeScriptDefinitionCommand.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,44 +27,20 @@
 //
 
 using System;
+using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.SharpDevelop.Gui;
 
-namespace ICSharpCode.TypeScriptBinding.Hosting
+namespace ICSharpCode.TypeScriptBinding
 {
-	public class ReferenceEntry
+	public class GoToTypeScriptDefinitionCommand : AbstractCommand
 	{
-		public ReferenceEntry(string entryInfo)
+		public override void Run()
 		{
-			ParseEntryInfo(entryInfo);
-		}
-		
-		void ParseEntryInfo(string entryInfo)
-		{
-			string[] items = entryInfo.Split(' ');
-			if (items.Length == 4) {
-				unitIndex = ParseInt(items[0]);
-				minChar = ParseInt(items[1]);
-				limChar = ParseInt(items[2]);
-				isWriteAccess = ParseBool(items[3]);
+			var editorProvider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
+			if (editorProvider != null) {
+				TypeScriptCodeCompletionBinding.GoToDefinition(editorProvider.TextEditor);
 			}
-		}
-		
-		bool ParseBool(string text)
-		{
-			return bool.Parse(text);
-		}
-		
-		int ParseInt(string text)
-		{
-			return Int32.Parse(text);
-		}
-		
-		public int unitIndex { get; set; }
-		public int minChar { get; set; }
-		public int limChar { get; set; }
-		public bool isWriteAccess { get; set; }
-		
-		internal int length {
-			get { return limChar - minChar; }
 		}
 	}
 }

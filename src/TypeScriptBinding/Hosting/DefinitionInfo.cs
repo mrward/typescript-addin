@@ -1,5 +1,5 @@
 ﻿// 
-// ReferenceEntry.cs
+// TypeScriptContext.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,27 +30,29 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class ReferenceEntry
+	public class DefinitionInfo
 	{
-		public ReferenceEntry(string entryInfo)
+		public DefinitionInfo(string definition)
 		{
-			ParseEntryInfo(entryInfo);
+			ParseDefinition(definition);
 		}
 		
-		void ParseEntryInfo(string entryInfo)
+		internal bool IsValid { get; private set; }
+		
+		void ParseDefinition(string definition)
 		{
-			string[] items = entryInfo.Split(' ');
-			if (items.Length == 4) {
-				unitIndex = ParseInt(items[0]);
-				minChar = ParseInt(items[1]);
-				limChar = ParseInt(items[2]);
-				isWriteAccess = ParseBool(items[3]);
+			string[] parts = definition.Split('\t');
+			if (parts.Length == 7) {
+				unitIndex = ParseInt(parts[0]);
+				minChar = ParseInt(parts[1]);
+				limChar = ParseInt(parts[2]);
+				kind = parts[3];
+				name = parts[4];
+				containerKind = parts[5];
+				containerName = parts[6];
+				
+				IsValid = true;
 			}
-		}
-		
-		bool ParseBool(string text)
-		{
-			return bool.Parse(text);
 		}
 		
 		int ParseInt(string text)
@@ -61,10 +63,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public int unitIndex { get; set; }
 		public int minChar { get; set; }
 		public int limChar { get; set; }
-		public bool isWriteAccess { get; set; }
-		
-		internal int length {
-			get { return limChar - minChar; }
-		}
+		public string kind { get; set; }
+		public string name { get; set; }
+		public string containerKind { get; set; }
+		public string containerName { get; set; }
 	}
 }
