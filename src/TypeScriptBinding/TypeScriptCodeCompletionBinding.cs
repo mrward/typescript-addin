@@ -95,17 +95,16 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
-		public static void FindReferences(ITextEditor editor)
+		public static List<Reference> GetReferences(ITextEditor editor)
 		{
 			UpdateContext(editor);
+			
 			ReferenceInfo referenceInfo = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
-			List<Reference> references = referenceInfo
+			return referenceInfo
 				.entries
 				.Select(entry => CreateReference(editor, entry))
 				.ToList();
-			
-			FindReferencesAndRenameHelper.ShowAsSearchResults("References", references);
 		}
 		
 		static Reference CreateReference(ITextEditor editor, ReferenceEntry entry)

@@ -1,5 +1,5 @@
 ﻿// 
-// FindTypeScriptReferences.cs
+// RenameTypeScriptReferenceCommand.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -37,15 +37,47 @@ using ICSharpCode.SharpDevelop.Refactoring;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class FindTypeScriptReferencesCommand : AbstractCommand
+	public class RenameTypeScriptReferenceCommand : AbstractCommand
 	{
 		public override void Run()
 		{
 			var editorProvider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
 			if (editorProvider != null) {
 				List<Reference> references = TypeScriptCodeCompletionBinding.GetReferences(editorProvider.TextEditor);
-				FindReferencesAndRenameHelper.ShowAsSearchResults("References", references);
+				
+				if (references.Count == 0) {
+					ShowUnknownReferenceError();
+				} else {
+					RenameAllReferences(references);
+				}
 			}
+		}
+		
+		static void ShowUnknownReferenceError()
+		{
+			MessageService.ShowMessage("${res:SharpDevelop.Refactoring.CannotRenameElement}");
+		}
+		
+		void RenameAllReferences(List<Reference> references)
+		{
+			string name = references.First().Expression;
+			string newName = GetNewName(name);
+			if (ShouldRenameReference(newName, name)) {
+				FindReferencesAndRenameHelper.RenameReferences(references, newName);
+			}
+		}
+		
+		string GetNewName(string name)
+		{
+			return MessageService.ShowInputBox(
+				"${res:SharpDevelop.Refactoring.Rename}",
+				"${res:SharpDevelop.Refactoring.RenameClassText}",
+				name);
+		}
+		
+		bool ShouldRenameReference(string newName, string name)
+		{
+			return (newName != null) && (newName != name);
 		}
 	}
 }

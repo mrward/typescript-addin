@@ -13,7 +13,7 @@
 		<Import assembly=":ICSharpCode.SharpDevelop"/>
 		<Import assembly="TypeScriptBinding.dll"/>
 	</Runtime>
-
+	
 	<Path name="/SharpDevelop/ViewContent/AvalonEdit/SyntaxModes">
 		<SyntaxMode
 			id="TypeScript.SyntaxMode"
@@ -21,7 +21,7 @@
 			name="TypeScript"
 			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.xshd"/>
 	</Path>
-
+	
 	<Path name="/Workspace/Autostart">
 		<Class
 			id="ICSharpCode.TypeScriptBinding.RegisterIcons"
@@ -30,25 +30,25 @@
 			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFile"
 			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileCommand"/>
 	</Path>
-
+	
 	<Path name="/Workspace/Icons">
 		<Icon
 			id="TypeScript.File"
 			extensions=".ts"
 			resource="TypeScript.ProjectBrowser.File"/>
 	</Path>
-
+	
 	<Path name="/SharpDevelop/BackendBindings/Templates">
 		<Directory id="TypeScript" path="./Templates" />
 	</Path>
-
+	
 	<Path name="/AddIns/DefaultTextEditor/CodeCompletion">
 		<CodeCompletionBinding
 			id="TypeScript"
 			extensions=".ts"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionBinding"/>
 	</Path>
-
+	
 	<Path name="/Addins/TypeScript/TextEditor/ContextMenu">
 		<MenuItem
 			id="FindTypeScriptReferences"
@@ -60,34 +60,43 @@
 			label="Go To TypeScript Definition"
 			icon="Icons.16x16.SelectionArrow"
 			class="ICSharpCode.TypeScriptBinding.GoToTypeScriptDefinitionCommand"/>
+		<MenuItem
+			id="RenameTypeScriptReference"
+			label="Rename"
+			class="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommand"/>
 	</Path>
 	
 	<Path name="/SharpDevelop/ViewContent/TextEditor/ContextMenu">
 		<Include
-			id="TypeScript"
+			id="GoToTypeScriptDefinition"
 			insertafter="Refactoring"
 			insertbefore="Cut"
 			item="/Addins/TypeScript/TextEditor/ContextMenu/GoToTypeScriptDefinition"/>
 		<Include
-			id="TypeScript"
+			id="FindTypeScriptReferences"
 			insertafter="Refactoring"
 			insertbefore="Cut"
 			item="/Addins/TypeScript/TextEditor/ContextMenu/FindTypeScriptReferences"/>
+		<Include
+			id="RenameTypeScriptReference"
+			insertafter="Refactoring"
+			insertbefore="Cut"
+			item="/Addins/TypeScript/TextEditor/ContextMenu/RenameTypeScriptReference"/>
 		<MenuItem
 			id="TypeScriptSeparator"
 			insertafter="TypeScript"
 			insertbefore="Cut"
 			type="Separator"/>
 	</Path>
-
+	
 	<Path name="/SharpDevelop/Workbench/MainMenu/Search">
 		<Include
-			id="TypeScript"
+			id="GoToTypeScriptDefinition"
 			insertafter="Separator2"
 			insertbefore="GotoLineNr"
 			item="/Addins/TypeScript/TextEditor/ContextMenu/GoToTypeScriptDefinition"/>
 		<Include
-			id="TypeScript"
+			id="FindTypeScriptReferences"
 			insertafter="Separator2"
 			insertbefore="GotoLineNr"
 			item="/Addins/TypeScript/TextEditor/ContextMenu/FindTypeScriptReferences"/>
