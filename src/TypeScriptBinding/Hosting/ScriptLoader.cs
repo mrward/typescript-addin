@@ -43,7 +43,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string libScriptFileName;
 		string findReferencesScriptFileName;
 		string definitionScriptFileName;
-		string completeNavigationInfoScriptFileName;
+		string navigationScriptFileName;
 		
 		public ScriptLoader()
 		{
@@ -57,7 +57,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			signatureScriptFileName = GetFullPath("signature.js");
 			findReferencesScriptFileName = GetFullPath("references.js");
 			definitionScriptFileName = GetFullPath("definition.js");
-			completeNavigationInfoScriptFileName = GetFullPath("navigation.js");
+			navigationScriptFileName = GetFullPath("navigation.js");
 			
 			typeScriptCompilerFileName = GetFullPath("tsc.js");
 			libScriptFileName = GetFullPath("lib.d.ts");
@@ -121,9 +121,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return ReadScript(definitionScriptFileName);
 		}
 		
-		public string GetCompleteNavigationInfoScript()
+		public string GetNavigationScript()
 		{
-			return ReadScript(completeNavigationInfoScriptFileName);
+			return ReadScript(navigationScriptFileName);
 		}
 	}
 }

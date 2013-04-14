@@ -65,7 +65,7 @@ namespace TypeScriptBinding.Tests.Parsing
 			throw new NotImplementedException();
 		}
 		
-		public string GetCompleteNavigationInfoScript()
+		public string GetNavigationScript()
 		{
 			return GetScriptFromResource("navigation.js");
 		}

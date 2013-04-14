@@ -120,15 +120,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.DefinitionInfo;
 		}
 		
-		public CompleteNavigationInfo GetCompleteNavigationInfo(FileName fileName)
+		public NavigationInfo GetOutliningRegions(FileName fileName)
 		{
 			host.fileName = fileName;
-			context.Run(scriptLoader.GetCompleteNavigationInfoScript());
+			context.Run(scriptLoader.GetNavigationScript());
 			
-			return new CompleteNavigationInfo {
-				LexicalStructure = host.LexicalStructure,
-				OutliningRegions = host.OutlingRegions
-			};
+			return host.OutlingRegions;
 		}
 	}
 }

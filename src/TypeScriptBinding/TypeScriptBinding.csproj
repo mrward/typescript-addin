@@ -80,7 +80,6 @@
     <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\FormalSignatureInfo.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
-    <Compile Include="Hosting\CompletionNavigationInfo.cs" />
     <Compile Include="Hosting\IScriptLoader.cs" />
     <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
     <Compile Include="Hosting\NavigateToItem.cs" />

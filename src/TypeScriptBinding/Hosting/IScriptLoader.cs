@@ -43,6 +43,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string GetLibScript();
 		string GetFindReferencesScript();
 		string GetDefinitionScript();
-		string GetCompleteNavigationInfoScript();
+		string GetNavigationScript();
 	}
 }

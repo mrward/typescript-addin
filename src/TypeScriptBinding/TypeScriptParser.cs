@@ -76,7 +76,7 @@ namespace ICSharpCode.TypeScriptBinding
 				using (TypeScriptContext context = contextFactory.CreateContext()) {
 					var file = new FileName(fileName);
 					context.AddFile(file, fileContent.Text);
-					CompleteNavigationInfo navigationInfo = context.GetCompleteNavigationInfo(file);
+					NavigationInfo navigationInfo = context.GetOutliningRegions(file);
 					var unit = new TypeScriptCompilationUnit(projectContent) {
 						FileName = fileName
 					};
