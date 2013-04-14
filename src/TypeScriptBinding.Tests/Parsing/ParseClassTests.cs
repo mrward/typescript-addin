@@ -42,6 +42,24 @@ namespace TypeScriptBinding.Tests.Parsing
 		}
 		
 		[Test]
+		public void Parse_EmptyStudentClass_ClassHasBeginLineAndColumnSetForRegion()
+		{
+			string code =
+				"class Student {\r\n" +
+				"}\r\n";
+			var expectedRegion = new DomRegion(
+				beginLine: 1,
+				beginColumn: 14,
+				endLine: 2,
+				endColumn: 2);
+			
+			Parse(code);
+			
+			IClass c = GetFirstClass();
+			Assert.AreEqual(expectedRegion, c.Region);
+		}
+		
+		[Test]
 		public void Parse_ClassWithOneMethod_ClassHasOneMethodWithCorrectBodyRegionAndName()
 		{
 			string code =

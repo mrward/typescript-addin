@@ -67,6 +67,7 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			var defaultClass = new DefaultClass(this, item.name);
 			defaultClass.BodyRegion = item.ToRegion(document);
+			defaultClass.Region = defaultClass.BodyRegion;
 			Classes.Add(defaultClass);
 		}
 		
