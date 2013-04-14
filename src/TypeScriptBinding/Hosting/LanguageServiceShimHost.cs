@@ -104,6 +104,22 @@ namespace TypeScriptHosting
 		
 		internal DefinitionInfo DefinitionInfo { get; private set; }
 		
+		public void updateLexicalStructure(string structure)
+		{
+			log(structure);
+			LexicalStructure = new NavigationInfo(structure);
+		}
+		
+		internal NavigationInfo LexicalStructure { get; private set; }
+		
+		public void updateOutliningRegions(string regions)
+		{
+			log(regions);
+			OutlingRegions = new NavigationInfo(regions);
+		}
+		
+		internal NavigationInfo OutlingRegions { get; private set; }
+		
 		public bool information()
 		{
 			return true;

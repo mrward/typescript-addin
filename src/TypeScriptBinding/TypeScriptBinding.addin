@@ -106,4 +106,12 @@
 			insertbefore="GotoLineNr"
 			type="Separator"/>
 	</Path>
+
+	<Path name="/Workspace/Parser">
+		<Parser
+			id="TypeScript"
+			supportedextensions=".ts"
+			projectfileextension=".csproj"
+			class="ICSharpCode.TypeScriptBinding.TypeScriptParser"/>
+	</Path>
 </AddIn>

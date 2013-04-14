@@ -39,11 +39,17 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		JavascriptContext context = new JavascriptContext();
 		LanguageServiceShimHost host = new LanguageServiceShimHost();
-		ScriptLoader scriptLoader = new ScriptLoader();
+		IScriptLoader scriptLoader;
 		bool runInitialization = true;
 		
 		public TypeScriptContext()
+			: this(new ScriptLoader())
 		{
+		}
+		
+		public TypeScriptContext(IScriptLoader scriptLoader)
+		{
+			this.scriptLoader = scriptLoader;
 			host.AddDefaultLibScript("lib.d.ts", scriptLoader.GetLibScript());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptServicesScript());
@@ -112,6 +118,17 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			context.Run(scriptLoader.GetDefinitionScript());
 			
 			return host.DefinitionInfo;
+		}
+		
+		public CompleteNavigationInfo GetCompleteNavigationInfo(FileName fileName)
+		{
+			host.fileName = fileName;
+			context.Run(scriptLoader.GetCompleteNavigationInfoScript());
+			
+			return new CompleteNavigationInfo {
+				LexicalStructure = host.LexicalStructure,
+				OutliningRegions = host.OutlingRegions
+			};
 		}
 	}
 }

@@ -32,7 +32,7 @@ using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class ScriptLoader
+	public class ScriptLoader : IScriptLoader
 	{
 		string root;
 		string typeScriptServicesFileName;
@@ -43,6 +43,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string libScriptFileName;
 		string findReferencesScriptFileName;
 		string definitionScriptFileName;
+		string completeNavigationInfoScriptFileName;
 		
 		public ScriptLoader()
 		{
@@ -56,6 +57,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			signatureScriptFileName = GetFullPath("signature.js");
 			findReferencesScriptFileName = GetFullPath("references.js");
 			definitionScriptFileName = GetFullPath("definition.js");
+			completeNavigationInfoScriptFileName = GetFullPath("navigation.js");
 			
 			typeScriptCompilerFileName = GetFullPath("tsc.js");
 			libScriptFileName = GetFullPath("lib.d.ts");
@@ -117,6 +119,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string GetDefinitionScript()
 		{
 			return ReadScript(definitionScriptFileName);
+		}
+		
+		public string GetCompleteNavigationInfoScript()
+		{
+			return ReadScript(completeNavigationInfoScriptFileName);
 		}
 	}
 }

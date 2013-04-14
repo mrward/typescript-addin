@@ -80,6 +80,11 @@
     <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\FormalSignatureInfo.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
+    <Compile Include="Hosting\CompletionNavigationInfo.cs" />
+    <Compile Include="Hosting\IScriptLoader.cs" />
+    <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
+    <Compile Include="Hosting\NavigateToItem.cs" />
+    <Compile Include="Hosting\NavigationInfo.cs" />
     <Compile Include="Hosting\ReferenceEntry.cs" />
     <Compile Include="Hosting\ReferenceInfo.cs" />
     <Compile Include="Hosting\SignatureInfo.cs" />
@@ -92,6 +97,7 @@
     <Compile Include="Hosting\ITextWriter.cs" />
     <Compile Include="Hosting\TypeScriptCompiler.cs" />
     <Compile Include="Hosting\TypeScriptCompilerResult.cs" />
+    <Compile Include="Hosting\TypeScriptContextFactory.cs" />
     <Compile Include="ProjectBrowserUpdater.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
@@ -109,11 +115,13 @@
     <Compile Include="TypeScriptCodeCompletionBinding.cs" />
     <Compile Include="TypeScriptCompletionItem.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
+    <Compile Include="TypeScriptCompilationUnit.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptInsightWindowHandler.cs" />
     <Compile Include="TypeScriptFunctionInsightItem.cs" />
     <Compile Include="TypeScriptFunctionInsightProvider.cs" />
     <Compile Include="TypeScriptOptions.cs" />
+    <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
@@ -125,6 +133,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\definition.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\navigation.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\references.js">
