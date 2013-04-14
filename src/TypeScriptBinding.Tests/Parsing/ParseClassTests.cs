@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 using ICSharpCode.SharpDevelop.Dom;
 using NUnit.Framework;
 
@@ -38,6 +39,27 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			IClass c = GetFirstClass();
 			Assert.AreEqual(expectedBodyRegion, c.BodyRegion);
+		}
+		
+		[Test]
+		public void Parse_ClassWithOneMethod_ClassHasOneMethodWithCorrectBodyRegionAndName()
+		{
+			string code =
+				"class Student {\r\n" +
+				"    sayHello() {\r\n" +
+				"        return \"Hello\";\r\n" +
+				"    }\r\n" +
+				"}\r\n";
+			
+			Parse(code);
+			
+			IClass c = GetFirstClass();
+			IMethod method = c.Methods.First();
+			Assert.AreEqual("sayHello", method.Name);
+			Assert.AreEqual(2, method.Region.EndLine);
+			Assert.AreEqual(15, method.Region.EndColumn);
+			Assert.AreEqual(4, method.BodyRegion.EndLine);
+			Assert.AreEqual(6, method.BodyRegion.EndColumn);
 		}
 	}
 }

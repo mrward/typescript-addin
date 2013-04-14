@@ -56,6 +56,9 @@ namespace ICSharpCode.TypeScriptBinding
 					case "class":
 						AddClass(item, document);
 						break;
+					case "method":
+						AddMethod(item, document);
+						break;
 				}
 			}
 		}
@@ -65,6 +68,30 @@ namespace ICSharpCode.TypeScriptBinding
 			var defaultClass = new DefaultClass(this, item.name);
 			defaultClass.BodyRegion = item.ToRegion(document);
 			Classes.Add(defaultClass);
+		}
+		
+		void AddMethod(NavigateToItem item, IDocument document)
+		{
+			IClass c = FindClass(item);
+			var method = new DefaultMethod(c, item.name);
+			UpdateMethodRegions(method, item, document);
+			c.Methods.Add(method);
+		}
+		
+		void UpdateMethodRegions(DefaultMethod method, NavigateToItem item, IDocument document)
+		{
+			DomRegion region = item.ToRegion(document);
+			method.Region = new DomRegion(
+				region.BeginLine,
+				region.BeginColumn,
+				region.BeginLine,
+				region.BeginColumn);
+			method.BodyRegion = region;
+		}
+		
+		IClass FindClass(NavigateToItem item)
+		{
+			return Classes[0];
 		}
 	}
 }
