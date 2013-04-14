@@ -57,6 +57,7 @@ namespace ICSharpCode.TypeScriptBinding
 						AddClass(item, document);
 						break;
 					case "method":
+					case "constructor":
 						AddMethod(item, document);
 						break;
 				}

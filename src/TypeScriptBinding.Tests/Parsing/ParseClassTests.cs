@@ -104,5 +104,26 @@ namespace TypeScriptBinding.Tests.Parsing
 			Assert.AreEqual(7, method.BodyRegion.EndLine);
 			Assert.AreEqual(6, method.BodyRegion.EndColumn);
 		}
+		
+		[Test]
+		public void Parse_ClassWithConstructor_ClassHasOneConstructorMethodWithCorrectBodyRegionAndName()
+		{
+			string code =
+				"class Student {\r\n" +
+				"    constructor() {\r\n" +
+				"    \r\n" +
+				"    }\r\n" +
+				"}\r\n";
+			
+			Parse(code);
+			
+			IClass c = GetFirstClass();
+			IMethod method = c.Methods.First();
+			Assert.AreEqual("constructor", method.Name);
+			Assert.AreEqual(2, method.Region.EndLine);
+			Assert.AreEqual(18, method.Region.EndColumn);
+			Assert.AreEqual(4, method.BodyRegion.EndLine);
+			Assert.AreEqual(6, method.BodyRegion.EndColumn);
+		}
 	}
 }
