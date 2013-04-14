@@ -61,5 +61,30 @@ namespace TypeScriptBinding.Tests.Parsing
 			Assert.AreEqual(4, method.BodyRegion.EndLine);
 			Assert.AreEqual(6, method.BodyRegion.EndColumn);
 		}
+		
+		[Test]
+		public void Parse_TwoClassesAndSecondOneHasOneMethod_SecondClassHasOneMethodWithCorrectBodyRegionAndName()
+		{
+			string code =
+				"class Class1 {\r\n" +
+				"}\r\n" +
+				"\r\n"+ 
+				"class Class2 {\r\n" +
+				"    sayHello() {\r\n" +
+				"        return \"Hello\";\r\n" +
+				"    }\r\n" +
+				"}\r\n";
+			
+			Parse(code);
+			
+			IClass c = GetSecondClass();
+			IMethod method = c.Methods.FirstOrDefault();
+			Assert.AreEqual(2, CompilationUnit.Classes.Count);
+			Assert.AreEqual("sayHello", method.Name);
+			Assert.AreEqual(5, method.Region.EndLine);
+			Assert.AreEqual(15, method.Region.EndColumn);
+			Assert.AreEqual(7, method.BodyRegion.EndLine);
+			Assert.AreEqual(6, method.BodyRegion.EndColumn);
+		}
 	}
 }

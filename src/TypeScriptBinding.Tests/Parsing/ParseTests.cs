@@ -36,7 +36,17 @@ namespace TypeScriptBinding.Tests.Parsing
 		
 		public IClass GetFirstClass()
 		{
-			return CompilationUnit.Classes.First();
+			return GetClassAtIndex(0);
+		}
+		
+		public IClass GetSecondClass()
+		{
+			return GetClassAtIndex(1);
+		}
+		
+		public IClass GetClassAtIndex(int index)
+		{
+			return CompilationUnit.Classes.Skip(index).First();
 		}
 	}
 }

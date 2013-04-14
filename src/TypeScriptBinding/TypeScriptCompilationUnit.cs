@@ -91,7 +91,9 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		IClass FindClass(NavigateToItem item)
 		{
-			return Classes[0];
+			return Classes
+				.Where(c => c.Name == item.containerName)
+				.FirstOrDefault();
 		}
 	}
 }
