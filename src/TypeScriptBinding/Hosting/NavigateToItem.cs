@@ -81,5 +81,27 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			Location end = document.OffsetToPosition(limChar);
 			return DomRegion.FromLocation(start, end);
 		}
+		
+		public bool HasContainer()
+		{
+			return !String.IsNullOrEmpty(containerName);
+		}
+		
+		public string GetFullName()
+		{
+			if (HasContainer()) {
+				return String.Format("{0}.{1}", containerName, name);
+			}
+			return name;
+		}
+		
+		public string GetContainerParentName()
+		{
+			int dotPosition = containerName.IndexOf('.');
+			if (dotPosition > 0) {
+				return containerName.Substring(0, dotPosition);
+			}
+			return null;
+		}
 	}
 }

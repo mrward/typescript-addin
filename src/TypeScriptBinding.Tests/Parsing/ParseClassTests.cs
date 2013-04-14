@@ -125,5 +125,57 @@ namespace TypeScriptBinding.Tests.Parsing
 			Assert.AreEqual(4, method.BodyRegion.EndLine);
 			Assert.AreEqual(6, method.BodyRegion.EndColumn);
 		}
+		
+		[Test]
+		public void Parse_EmptyInterface_InterfaceAddedToCompilationUnit()
+		{
+			string code =
+				"interface Student {\r\n" +
+				"}\r\n";
+			
+			Parse(code);
+			
+			IClass c = GetFirstClass();
+			Assert.AreEqual("Student", c.Name);
+			Assert.AreEqual(ClassType.Interface, c.ClassType);
+		}
+		
+		[Test]
+		public void Parse_ModuleWithOneClass_ModuleClassHasOneNestedClass()
+		{
+			string code =
+				"module MyModule {\r\n" +
+				"    class Student {\r\n" +
+				"    }\r\n" +
+				"}\r\n";
+			
+			Parse(code);
+			
+			IClass module = GetFirstClass();
+			Assert.AreEqual("MyModule", module.Name);
+			Assert.AreEqual(ClassType.Module, module.ClassType);
+			IClass c = module.InnerClasses.FirstOrDefault();
+			Assert.AreEqual("MyModule.Student", c.FullyQualifiedName);
+			Assert.AreEqual(1, CompilationUnit.Classes.Count);
+		}
+		
+		[Test]
+		public void Parse_ModuleWithOneClassThatHasOneMethod_NestedClassHasOneMethod()
+		{
+			string code =
+				"module MyModule {\r\n" +
+				"    class Student {\r\n" +
+				"         speak() {\r\n" +
+				"         }\r\n" +
+				"    }\r\n" +
+				"}\r\n";
+			
+			Parse(code);
+			
+			IClass module = GetFirstClass();
+			IClass c = module.InnerClasses.FirstOrDefault();
+			IMethod method = c.Methods[0];
+			Assert.AreEqual("speak", method.Name);
+		}
 	}
 }

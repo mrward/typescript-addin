@@ -56,6 +56,12 @@ namespace ICSharpCode.TypeScriptBinding
 					case "class":
 						AddClass(item, document);
 						break;
+					case "interface":
+						AddInterface(item, document);
+						break;
+					case "module":
+						AddModule(item, document);
+						break;
 					case "method":
 					case "constructor":
 						AddMethod(item, document);
@@ -64,17 +70,36 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
-		void AddClass(NavigateToItem item, IDocument document)
+		DefaultClass AddClass(NavigateToItem item, IDocument document)
 		{
-			var defaultClass = new DefaultClass(this, item.name);
+			var defaultClass = new DefaultClass(this, item.GetFullName());
 			defaultClass.BodyRegion = item.ToRegion(document);
 			defaultClass.Region = defaultClass.BodyRegion;
-			Classes.Add(defaultClass);
+			
+			if (item.HasContainer()) {
+				IClass parentClass = FindParentClass(item);
+				parentClass.InnerClasses.Add(defaultClass);
+			} else {
+				Classes.Add(defaultClass);
+			}
+			return defaultClass;
+		}
+		
+		void AddInterface(NavigateToItem item, IDocument document)
+		{
+			DefaultClass c = AddClass(item, document);
+			c.ClassType = ClassType.Interface;
+		}
+		
+		void AddModule(NavigateToItem item, IDocument document)
+		{
+			DefaultClass c = AddClass(item, document);
+			c.ClassType = ClassType.Module;
 		}
 		
 		void AddMethod(NavigateToItem item, IDocument document)
 		{
-			IClass c = FindClass(item);
+			IClass c = FindParentClass(item);
 			var method = new DefaultMethod(c, item.name);
 			UpdateMethodRegions(method, item, document);
 			c.Methods.Add(method);
@@ -91,10 +116,26 @@ namespace ICSharpCode.TypeScriptBinding
 			method.BodyRegion = region;
 		}
 		
-		IClass FindClass(NavigateToItem item)
+		IClass FindParentClass(NavigateToItem item)
 		{
-			return Classes
-				.Where(c => c.Name == item.containerName)
+			string containerParentName = item.GetContainerParentName();
+			if (containerParentName != null) {
+				IClass parentClass = FindClass(containerParentName);
+				return FindClass(parentClass.InnerClasses, item.containerName);
+			} else {
+				return FindClass(item.containerName);
+			}
+		}
+		
+		IClass FindClass(string name)
+		{
+			return FindClass(Classes, name);
+		}
+		
+		IClass FindClass(IList<IClass> classes, string name)
+		{
+			return classes
+				.Where(c => c.FullyQualifiedName == name)
 				.FirstOrDefault();
 		}
 	}
