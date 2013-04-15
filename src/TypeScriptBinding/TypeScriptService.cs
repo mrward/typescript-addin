@@ -27,6 +27,10 @@
 //
 
 using System;
+using System.ComponentModel;
+using ICSharpCode.AvalonEdit.AddIn;
+using ICSharpCode.SharpDevelop.Dom;
+using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -34,6 +38,7 @@ namespace ICSharpCode.TypeScriptBinding
 	public static class TypeScriptService
 	{
 		static readonly TypeScriptOptions options = new TypeScriptOptions();
+		static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		
 		public static TypeScriptOptions Options {
 			get { return options; }
@@ -49,6 +54,22 @@ namespace ICSharpCode.TypeScriptBinding
 				return new TypeScriptProject(ProjectService.CurrentProject);
 			}
 			return null;
+		}
+		
+		public static void Initialize()
+		{
+			WorkbenchSingleton.WorkbenchCreated += WorkbenchCreated;
+		}
+		
+		static void WorkbenchCreated(object sender, EventArgs e)
+		{
+			WorkbenchSingleton.Workbench.MainWindow.Closing += MainWindowClosing;
+			parserService.Start();
+		}
+		
+		static void MainWindowClosing(object sender, CancelEventArgs e)
+		{
+			parserService.Stop();
 		}
 	}
 }

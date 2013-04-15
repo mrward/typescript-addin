@@ -1,5 +1,5 @@
 ﻿// 
-// FileNameExtensions.cs
+// InitializeTypeScriptServiceCommand.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,26 +27,15 @@
 //
 
 using System;
-using System.IO;
 using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public static class FileNameExtensions
+	public class InitializeTypeScriptServiceCommand : AbstractCommand
 	{
-		public static FileName ChangeExtension(this FileName fileName, string extension)
+		public override void Run()
 		{
-			return new FileName(Path.ChangeExtension(fileName, extension));
-		}
-		
-		public static string GetFileNameWithoutPath(this FileName fileName)
-		{
-			return Path.GetFileName(fileName);
-		}
-		
-		public static string GetExtension(this FileName fileName)
-		{
-			return Path.GetExtension(fileName);
+			TypeScriptService.Initialize();
 		}
 	}
 }

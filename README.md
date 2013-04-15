@@ -6,10 +6,8 @@ This is a simple proof of concept that adds very basic [TypeScript](http://www.t
 
 1. Syntax highlighting for TypeScript files (.ts)
 2. TypeScript file template
-3. Code completion - using the TypeScript language services.
-4. Code folding.
-5. Quick Class Browser support.
-6. Generate JavaScript file when saving TypeScript file.
+3. Very basic code completion for types - using the TypeScript language services.
+4. Generate JavaScript file when saving TypeScript file.
 
 ## Dependencies
 

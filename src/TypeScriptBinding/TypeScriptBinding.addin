@@ -7,6 +7,7 @@
 	
 	<Manifest>
 		<Identity name="ICSharpCode.TypeScriptBinding"/>
+		<Dependency addin="ICSharpCode.AvalonEdit" requirePreload="true"/>
 	</Manifest>
 	
 	<Runtime>
@@ -29,6 +30,9 @@
 		<Class
 			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFile"
 			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileCommand"/>
+		<Class
+			id="ICSharpCode.TypeScriptBinding.InitializeTypeScriptService"
+			class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceCommand"/>
 	</Path>
 	
 	<Path name="/Workspace/Icons">
@@ -84,7 +88,7 @@
 			item="/Addins/TypeScript/TextEditor/ContextMenu/RenameTypeScriptReference"/>
 		<MenuItem
 			id="TypeScriptSeparator"
-			insertafter="TypeScript"
+			insertafter="RenameTypeScriptReference"
 			insertbefore="Cut"
 			type="Separator"/>
 	</Path>
@@ -102,16 +106,8 @@
 			item="/Addins/TypeScript/TextEditor/ContextMenu/FindTypeScriptReferences"/>
 		<MenuItem
 			id="TypeScriptSeparator"
-			insertafter="TypeScript"
+			insertafter="FindTypeScriptReferences"
 			insertbefore="GotoLineNr"
 			type="Separator"/>
-	</Path>
-
-	<Path name="/Workspace/Parser">
-		<Parser
-			id="TypeScript"
-			supportedextensions=".ts"
-			projectfileextension=".csproj"
-			class="ICSharpCode.TypeScriptBinding.TypeScriptParser"/>
 	</Path>
 </AddIn>
