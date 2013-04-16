@@ -42,7 +42,6 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptCodeCompletionBinding : ICodeCompletionBinding
 	{
-		static TypeScriptContext context = new TypeScriptContext();
 		TypeScriptInsightWindowHandler insightHandler = new TypeScriptInsightWindowHandler();
 		
 		public CodeCompletionKeyPressResult HandleKeyPress(ITextEditor editor, char ch)
@@ -66,13 +65,19 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		bool ShowCompletion(ITextEditor editor, bool memberCompletion)
 		{
-			UpdateContext(editor);
+			TypeScriptContext context = GetContext(editor);
+			UpdateContext(context, editor);
 			
 			var completionProvider = new TypeScriptCompletionItemProvider(context);
 			return completionProvider.ShowCompletion(editor, memberCompletion);
 		}
 		
-		static void UpdateContext(ITextEditor editor)
+		static TypeScriptContext GetContext(ITextEditor editor)
+		{
+			return TypeScriptService.ContextProvider.GetContext(editor.FileName);
+		}
+		
+		static void UpdateContext(TypeScriptContext context, ITextEditor editor)
 		{
 			context.UpdateFile(editor.FileName, editor.Document.Text);
 		}
@@ -84,7 +89,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void ShowMethodInsight(ITextEditor editor)
 		{
-			UpdateContext(editor);
+			TypeScriptContext context = GetContext(editor);
+			UpdateContext(context, editor);
 			
 			var provider = new TypeScriptFunctionInsightProvider(context);
 			IInsightItem[] items = provider.ProvideInsight(editor);
@@ -97,7 +103,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public static List<Reference> GetReferences(ITextEditor editor)
 		{
-			UpdateContext(editor);
+			TypeScriptContext context = GetContext(editor);
+			UpdateContext(context, editor);
 			
 			ReferenceInfo referenceInfo = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
@@ -121,7 +128,9 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public static void GoToDefinition(ITextEditor editor)
 		{
-			UpdateContext(editor);
+			TypeScriptContext context = GetContext(editor);
+			UpdateContext(context, editor);
+			
 			DefinitionInfo definitionInfo = context.GetDefinition(editor.FileName, editor.Caret.Offset);
 			if (definitionInfo.IsValid) {
 				Location location = editor.Document.OffsetToPosition(definitionInfo.minChar);

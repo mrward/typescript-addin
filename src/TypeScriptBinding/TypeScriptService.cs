@@ -32,6 +32,7 @@ using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -39,9 +40,15 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		static readonly TypeScriptOptions options = new TypeScriptOptions();
 		static readonly TypeScriptParserService parserService = new TypeScriptParserService();
+		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
+		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		
 		public static TypeScriptOptions Options {
 			get { return options; }
+		}
+		
+		public static TypeScriptContextProvider ContextProvider {
+			get { return contextProvider; }
 		}
 		
 		public static bool IsProjectOpen {
@@ -63,7 +70,9 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void WorkbenchCreated(object sender, EventArgs e)
 		{
-			WorkbenchSingleton.Workbench.MainWindow.Closing += MainWindowClosing;
+			IWorkbench workbench = WorkbenchSingleton.Workbench;
+			workbench.MainWindow.Closing += MainWindowClosing;
+			workbenchMonitor = new TypeScriptWorkbenchMonitor(workbench, contextProvider);
 			parserService.Start();
 		}
 		

@@ -112,6 +112,7 @@
     <Compile Include="Hosting\TypeScriptCompiler.cs" />
     <Compile Include="Hosting\TypeScriptCompilerResult.cs" />
     <Compile Include="Hosting\TypeScriptContextFactory.cs" />
+    <Compile Include="Hosting\TypeScriptContextProvider.cs" />
     <Compile Include="ProjectBrowserUpdater.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptService.cs" />
+    <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
   </ItemGroup>
   <ItemGroup>

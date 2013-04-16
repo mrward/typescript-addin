@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptProject.cs
+// TypeScriptContextProvider.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -29,44 +29,44 @@
 using System;
 using System.Collections.Generic;
 using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Project;
-using ICSharpCode.TypeScriptBinding.Hosting;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class TypeScriptProject
+	public class TypeScriptContextProvider
 	{
-		IProject project;
+		ITypeScriptContextFactory factory;
+		Dictionary<FileName, TypeScriptContext> cachedContexts = 
+			new Dictionary<FileName, TypeScriptContext>();
 		
-		public TypeScriptProject(IProject project)
+		public TypeScriptContextProvider()
+			: this(new TypeScriptContextFactory())
 		{
-			this.project = project;
 		}
 		
-		public void AddMissingFiles(IEnumerable<GeneratedTypeScriptFile> filesGenerated)
+		public TypeScriptContextProvider(ITypeScriptContextFactory factory)
 		{
-			foreach (GeneratedTypeScriptFile file in filesGenerated) {
-				AddMissingFile(file);
-			}
-			project.Save();
+			this.factory = factory;
 		}
 		
-		void AddMissingFile(GeneratedTypeScriptFile file)
+		public TypeScriptContext CreateContext(FileName fileName, string text)
 		{
-			if (IsFileInProject(file.FileName)) {
-				return;
-			}
+			TypeScriptContext context = factory.CreateContext();
+			context.AddFile(fileName, text);
+			cachedContexts.Add(fileName, context);
 			
-			var projectItem = new FileProjectItem(project, ItemType.None);
-			projectItem.FileName = file.FileName;
-			projectItem.DependentUpon = file.GetDependentUpon();
-			
-			ProjectService.AddProjectItem(project, projectItem);
+			return context;
 		}
 		
-		public bool IsFileInProject(FileName fileName)
+		public TypeScriptContext GetContext(FileName fileName)
 		{
-			return project.IsFileInProject(fileName);
+			return cachedContexts[fileName];
+		}
+		
+		public void DisposeContext(FileName fileName)
+		{
+			TypeScriptContext context = GetContext(fileName);
+			context.Dispose();
+			cachedContexts.Remove(fileName);
 		}
 	}
 }
