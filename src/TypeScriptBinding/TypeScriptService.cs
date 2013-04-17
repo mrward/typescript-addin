@@ -42,6 +42,7 @@ namespace ICSharpCode.TypeScriptBinding
 		static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
+		static TypeScriptProjectMonitor projectMonitor;
 		
 		public static TypeScriptOptions Options {
 			get { return options; }
@@ -73,6 +74,7 @@ namespace ICSharpCode.TypeScriptBinding
 			IWorkbench workbench = WorkbenchSingleton.Workbench;
 			workbench.MainWindow.Closing += MainWindowClosing;
 			workbenchMonitor = new TypeScriptWorkbenchMonitor(workbench, contextProvider);
+			projectMonitor = new TypeScriptProjectMonitor(contextProvider);
 			parserService.Start();
 		}
 		

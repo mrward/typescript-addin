@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptProject.cs
+// TypeScriptProjectMonitor.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,62 +27,40 @@
 //
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptProject
+	public class TypeScriptProjectMonitor
 	{
-		IProject project;
+		TypeScriptContextProvider contextProvider;
 		
-		public TypeScriptProject(IProject project)
+		public TypeScriptProjectMonitor(TypeScriptContextProvider contextProvider)
 		{
-			this.project = project;
+			this.contextProvider = contextProvider;
+			ProjectService.SolutionLoaded += SolutionLoaded;
+			ProjectService.SolutionClosed += SolutionClosed;
 		}
-		
-		public void AddMissingFiles(IEnumerable<GeneratedTypeScriptFile> filesGenerated)
+
+		void SolutionLoaded(object sender, SolutionEventArgs e)
 		{
-			foreach (GeneratedTypeScriptFile file in filesGenerated) {
-				AddMissingFile(file);
+			foreach (IProject project in e.Solution.Projects) {
+				CreateTypeScriptContextIfProjectHasTypeScriptFiles(project);
 			}
-			project.Save();
 		}
 		
-		void AddMissingFile(GeneratedTypeScriptFile file)
+		void CreateTypeScriptContextIfProjectHasTypeScriptFiles(IProject project)
 		{
-			if (IsFileInProject(file.FileName)) {
-				return;
+			var typeScriptProject = new TypeScriptProject(project);
+			if (typeScriptProject.HasTypeScriptFiles()) {
+				contextProvider.CreateProjectContext(typeScriptProject);
 			}
-			
-			var projectItem = new FileProjectItem(project, ItemType.None);
-			projectItem.FileName = file.FileName;
-			projectItem.DependentUpon = file.GetDependentUpon();
-			
-			ProjectService.AddProjectItem(project, projectItem);
 		}
 		
-		public bool IsFileInProject(FileName fileName)
+		void SolutionClosed(object sender, EventArgs e)
 		{
-			return project.IsFileInProject(fileName);
-		}
-		
-		public bool HasTypeScriptFiles()
-		{
-			return project
-				.Items
-				.Any(item => TypeScriptParser.IsTypeScriptFileName(item.FileName));
-		}
-		
-		public IEnumerable<FileName> GetTypeScriptFileNames()
-		{
-			return project
-				.Items
-				.Where(item => TypeScriptParser.IsTypeScriptFileName(item.FileName))
-				.Select(item => new FileName(item.FileName));
+			contextProvider.DisposeAllProjectContexts();
 		}
 	}
 }

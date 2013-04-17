@@ -127,7 +127,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterIconsCommand.cs" />
     <Compile Include="RenameTypeScriptReferenceCommand.cs" />
-    <Compile Include="InitializeTypeScriptServicesCommand.cs" />
+    <Compile Include="InitializeTypeScriptServiceCommand.cs" />
     <Compile Include="TypeScriptCodeCompletionBinding.cs" />
     <Compile Include="TypeScriptCompletionItem.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
@@ -140,6 +140,7 @@
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
+    <Compile Include="TypeScriptProjectMonitor.cs" />
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />

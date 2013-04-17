@@ -38,6 +38,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		Dictionary<FileName, TypeScriptContext> cachedContexts = 
 			new Dictionary<FileName, TypeScriptContext>();
 		
+		Dictionary<FileName, TypeScriptContext> cachedContextsInsideProjects = 
+			new Dictionary<FileName, TypeScriptContext>();
+		
+		List<TypeScriptContext> projectContexts = new List<TypeScriptContext>();
+		
 		public TypeScriptContextProvider()
 			: this(new TypeScriptContextFactory())
 		{
@@ -59,14 +64,44 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public TypeScriptContext GetContext(FileName fileName)
 		{
-			return cachedContexts[fileName];
+			TypeScriptContext context = null;
+			if (cachedContexts.TryGetValue(fileName, out context)) {
+				return context;
+			} else if (cachedContextsInsideProjects.TryGetValue(fileName, out context)) {
+				return context;
+			}
+			return null;
 		}
 		
 		public void DisposeContext(FileName fileName)
 		{
 			TypeScriptContext context = GetContext(fileName);
-			context.Dispose();
+			if (context != null) {
+				context.Dispose();
+			}
 			cachedContexts.Remove(fileName);
+			cachedContextsInsideProjects.Remove(fileName);
+		}
+		
+		public TypeScriptContext CreateProjectContext(TypeScriptProject project)
+		{
+			TypeScriptContext context = factory.CreateContext();
+			projectContexts.Add(context);
+			
+			foreach (FileName typeScriptFileName in project.GetTypeScriptFileNames()) {
+				cachedContextsInsideProjects.Add(typeScriptFileName, context);
+			}
+			
+			return context;
+		}
+		
+		public void DisposeAllProjectContexts()
+		{
+			foreach (TypeScriptContext context in projectContexts) {
+				context.Dispose();
+			}
+			cachedContextsInsideProjects = new Dictionary<FileName, TypeScriptContext>();
+			projectContexts = new List<TypeScriptContext>();
 		}
 	}
 }

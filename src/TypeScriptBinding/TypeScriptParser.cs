@@ -99,5 +99,10 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			return String.Equals(".ts", fileName.GetExtension(), StringComparison.OrdinalIgnoreCase);
 		}
+		
+		public static bool IsTypeScriptFileName(string fileName)
+		{
+			return IsTypeScriptFileName(new FileName(fileName));
+		}
 	}
 }
