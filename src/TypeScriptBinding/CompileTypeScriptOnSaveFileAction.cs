@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -64,10 +65,19 @@ namespace ICSharpCode.TypeScriptBinding
 		void ReportCompileFinished(bool error)
 		{
 			if (error) {
+				ShowOutputPad();
 				Report("TypeScript compilation failed.");
 			} else {
 				Report("TypeScript compilation finished successfully.");
 			}
+		}
+		
+		void ShowOutputPad()
+		{
+			WorkbenchSingleton
+				.Workbench
+				.GetPad(typeof(CompilerMessageView))
+				.BringPadToFront();
 		}
 		
 		void UpdateProject(IEnumerable<GeneratedTypeScriptFile> generatedFiles)
