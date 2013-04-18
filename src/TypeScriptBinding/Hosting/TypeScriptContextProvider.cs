@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -73,6 +74,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return null;
 		}
 		
+		public bool IsFileInsideProject(FileName fileName)
+		{
+			return cachedContextsInsideProjects.ContainsKey(fileName);
+		}
+		
 		public void DisposeContext(FileName fileName)
 		{
 			TypeScriptContext context = GetContext(fileName);
@@ -90,6 +96,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			foreach (FileName typeScriptFileName in project.GetTypeScriptFileNames()) {
 				cachedContextsInsideProjects.Add(typeScriptFileName, context);
+				ITextBuffer fileContent = ParserService.GetParseableFileContent(typeScriptFileName);
+				context.AddFile(typeScriptFileName, fileContent.Text);
 			}
 			
 			return context;

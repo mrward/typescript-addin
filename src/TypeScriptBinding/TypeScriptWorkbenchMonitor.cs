@@ -73,15 +73,12 @@ namespace ICSharpCode.TypeScriptBinding
 		bool StandaloneTypeScriptFileOpened(FileName fileName)
 		{
 			return TypeScriptParser.IsTypeScriptFileName(fileName) &&
-				!TypeScriptFileInOpenProject(fileName);
+				!TypeScriptFileInAnyProject(fileName);
 		}
 		
-		bool TypeScriptFileInOpenProject(FileName fileName)
+		bool TypeScriptFileInAnyProject(FileName fileName)
 		{
-			if (TypeScriptService.IsProjectOpen) {
-				return TypeScriptService.GetCurrentTypeScriptProject().IsFileInProject(fileName);
-			}
-			return false;
+			return TypeScriptService.ContextProvider.IsFileInsideProject(fileName);
 		}
 		
 		void ViewClosed(object sender, ViewContentEventArgs e)
