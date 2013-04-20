@@ -58,6 +58,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			TypeScriptContext context = factory.CreateContext();
 			context.AddFile(fileName, text);
+			context.RunInitialisationScript();
+			
 			cachedContexts.Add(fileName, context);
 			
 			return context;
@@ -99,6 +101,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 				ITextBuffer fileContent = ParserService.GetParseableFileContent(typeScriptFileName);
 				context.AddFile(typeScriptFileName, fileContent.Text);
 			}
+			
+			context.RunInitialisationScript();
 			
 			return context;
 		}

@@ -59,7 +59,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public void AddFile(FileName fileName, string text)
 		{
 			host.AddFile(fileName, text);
-			
+		}
+		
+		public void RunInitialisationScript()
+		{
 			if (runInitialization) {
 				runInitialization = false;
 				context.Run(scriptLoader.GetMainScript());
@@ -68,11 +71,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public void UpdateFile(FileName fileName, string text)
 		{
-			if (host.getScriptCount() == 1) {
-				AddFile(fileName, text);
-			} else {
-				host.UpdateFile(fileName, text);
-			}
+			host.UpdateFile(fileName, text);
 		}
 		
 		public CompletionInfo GetCompletionItems(FileName fileName, int offset, string text, bool memberCompletion)
