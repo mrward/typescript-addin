@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -97,14 +98,19 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			projectContexts.Add(context);
 			
 			foreach (FileName typeScriptFileName in project.GetTypeScriptFileNames()) {
-				cachedContextsInsideProjects.Add(typeScriptFileName, context);
-				ITextBuffer fileContent = ParserService.GetParseableFileContent(typeScriptFileName);
-				context.AddFile(typeScriptFileName, fileContent.Text);
+				AddFileToProjectContext(context, typeScriptFileName);
 			}
 			
 			context.RunInitialisationScript();
 			
 			return context;
+		}
+		
+		void AddFileToProjectContext(TypeScriptContext context, FileName fileName)
+		{
+			cachedContextsInsideProjects.Add(fileName, context);
+			ITextBuffer fileContent = ParserService.GetParseableFileContent(fileName);
+			context.AddFile(fileName, fileContent.Text);
 		}
 		
 		public void DisposeAllProjectContexts()
@@ -114,6 +120,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 			cachedContextsInsideProjects = new Dictionary<FileName, TypeScriptContext>();
 			projectContexts = new List<TypeScriptContext>();
+		}
+		
+		public void AddFileToProjectContext(FileName fileName)
+		{
+			TypeScriptContext context = projectContexts[0];
+			AddFileToProjectContext(context, fileName);
 		}
 	}
 }

@@ -28,6 +28,7 @@
 
 using System;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -43,6 +44,7 @@ namespace ICSharpCode.TypeScriptBinding
 			ProjectService.SolutionLoaded += SolutionLoaded;
 			ProjectService.SolutionClosed += SolutionClosed;
 			ProjectService.ProjectItemRemoved += ProjectItemRemoved;
+			ProjectService.ProjectItemAdded += ProjectItemAdded;
 		}
 		
 		void SolutionLoaded(object sender, SolutionEventArgs e)
@@ -75,6 +77,18 @@ namespace ICSharpCode.TypeScriptBinding
 			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
 				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
 				context.RemoveFile(fileName);
+			}
+		}
+		
+		void ProjectItemAdded(object sender, ProjectItemEventArgs e)
+		{
+			AddTypeScriptFileToContext(new FileName(e.ProjectItem.FileName));
+		}
+		
+		void AddTypeScriptFileToContext(FileName fileName)
+		{
+			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
+				TypeScriptService.ContextProvider.AddFileToProjectContext(fileName);
 			}
 		}
 	}

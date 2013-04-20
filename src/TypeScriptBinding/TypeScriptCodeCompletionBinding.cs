@@ -112,8 +112,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static ITextBuffer GetFileContent(string fileName)
 		{
-			var fileContentFinder = new ParseableFileContentFinder();
-			return fileContentFinder.Create(new FileName(fileName));
+			return ParserService.GetParseableFileContent(fileName);
 		}
 		
 		public bool CtrlSpace(ITextEditor editor)
