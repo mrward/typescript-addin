@@ -63,6 +63,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public int limChar { get; set; }
 		public bool isWriteAccess { get; set; }
 		
+		internal string FileName { get; set; }
+		
 		internal int length {
 			get { return limChar - minChar; }
 		}

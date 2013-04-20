@@ -96,7 +96,24 @@ namespace TypeScriptHosting
 		public void updateReferencesAtPosition(string references)
 		{
 			LogDebug(references);
-			ReferenceInfo = new ReferenceInfo(references);
+			ReferenceInfo = CreateReferenceInfo(references);
+		}
+		
+		ReferenceInfo CreateReferenceInfo(string references)
+		{
+			var referenceInfo = new ReferenceInfo(references);
+			foreach (ReferenceEntry entry in referenceInfo.entries) {
+				entry.FileName = GetFileName(entry.unitIndex);
+			}
+			return referenceInfo;
+		}
+		
+		string GetFileName(int index)
+		{
+			if ((index >= 0) && (index < scripts.Count)) {
+				return scripts[index].Id;
+			}
+			return null;
 		}
 		
 		internal ReferenceInfo ReferenceInfo { get; private set; }

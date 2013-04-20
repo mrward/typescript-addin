@@ -30,11 +30,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using ICSharpCode.Core;
 using ICSharpCode.NRefactory;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.SharpDevelop.Editor.Search;
+using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.SharpDevelop.Refactoring;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -110,14 +112,16 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			return referenceInfo
 				.entries
-				.Select(entry => CreateReference(editor, entry))
+				.Select(entry => CreateReference(entry))
 				.ToList();
 		}
 		
-		static Reference CreateReference(ITextEditor editor, ReferenceEntry entry)
+		static Reference CreateReference(ReferenceEntry entry)
 		{
-			string expression = editor.Document.GetText(entry.minChar, entry.length);
-			return new Reference(editor.FileName, entry.minChar, entry.length, expression, null);
+			var fileContentFinder = new ParseableFileContentFinder();
+			ITextBuffer fileContent = fileContentFinder.Create(new FileName(entry.FileName));
+			string expression = fileContent.GetText(entry.minChar, entry.length);
+			return new Reference(entry.FileName, entry.minChar, entry.length, expression, null);
 		}
 		
 		static void ShowSearchResults(List<SearchResultMatch> searchResults)
