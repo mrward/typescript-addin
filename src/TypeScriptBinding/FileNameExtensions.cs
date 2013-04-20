@@ -48,5 +48,10 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			return Path.GetExtension(fileName);
 		}
+		
+		public static string ToLower(this FileName fileName)
+		{
+			return fileName.ToString().ToLowerInvariant();
+		}
 	}
 }

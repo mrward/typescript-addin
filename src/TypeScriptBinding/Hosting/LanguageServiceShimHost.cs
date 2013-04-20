@@ -28,6 +28,8 @@
 
 using System;
 using System.Collections.Generic;
+using ICSharpCode.Core;
+using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using Newtonsoft.Json;
 
@@ -44,20 +46,21 @@ namespace TypeScriptHosting
 			this.logger = logger;
 		}
 		
-		internal void AddDefaultLibScript(string fileName, string text)
+		internal void AddDefaultLibScript(FileName fileName, string text)
 		{
 			AddFile(fileName, text);
 			defaultLibScriptIndex = scripts.Count - 1;
 		}
 		
-		internal void AddFile(string fileName, string text)
+		internal void AddFile(FileName fileName, string text)
 		{
-			scripts.Add(new Script(fileName, text));
+			scripts.Add(new Script(fileName.ToLower(), text));
 		}
 		
-		internal void UpdateFile(string fileName, string text)
+		internal void UpdateFile(FileName fileName, string text)
 		{
-			Script script = scripts.Find(s => s.Id == fileName);
+			string matchFileName = fileName.ToLower();
+			Script script = scripts.Find(s => s.Id == matchFileName);
 			if (script != null) {
 				script.Update(text);
 			} else {
@@ -215,6 +218,11 @@ namespace TypeScriptHosting
 				return null;
 			
 			return "{ \"minChar\": -1, \"limChar\": -1, \"delta\": -1}";
+		}
+		
+		internal void UpdateFileName(FileName fileName)
+		{
+			this.fileName = fileName.ToLower();
 		}
 	}
 }

@@ -46,7 +46,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			this.scriptLoader = scriptLoader;
 			host = new LanguageServiceShimHost(logger);
-			host.AddDefaultLibScript("lib.d.ts", scriptLoader.GetLibScript());
+			host.AddDefaultLibScript(new FileName("lib.d.ts"), scriptLoader.GetLibScript());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptServicesScript());
 		}
@@ -58,7 +58,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public void AddFile(FileName fileName, string text)
 		{
-			host.AddFile(fileName.ToString(), text);
+			host.AddFile(fileName, text);
 			
 			if (runInitialization) {
 				runInitialization = false;
@@ -71,14 +71,14 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			if (host.getScriptCount() == 1) {
 				AddFile(fileName, text);
 			} else {
-				host.UpdateFile(fileName.ToString(), text);
+				host.UpdateFile(fileName, text);
 			}
 		}
 		
 		public CompletionInfo GetCompletionItems(FileName fileName, int offset, string text, bool memberCompletion)
 		{
 			host.position = offset;
-			host.fileName = fileName.ToString();
+			host.UpdateFileName(fileName);
 			host.isMemberCompletion = memberCompletion;
 			
 			context.Run(scriptLoader.GetMemberCompletionScript());
@@ -89,7 +89,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public SignatureInfo GetSignature(FileName fileName, int offset)
 		{
 			host.position = offset;
-			host.fileName = fileName;
+			host.UpdateFileName(fileName);
 			
 			context.Run(scriptLoader.GetFunctionSignatureScript());
 			
@@ -99,7 +99,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public ReferenceInfo FindReferences(FileName fileName, int offset)
 		{
 			host.position = offset;
-			host.fileName = fileName;
+			host.UpdateFileName(fileName);
 			
 			context.Run(scriptLoader.GetFindReferencesScript());
 			
@@ -109,7 +109,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public DefinitionInfo GetDefinition(FileName fileName, int offset)
 		{
 			host.position = offset;
-			host.fileName = fileName;
+			host.UpdateFileName(fileName);
 			
 			context.Run(scriptLoader.GetDefinitionScript());
 			
@@ -118,7 +118,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public NavigationInfo GetOutliningRegions(FileName fileName)
 		{
-			host.fileName = fileName;
+			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
 			return host.OutlingRegions;
