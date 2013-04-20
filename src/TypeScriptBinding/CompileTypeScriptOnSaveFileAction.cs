@@ -43,7 +43,7 @@ namespace ICSharpCode.TypeScriptBinding
 			var compiler = new TypeScriptCompiler();
 			TypeScriptCompilerResult result = compiler.Compile(fileName);
 			
-			if (!result.HasErrors && TypeScriptService.IsProjectOpen) {
+			if (TypeScriptService.IsProjectOpen) {
 				UpdateProject(result.GeneratedFiles);
 			}
 			

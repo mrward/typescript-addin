@@ -28,7 +28,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
@@ -54,7 +56,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddMissingFile(GeneratedTypeScriptFile file)
 		{
-			if (IsFileInProject(file.FileName)) {
+			if (IsFileInProject(file.FileName) || !File.Exists(file.FileName)) {
 				return;
 			}
 			
