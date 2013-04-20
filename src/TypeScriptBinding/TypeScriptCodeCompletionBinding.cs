@@ -98,11 +98,16 @@ namespace ICSharpCode.TypeScriptBinding
 			foreach (IViewContent view in WorkbenchSingleton.Workbench.ViewContentCollection) {
 				if (TypeScriptParser.IsTypeScriptFileName(view.PrimaryFileName)) {
 					if (IsFileInsideProject(view.PrimaryFileName)) {
-						ITextBuffer fileContent = GetFileContent(view.PrimaryFileName);
-						context.UpdateFile(view.PrimaryFileName, fileContent.Text);
+						UpdateContext(context, view.PrimaryFileName);
 					}
 				}
 			}
+		}
+		
+		static void UpdateContext(TypeScriptContext context, FileName fileName)
+		{
+			ITextBuffer fileContent = GetFileContent(fileName);
+			context.UpdateFile(fileName, fileContent.Text);
 		}
 		
 		static ITextBuffer GetFileContent(string fileName)

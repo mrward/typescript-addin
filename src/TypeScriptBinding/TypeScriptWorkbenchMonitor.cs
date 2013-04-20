@@ -27,9 +27,12 @@
 //
 
 using System;
+using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Gui;
+using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -83,9 +86,21 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void ViewClosed(object sender, ViewContentEventArgs e)
 		{
-			if (StandaloneTypeScriptFileOpened(e)) {
-				provider.DisposeContext(e.Content.PrimaryFileName);
+			FileName fileName = e.Content.PrimaryFileName;
+			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
+				if (TypeScriptFileInAnyProject(fileName)) {
+					UpdateTypeScriptContextWithFileContentFromDisk(fileName);
+				} else {
+					provider.DisposeContext(fileName);
+				}
 			}
+		}
+		
+		void UpdateTypeScriptContextWithFileContentFromDisk(FileName fileName)
+		{
+			TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
+			string fileContent = FileReader.ReadFileContent(fileName, ParserService.DefaultFileEncoding);
+			context.UpdateFile(fileName, fileContent);
 		}
 	}
 }

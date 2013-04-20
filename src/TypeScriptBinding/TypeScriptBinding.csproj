@@ -41,8 +41,13 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.AvalonEdit">
+      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.AvalonEdit.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit.AddIn">
       <HintPath>..\..\lib\SharpDevelop\ICSharpCode.AvalonEdit.AddIn.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="ICSharpCode.Core">
       <HintPath>..\..\lib\SharpDevelop\ICSharpCode.Core.dll</HintPath>
