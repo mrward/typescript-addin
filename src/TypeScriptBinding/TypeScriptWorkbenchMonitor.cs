@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.IO;
 using ICSharpCode.AvalonEdit.Utils;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
@@ -98,9 +99,11 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void UpdateTypeScriptContextWithFileContentFromDisk(FileName fileName)
 		{
-			TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
-			string fileContent = FileReader.ReadFileContent(fileName, ParserService.DefaultFileEncoding);
-			context.UpdateFile(fileName, fileContent);
+			if (File.Exists(fileName)) {
+				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
+				string fileContent = FileReader.ReadFileContent(fileName, ParserService.DefaultFileEncoding);
+				context.UpdateFile(fileName, fileContent);
+			}
 		}
 	}
 }
