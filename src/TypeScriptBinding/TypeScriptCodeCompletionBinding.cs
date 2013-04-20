@@ -29,13 +29,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.Core;
 using ICSharpCode.NRefactory;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.SharpDevelop.Editor.Search;
+using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.SharpDevelop.Refactoring;
 using ICSharpCode.TypeScriptBinding.Hosting;
@@ -81,7 +81,34 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void UpdateContext(TypeScriptContext context, ITextEditor editor)
 		{
-			context.UpdateFile(editor.FileName, editor.Document.Text);
+			if (IsFileInsideProject(editor.FileName)) {
+				UpdateAllOpenFiles(context);
+			} else {
+				context.UpdateFile(editor.FileName, editor.Document.Text);
+			}
+		}
+		
+		static bool IsFileInsideProject(FileName fileName)
+		{
+			return TypeScriptService.ContextProvider.IsFileInsideProject(fileName);
+		}
+		
+		static void UpdateAllOpenFiles(TypeScriptContext context)
+		{
+			foreach (IViewContent view in WorkbenchSingleton.Workbench.ViewContentCollection) {
+				if (TypeScriptParser.IsTypeScriptFileName(view.PrimaryFileName)) {
+					if (IsFileInsideProject(view.PrimaryFileName)) {
+						ITextBuffer fileContent = GetFileContent(view.PrimaryFileName);
+						context.UpdateFile(view.PrimaryFileName, fileContent.Text);
+					}
+				}
+			}
+		}
+		
+		static ITextBuffer GetFileContent(string fileName)
+		{
+			var fileContentFinder = new ParseableFileContentFinder();
+			return fileContentFinder.Create(new FileName(fileName));
 		}
 		
 		public bool CtrlSpace(ITextEditor editor)
@@ -118,8 +145,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static Reference CreateReference(ReferenceEntry entry)
 		{
-			var fileContentFinder = new ParseableFileContentFinder();
-			ITextBuffer fileContent = fileContentFinder.Create(new FileName(entry.FileName));
+			ITextBuffer fileContent = GetFileContent(entry.FileName);
 			string expression = fileContent.GetText(entry.minChar, entry.length);
 			return new Reference(entry.FileName, entry.minChar, entry.length, expression, null);
 		}
