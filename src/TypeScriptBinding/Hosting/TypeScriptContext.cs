@@ -38,18 +38,14 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	public class TypeScriptContext : IDisposable
 	{
 		JavascriptContext context = new JavascriptContext();
-		LanguageServiceShimHost host = new LanguageServiceShimHost();
+		LanguageServiceShimHost host;
 		IScriptLoader scriptLoader;
 		bool runInitialization = true;
 		
-		public TypeScriptContext()
-			: this(new ScriptLoader())
-		{
-		}
-		
-		public TypeScriptContext(IScriptLoader scriptLoader)
+		public TypeScriptContext(IScriptLoader scriptLoader, ILogger logger)
 		{
 			this.scriptLoader = scriptLoader;
+			host = new LanguageServiceShimHost(logger);
 			host.AddDefaultLibScript("lib.d.ts", scriptLoader.GetLibScript());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptServicesScript());

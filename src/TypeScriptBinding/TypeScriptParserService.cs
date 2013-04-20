@@ -29,9 +29,9 @@
 using System;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-
 using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.Core;
+using ICSharpCode.TypeScriptBinding.Hosting;
 using ITextBuffer = ICSharpCode.SharpDevelop.ITextBuffer;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
@@ -108,7 +108,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		ParseInformation ParseTypeScriptFile(string fileName, ITextBuffer fileContent)
 		{
-			var parser = new TypeScriptParser();
+			var parser = new TypeScriptParser(new LanguageServiceNullLogger());
 			var projectContent = new DefaultProjectContent();
 			ICompilationUnit unit = parser.Parse(projectContent, fileName, fileContent);
 			return new ParseInformation(unit);

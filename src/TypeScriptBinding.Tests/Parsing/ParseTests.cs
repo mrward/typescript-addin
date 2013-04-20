@@ -25,10 +25,11 @@ namespace TypeScriptBinding.Tests.Parsing
 			var textBuffer = new StringTextBuffer(text);
 			
 			var scriptLoader = new ParseTestScriptLoader();
+			var logger = new LanguageServiceLogger();
 			ITypeScriptContextFactory contextFactory = MockRepository.GenerateStub<ITypeScriptContextFactory>();
 			contextFactory
 				.Stub(f => f.CreateContext())
-				.Return(new TypeScriptContext(scriptLoader));
+				.Return(new TypeScriptContext(scriptLoader, logger));
 			
 			var parser = new TypeScriptParser(contextFactory);
 			CompilationUnit = parser.Parse(ProjectContent, fileName, textBuffer);

@@ -37,9 +37,11 @@ namespace TypeScriptHosting
 	{
 		List<Script> scripts = new List<Script>();
 		int defaultLibScriptIndex = -1;
+		ILogger logger;
 		
-		public LanguageServiceShimHost()
+		public LanguageServiceShimHost(ILogger logger)
 		{
+			this.logger = logger;
 		}
 		
 		internal void AddDefaultLibScript(string fileName, string text)
@@ -74,7 +76,7 @@ namespace TypeScriptHosting
 		
 		public void updateCompletionInfoAtCurrentPosition(string completionInfo)
 		{
-			log(completionInfo);
+			LogDebug(completionInfo);
 			CompletionResult = JsonConvert.DeserializeObject<CompletionResult>(completionInfo);
 		}
 		
@@ -82,7 +84,7 @@ namespace TypeScriptHosting
 		
 		public void updateSignatureAtPosition(string signature)
 		{
-			log(signature);
+			LogDebug(signature);
 			SignatureResult = JsonConvert.DeserializeObject<SignatureResult>(signature);
 		}
 		
@@ -90,7 +92,7 @@ namespace TypeScriptHosting
 		
 		public void updateReferencesAtPosition(string references)
 		{
-			log(references);
+			LogDebug(references);
 			ReferenceInfo = new ReferenceInfo(references);
 		}
 		
@@ -98,7 +100,7 @@ namespace TypeScriptHosting
 		
 		public void updateDefinitionAtPosition(string definition)
 		{
-			log(definition);
+			LogDebug(definition);
 			DefinitionInfo = new DefinitionInfo(definition);
 		}
 		
@@ -106,7 +108,7 @@ namespace TypeScriptHosting
 		
 		public void updateLexicalStructure(string structure)
 		{
-			log(structure);
+			LogDebug(structure);
 			LexicalStructure = new NavigationInfo(structure);
 		}
 		
@@ -114,7 +116,7 @@ namespace TypeScriptHosting
 		
 		public void updateOutliningRegions(string regions)
 		{
-			log(regions);
+			LogDebug(regions);
 			OutlingRegions = new NavigationInfo(regions);
 		}
 		
@@ -122,85 +124,92 @@ namespace TypeScriptHosting
 		
 		public bool information()
 		{
-			return true;
+			return logger.information();
 		}
 		
 		public bool debug()
 		{
-			return true;
+			return logger.debug();
 		}
 		
 		public bool warning()
 		{
-			return true;
+			return logger.warning();
 		}
 		
 		public bool error()
 		{
-			return true;
+			return logger.error();
 		}
 		
 		public bool fatal()
 		{
-			return true;
+			return logger.fatal();
 		}
 		
 		public void log(string s)
 		{
-			Console.WriteLine(s);
+			logger.log(s);
 		}
 		
-		void LogFormat(string format, params object[] args)
+		void LogDebug(string format, params object[] args)
 		{
-			log(String.Format(format, args));
+			LogDebug(String.Format(format, args));
+		}
+		
+		void LogDebug(string s)
+		{
+			if (debug()) {
+				log(s);
+			}
 		}
 		
 		public string getCompilationSettings()
 		{
-			log("Host.getCompilationSettings");
+			LogDebug("Host.getCompilationSettings");
 			return null;
 		}
 		
 		public int getScriptCount()
 		{
-			LogFormat("Host.getScriptCount. Count={0}", scripts.Count);
+			LogDebug("Host.getScriptCount. Count={0}", scripts.Count);
 			return scripts.Count;
 		}
 		
 		public string getScriptId(int scriptIndex)
 		{
-			log("Host.getScriptId: " + scriptIndex);
+			LogDebug("Host.getScriptId: " + scriptIndex);
 			return scripts[scriptIndex].Id;
 		}
 		
 		public string getScriptSourceText(int scriptIndex, int start, int end)
 		{
-			LogFormat("Host.getScriptSourceText: index={0}, start={1}, end={2}", scriptIndex, start, end);
+			LogDebug("Host.getScriptSourceText: index={0}, start={1}, end={2}", scriptIndex, start, end);
 			Script script = scripts[scriptIndex];
 			return script.Source.Substring(start, end - start);
 		}
 		
 		public int getScriptSourceLength(int scriptIndex)
 		{
-			log("Host.getScriptId: " + scriptIndex);
+			LogDebug("Host.getScriptId: " + scriptIndex);
 			return scripts[scriptIndex].Source.Length;
 		}
 		
 		public bool getScriptIsResident(int scriptIndex)
 		{
-			log("Host.getScriptIsResident: " + scriptIndex);
+			LogDebug("Host.getScriptIsResident: " + scriptIndex);
 			return scriptIndex == defaultLibScriptIndex;
 		}
 		
 		public int getScriptVersion(int scriptIndex)
 		{
-			log("Host.getScriptVersion: " + scriptIndex);
+			LogDebug("Host.getScriptVersion: " + scriptIndex);
 			return scripts[scriptIndex].Version;
 		}
 		
 		public string getScriptEditRangeSinceVersion(int scriptIndex, int scriptVersion)
 		{
-			LogFormat("Host.getScriptId: index={0}, version={1}", scriptIndex, scriptVersion);
+			LogDebug("Host.getScriptId: index={0}, version={1}", scriptIndex, scriptVersion);
 			Script script = scripts[scriptIndex];
 			if (script.Version == scriptVersion)
 				return null;

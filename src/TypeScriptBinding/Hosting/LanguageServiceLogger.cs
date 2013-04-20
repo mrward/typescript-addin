@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptContextFactory.cs
+// LanguageServiceLogger.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,25 +30,36 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class TypeScriptContextFactory : ITypeScriptContextFactory
+	public class LanguageServiceLogger : ILogger
 	{
-		IScriptLoader scriptLoader;
-		ILogger logger;
-		
-		public TypeScriptContextFactory()
-			: this(new ScriptLoader(), new LanguageServiceLogger())
+		public bool information()
 		{
+			return true;
 		}
 		
-		public TypeScriptContextFactory(IScriptLoader scriptLoader, ILogger logger)
+		public bool debug()
 		{
-			this.scriptLoader = scriptLoader;
-			this.logger = logger;
+			return true;
 		}
 		
-		public TypeScriptContext CreateContext()
+		public bool warning()
 		{
-			return new TypeScriptContext(scriptLoader, logger);
+			return true;
+		}
+		
+		public bool error()
+		{
+			return true;
+		}
+		
+		public bool fatal()
+		{
+			return true;
+		}
+		
+		public void log(string s)
+		{
+			Console.WriteLine(s);
 		}
 	}
 }

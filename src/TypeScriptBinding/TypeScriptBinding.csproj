@@ -97,6 +97,8 @@
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
     <Compile Include="Hosting\IScriptLoader.cs" />
     <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
+    <Compile Include="Hosting\LanguageServiceNullLogger.cs" />
+    <Compile Include="Hosting\LanguageServiceLogger.cs" />
     <Compile Include="Hosting\NavigateToItem.cs" />
     <Compile Include="Hosting\NavigationInfo.cs" />
     <Compile Include="Hosting\ReferenceEntry.cs" />

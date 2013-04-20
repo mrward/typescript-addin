@@ -39,8 +39,8 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		ITypeScriptContextFactory contextFactory;
 		
-		public TypeScriptParser()
-			: this(new TypeScriptContextFactory())
+		public TypeScriptParser(ILogger logger)
+			: this(new TypeScriptContextFactory(new ScriptLoader(), logger))
 		{
 		}
 		
