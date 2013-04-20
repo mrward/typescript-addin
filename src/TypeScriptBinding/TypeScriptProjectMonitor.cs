@@ -27,6 +27,7 @@
 //
 
 using System;
+using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -41,8 +42,9 @@ namespace ICSharpCode.TypeScriptBinding
 			this.contextProvider = contextProvider;
 			ProjectService.SolutionLoaded += SolutionLoaded;
 			ProjectService.SolutionClosed += SolutionClosed;
+			ProjectService.ProjectItemRemoved += ProjectItemRemoved;
 		}
-
+		
 		void SolutionLoaded(object sender, SolutionEventArgs e)
 		{
 			foreach (IProject project in e.Solution.Projects) {
@@ -61,6 +63,19 @@ namespace ICSharpCode.TypeScriptBinding
 		void SolutionClosed(object sender, EventArgs e)
 		{
 			contextProvider.DisposeAllProjectContexts();
+		}
+		
+		void ProjectItemRemoved(object sender, ProjectItemEventArgs e)
+		{
+			RemoveTypeScriptFileFromContext(new FileName(e.ProjectItem.FileName));
+		}
+		
+		void RemoveTypeScriptFileFromContext(FileName fileName)
+		{
+			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
+				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
+				context.RemoveFile(fileName);
+			}
 		}
 	}
 }

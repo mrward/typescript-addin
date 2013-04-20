@@ -59,13 +59,18 @@ namespace TypeScriptHosting
 		
 		internal void UpdateFile(FileName fileName, string text)
 		{
-			string matchFileName = fileName.ToLower();
-			Script script = scripts.Find(s => s.Id == matchFileName);
+			Script script = FindScript(fileName);
 			if (script != null) {
 				script.Update(text);
 			} else {
 				AddFile(fileName, text);
 			}
+		}
+		
+		Script FindScript(FileName fileName)
+		{
+			string matchFileName = fileName.ToLower();
+			return scripts.Find(s => s.Id == matchFileName);
 		}
 		
 		internal void UpdateFile(int index, string text)
@@ -240,6 +245,14 @@ namespace TypeScriptHosting
 		internal void UpdateFileName(FileName fileName)
 		{
 			this.fileName = fileName.ToLower();
+		}
+		
+		internal void RemoveFile(FileName fileName)
+		{
+			Script script = FindScript(fileName);
+			if (script != null) {
+				scripts.Remove(script);
+			}
 		}
 	}
 }

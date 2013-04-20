@@ -122,5 +122,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			return host.OutlingRegions;
 		}
+		
+		public void RemoveFile(FileName fileName)
+		{
+			host.RemoveFile(fileName);
+		}
 	}
 }
