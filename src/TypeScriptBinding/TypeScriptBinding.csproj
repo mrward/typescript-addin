@@ -95,6 +95,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompileTypeScriptAction.cs" />
     <Compile Include="CompileTypeScriptFilesOnBuildAction.cs" />
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
     <Compile Include="FileNameExtensions.cs" />

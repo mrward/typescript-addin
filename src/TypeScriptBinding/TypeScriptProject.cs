@@ -46,6 +46,10 @@ namespace ICSharpCode.TypeScriptBinding
 			this.project = project;
 		}
 		
+		public string Name {
+			get { return project.Name; }
+		}
+		
 		public void AddMissingFiles(IEnumerable<GeneratedTypeScriptFile> filesGenerated)
 		{
 			foreach (GeneratedTypeScriptFile file in filesGenerated) {

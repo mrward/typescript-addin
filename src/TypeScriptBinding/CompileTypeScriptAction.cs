@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// CompileTypeScriptAction.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,39 +27,39 @@
 //
 
 using System;
-using System.Collections.Generic;
-using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
-using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
+	public abstract class CompileTypeScriptAction
 	{
-		public void Compile(FileName fileName)
+		protected void Report(string format, params object[] args)
 		{
-			ReportCompileStarting(fileName);
-			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
-			
-			TypeScriptProject project = TypeScriptService.GetProjectForFile(fileName);
-			if (project != null) {
-				UpdateProject(project, result.GeneratedFiles);
-			}
-			
-			ReportCompileFinished(result.HasErrors);
+			string message = String.Format(format, args);
+			TaskService.BuildMessageViewCategory.AppendLine(message);
 		}
 		
-		void ReportCompileStarting(FileName fileName)
+		protected void ClearOutputWindow()
 		{
-			ClearOutputWindow();
-			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
+			TaskService.BuildMessageViewCategory.ClearText();
 		}
 		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
+		protected void ShowOutputPad()
 		{
-			using (var updater = new ProjectBrowserUpdater()) {
-				project.AddMissingFiles(generatedFiles);
+			WorkbenchSingleton
+				.Workbench
+				.GetPad(typeof(CompilerMessageView))
+				.BringPadToFront();
+		}
+		
+		protected void ReportCompileFinished(bool error)
+		{
+			if (error) {
+				ShowOutputPad();
+				Report("TypeScript compilation failed.");
+			} else {
+				Report("TypeScript compilation finished successfully.");
 			}
 		}
 	}

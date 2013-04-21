@@ -36,10 +36,11 @@ using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptFilesOnBuildAction
+	public class CompileTypeScriptFilesOnBuildAction : CompileTypeScriptAction
 	{
 		public void CompileFiles(IBuildable buildable)
 		{
+			ClearOutputWindow();
 			foreach (TypeScriptProject project in buildable.GetTypeScriptProjects()) {
 				CompileFiles(project);
 			}
@@ -48,9 +49,26 @@ namespace ICSharpCode.TypeScriptBinding
 		void CompileFiles(TypeScriptProject project)
 		{
 			FileName[] fileNames = project.GetTypeScriptFileNames().ToArray();
+			if (fileNames.Length == 0)
+				return;
+			
+			CompileFiles(project, fileNames);
+		}
+		
+		void CompileFiles(TypeScriptProject project, FileName[] fileNames)
+		{
+			ReportCompileStarting(project);
+			
 			var compiler = new TypeScriptCompiler();
 			TypeScriptCompilerResult result = compiler.Compile(fileNames);
 			UpdateProject(project, result.GeneratedFiles);
+			
+			ReportCompileFinished(result.HasErrors);
+		}
+		
+		void ReportCompileStarting(TypeScriptProject project)
+		{
+			Report("Compiling TypeScript files for project: {0}", project.Name);
 		}
 		
 		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
