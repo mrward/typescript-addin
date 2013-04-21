@@ -27,8 +27,10 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
+
 using ICSharpCode.SharpDevelop.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -38,6 +40,12 @@ namespace ICSharpCode.TypeScriptBinding
 		TypeScriptOptions options;
 		bool compileOnSave;
 		bool compileOnBuild;
+		bool includeComments;
+		bool generateSourceMap;
+		string selectedEcmaScriptTargetVersion;
+		string[] ecmaScriptTargetVersions = new string[] { "ES3", "ES5" };
+		string selectedModuleKind;
+		string[] moduleKinds = new string[] { "AMD", "CommonJS" };
 		
 		public TypeScriptOptionsPanel()
 		{
@@ -63,16 +71,64 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
+		public bool IncludeComments {
+			get { return includeComments; }
+			set {
+				includeComments = value;
+				RaisePropertyChanged(() => IncludeComments);
+			}
+		}
+		
+		public bool GenerateSourceMap {
+			get { return generateSourceMap; }
+			set {
+				generateSourceMap = value;
+				RaisePropertyChanged(() => GenerateSourceMap);
+			}
+		}
+		
+		public string[] EcmaScriptTargetVersions {
+			get { return ecmaScriptTargetVersions; }
+		}
+		
+		public string SelectedEcmaScriptTargetVersion {
+			get { return selectedEcmaScriptTargetVersion; }
+			set {
+				selectedEcmaScriptTargetVersion = value;
+				RaisePropertyChanged(() => SelectedEcmaScriptTargetVersion);
+			}
+		}
+		
+		public string[] ModuleKinds {
+			get { return moduleKinds; }
+		}
+		
+		public string SelectedModuleKind {
+			get { return selectedModuleKind; }
+			set {
+				selectedModuleKind = value;
+				RaisePropertyChanged(() => SelectedModuleKind);
+			}
+		}
+		
 		public override void LoadOptions()
 		{
-			compileOnSave = options.CompileOnSave;
-			compileOnBuild = options.CompileOnBuild;
+			CompileOnSave = options.CompileOnSave;
+			CompileOnBuild = options.CompileOnBuild;
+			IncludeComments = options.IncludeComments;
+			GenerateSourceMap = options.GenerateSourceMap;
+			SelectedEcmaScriptTargetVersion = options.EcmaScriptTargetVersion;
+			SelectedModuleKind = options.ModuleKind;
 		}
 		
 		public override bool SaveOptions()
 		{
 			options.CompileOnSave = CompileOnSave;
 			options.CompileOnBuild = CompileOnBuild;
+			options.IncludeComments = IncludeComments;
+			options.GenerateSourceMap = GenerateSourceMap;
+			options.EcmaScriptTargetVersion = SelectedEcmaScriptTargetVersion;
+			options.ModuleKind = SelectedModuleKind;
 			return true;
 		}
 	}

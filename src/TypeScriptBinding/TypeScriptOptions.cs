@@ -54,5 +54,25 @@ namespace ICSharpCode.TypeScriptBinding
 			get { return properties.Get("CompileOnBuild", false); }
 			set { properties.Set("CompileOnBuild", value); }
 		}
+		
+		public bool IncludeComments {
+			get { return properties.Get("IncludeComments", false); }
+			set { properties.Set("IncludeComments", value); }
+		}
+		
+		public bool GenerateSourceMap {
+			get { return properties.Get("GenerateSourceMap", false); }
+			set { properties.Set("GenerateSourceMap", value); }
+		}
+		
+		public string ModuleKind {
+			get { return properties.Get("ModuleKind", "AMD"); }
+			set { properties.Set("ModuleKind", value); }
+		}
+		
+		public string EcmaScriptTargetVersion {
+			get { return properties.Get("EcmaScriptTargetVersion", "ES3"); }
+			set { properties.Set("EcmaScriptTargetVersion", value); }
+		}
 	}
 }
