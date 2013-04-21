@@ -37,6 +37,7 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		TypeScriptOptions options;
 		bool compileOnSave;
+		bool compileOnBuild;
 		
 		public TypeScriptOptionsPanel()
 		{
@@ -54,14 +55,24 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
+		public bool CompileOnBuild {
+			get { return compileOnBuild; }
+			set {
+				compileOnBuild = value;
+				RaisePropertyChanged(() => CompileOnBuild);
+			}
+		}
+		
 		public override void LoadOptions()
 		{
 			compileOnSave = options.CompileOnSave;
+			compileOnBuild = options.CompileOnBuild;
 		}
 		
 		public override bool SaveOptions()
 		{
 			options.CompileOnSave = CompileOnSave;
+			options.CompileOnBuild = CompileOnBuild;
 			return true;
 		}
 	}

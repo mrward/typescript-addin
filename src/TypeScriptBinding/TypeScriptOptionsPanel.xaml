@@ -14,12 +14,18 @@
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
+					<RowDefinition Height="Auto"/>
 				</Grid.RowDefinitions>
 				
 				<CheckBox
 					Margin="4, 4, 0, 0"
 					Content="Compile TypeScript file on save"
 					IsChecked="{Binding CompileOnSave}"/>
+				<CheckBox
+					Grid.Row="1"
+					Margin="4, 4, 0, 0"
+					Content="Compile TypeScript files on build"
+					IsChecked="{Binding CompileOnBuild}"/>
 			</Grid>
 		<!--</GroupBox>-->
 	</StackPanel>
