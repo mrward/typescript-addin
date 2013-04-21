@@ -122,10 +122,14 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			projectContexts = new List<TypeScriptContext>();
 		}
 		
-		public void AddFileToProjectContext(FileName fileName)
+		public void AddFileToProjectContext(TypeScriptProject project, FileName fileName)
 		{
-			TypeScriptContext context = projectContexts[0];
-			AddFileToProjectContext(context, fileName);
+			if (projectContexts.Count == 0) {
+				CreateProjectContext(project);
+			} else {
+				TypeScriptContext context = projectContexts[0];
+				AddFileToProjectContext(context, fileName);
+			}
 		}
 	}
 }

@@ -82,13 +82,14 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void ProjectItemAdded(object sender, ProjectItemEventArgs e)
 		{
-			AddTypeScriptFileToContext(new FileName(e.ProjectItem.FileName));
+			AddTypeScriptFileToContext(e.Project, new FileName(e.ProjectItem.FileName));
 		}
 		
-		void AddTypeScriptFileToContext(FileName fileName)
+		void AddTypeScriptFileToContext(IProject project, FileName fileName)
 		{
 			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
-				TypeScriptService.ContextProvider.AddFileToProjectContext(fileName);
+				var typeScriptProject = new TypeScriptProject(project);
+				TypeScriptService.ContextProvider.AddFileToProjectContext(typeScriptProject, fileName);
 			}
 		}
 	}
