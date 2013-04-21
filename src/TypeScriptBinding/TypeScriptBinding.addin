@@ -110,4 +110,17 @@
 			insertbefore="GotoLineNr"
 			type="Separator"/>
 	</Path>
+
+	<Path name="/SharpDevelop/Dialogs/OptionsDialog">
+		<OptionPanel
+			id="TypeScript"
+			label="TypeScript"
+			insertafter="Tools"
+			insertbefore="FormsDesignerOptions">
+			<OptionPanel
+				id="TypeScriptOptions"
+				label="General"
+				class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
+		</OptionPanel>
+	</Path>
 </AddIn>

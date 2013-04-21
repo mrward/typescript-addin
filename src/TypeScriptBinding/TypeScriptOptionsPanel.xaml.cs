@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptOptions.cs
+// TypeScriptOptionsPanel.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,27 +27,42 @@
 //
 
 using System;
-using ICSharpCode.Core;
+using System.ComponentModel;
+using System.Windows.Controls;
+using ICSharpCode.SharpDevelop.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptOptions
+	public partial class TypeScriptOptionsPanel : OptionPanel, INotifyPropertyChanged
 	{
-		Properties properties;
+		TypeScriptOptions options;
+		bool compileOnSave;
 		
-		public TypeScriptOptions()
-			: this(PropertyService.Get("TypeScriptBinding.Options", new Properties()))
+		public TypeScriptOptionsPanel()
 		{
-		}
-		
-		public TypeScriptOptions(Properties properties)
-		{
-			this.properties = properties;
+			InitializeComponent();
+			this.DataContext = this;
+			
+			options = TypeScriptService.Options;
 		}
 		
 		public bool CompileOnSave {
-			get { return properties.Get("CompileOnSave", true); }
-			set { properties.Set("CompileOnSave", value); }
+			get { return compileOnSave; }
+			set {
+				compileOnSave = value;
+				RaisePropertyChanged(() => CompileOnSave);
+			}
+		}
+		
+		public override void LoadOptions()
+		{
+			compileOnSave = options.CompileOnSave;
+		}
+		
+		public override bool SaveOptions()
+		{
+			options.CompileOnSave = CompileOnSave;
+			return true;
 		}
 	}
 }
