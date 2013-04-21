@@ -103,5 +103,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			this.fileNames.AddRange(fileNames);
 		}
+		
+		public IList<FileName> Files {
+			get { return fileNames; }
+		}
 	}
 }

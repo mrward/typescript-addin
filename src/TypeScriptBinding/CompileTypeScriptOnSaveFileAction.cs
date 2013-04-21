@@ -39,8 +39,13 @@ namespace ICSharpCode.TypeScriptBinding
 		public void Compile(FileName fileName)
 		{
 			ReportCompileStarting(fileName);
+			
 			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileName);
+			compiler.AddFiles(fileName);
+			
+			Report(compiler.GetCommandLine());
+			
+			TypeScriptCompilerResult result = compiler.Compile();
 			
 			TypeScriptProject project = TypeScriptService.GetProjectForFile(fileName);
 			if (project != null) {

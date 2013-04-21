@@ -53,9 +53,13 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			commandLineArguments = new TypeScriptCompilerArguments(options);
 		}
 		
-		public TypeScriptCompilerResult Compile(params FileName[] fileNames)
+		public void AddFiles(params FileName[] fileNames)
 		{
 			commandLineArguments.AddTypeScriptFiles(fileNames);
+		}
+		
+		public TypeScriptCompilerResult Compile()
+		{
 			host = new TypeScriptCompilerIOHost();
 			host.arguments = commandLineArguments.GetArguments();
 			
@@ -66,7 +70,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 				HasErrors = host.QuitExitCode != SuccessExitCode
 			};
 			
-			foreach (FileName fileName in fileNames) {
+			foreach (FileName fileName in commandLineArguments.Files) {
 				result.AddGeneratedFile(fileName, fileName.ChangeExtension(".js"));
 			}
 			return result;
@@ -75,6 +79,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public void Dispose()
 		{
 			context.Dispose();
+		}
+		
+		public string GetCommandLine()
+		{
+			return commandLineArguments.GetCommandLine();
 		}
 	}
 }

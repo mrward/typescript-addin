@@ -60,7 +60,11 @@ namespace ICSharpCode.TypeScriptBinding
 			ReportCompileStarting(project);
 			
 			var compiler = new TypeScriptCompiler();
-			TypeScriptCompilerResult result = compiler.Compile(fileNames);
+			compiler.AddFiles(fileNames);
+			
+			Report(compiler.GetCommandLine());
+			
+			TypeScriptCompilerResult result = compiler.Compile();
 			UpdateProject(project, result.GeneratedFiles);
 			
 			ReportCompileFinished(result.HasErrors);
