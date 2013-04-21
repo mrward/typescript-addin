@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using ICSharpCode.Core;
 using Noesis.Javascript;
 
@@ -45,16 +46,20 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 		}
 		
-		public TypeScriptCompilerResult Compile(FileName fileName)
+		public TypeScriptCompilerResult Compile(params FileName[] fileNames)
 		{
-			host = new TypeScriptCompilerIOHost(fileName.ToString());
+			host = new TypeScriptCompilerIOHost();
+			host.AddFiles(fileNames);
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptCompilerScript());
 			
 			var result = new TypeScriptCompilerResult {
 				HasErrors = host.QuitExitCode != SuccessExitCode
 			};
-			result.AddGeneratedFile(fileName, fileName.ChangeExtension(".js"));
+			
+			foreach (FileName fileName in fileNames) {
+				result.AddGeneratedFile(fileName, fileName.ChangeExtension(".js"));
+			}
 			return result;
 		}
 		

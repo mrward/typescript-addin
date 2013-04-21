@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptOptions.cs
+// RegisterTypeScriptCompileOnBuildCommand.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -28,31 +28,36 @@
 
 using System;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptOptions
+	public class RegisterTypeScriptCompileBuildOnCommand : AbstractCommand
 	{
-		Properties properties;
+		TypeScriptOptions options;
 		
-		public TypeScriptOptions()
-			: this(PropertyService.Get("TypeScriptBinding.Options", new Properties()))
+		public RegisterTypeScriptCompileBuildOnCommand()
+			: this(TypeScriptService.Options)
 		{
 		}
 		
-		public TypeScriptOptions(Properties properties)
+		public RegisterTypeScriptCompileBuildOnCommand(TypeScriptOptions options)
 		{
-			this.properties = properties;
+			this.options = options;
 		}
 		
-		public bool CompileOnSave {
-			get { return properties.Get("CompileOnSave", true); }
-			set { properties.Set("CompileOnSave", value); }
+		public override void Run()
+		{
+			ProjectService.BuildStarted += BuildStarted;
 		}
-		
-		public bool CompileOnBuild {
-			get { return properties.Get("CompileOnBuild", false); }
-			set { properties.Set("CompileOnBuild", value); }
+
+		void BuildStarted(object sender, BuildEventArgs e)
+		{
+			if (!options.CompileOnBuild)
+				return;
+			
+			var action = new CompileTypeScriptFilesOnBuildAction();
+			action.CompileFiles(e.Buildable);
 		}
 	}
 }

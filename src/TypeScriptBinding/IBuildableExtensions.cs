@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptOptions.cs
+// IBuildableExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,32 +27,34 @@
 //
 
 using System;
-using ICSharpCode.Core;
+using System.Collections.Generic;
+using System.Linq;
+
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptOptions
+	public static class IBuildableExtensions
 	{
-		Properties properties;
-		
-		public TypeScriptOptions()
-			: this(PropertyService.Get("TypeScriptBinding.Options", new Properties()))
+		public static IEnumerable<TypeScriptProject> GetTypeScriptProjects(this IBuildable buildable)
 		{
+			return GetProjects(buildable)
+				.Select(project => new TypeScriptProject(project));
 		}
 		
-		public TypeScriptOptions(Properties properties)
+		static IEnumerable<IProject> GetProjects(IBuildable buildable)
 		{
-			this.properties = properties;
-		}
-		
-		public bool CompileOnSave {
-			get { return properties.Get("CompileOnSave", true); }
-			set { properties.Set("CompileOnSave", value); }
-		}
-		
-		public bool CompileOnBuild {
-			get { return properties.Get("CompileOnBuild", false); }
-			set { properties.Set("CompileOnBuild", value); }
+			var project = buildable as IProject;
+			if (project != null) {
+				return new IProject[] { project };
+			}
+			
+			var solution = buildable as Solution;
+			if (solution != null) {
+				return solution.Projects;
+			}
+			
+			return new IProject[0];
 		}
 	}
 }

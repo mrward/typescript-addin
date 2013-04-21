@@ -31,6 +31,9 @@
 			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFile"
 			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileCommand"/>
 		<Class
+			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuild"
+			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileBuildOnCommand"/>
+		<Class
 			id="ICSharpCode.TypeScriptBinding.InitializeTypeScriptService"
 			class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceCommand"/>
 	</Path>

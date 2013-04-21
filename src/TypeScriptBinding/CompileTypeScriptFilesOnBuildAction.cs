@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptOptions.cs
+// CompileTypeScriptFilesOnBuildFileAction.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,32 +27,37 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop.Project;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptOptions
+	public class CompileTypeScriptFilesOnBuildAction
 	{
-		Properties properties;
-		
-		public TypeScriptOptions()
-			: this(PropertyService.Get("TypeScriptBinding.Options", new Properties()))
+		public void CompileFiles(IBuildable buildable)
 		{
+			foreach (TypeScriptProject project in buildable.GetTypeScriptProjects()) {
+				CompileFiles(project);
+			}
 		}
 		
-		public TypeScriptOptions(Properties properties)
+		void CompileFiles(TypeScriptProject project)
 		{
-			this.properties = properties;
+			FileName[] fileNames = project.GetTypeScriptFileNames().ToArray();
+			var compiler = new TypeScriptCompiler();
+			TypeScriptCompilerResult result = compiler.Compile(fileNames);
+			UpdateProject(project, result.GeneratedFiles);
 		}
 		
-		public bool CompileOnSave {
-			get { return properties.Get("CompileOnSave", true); }
-			set { properties.Set("CompileOnSave", value); }
-		}
-		
-		public bool CompileOnBuild {
-			get { return properties.Get("CompileOnBuild", false); }
-			set { properties.Set("CompileOnBuild", value); }
+		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
+		{
+			using (var updater = new ProjectBrowserUpdater()) {
+				project.AddMissingFiles(generatedFiles);
+			}
 		}
 	}
 }

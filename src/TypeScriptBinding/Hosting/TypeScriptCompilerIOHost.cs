@@ -3,6 +3,9 @@
 
 using System;
 using System.IO;
+using System.Linq;
+
+using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -10,13 +13,18 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		string executingFilePath = new ScriptLoader().TypeScriptCompilerFileName;
 		
-		public TypeScriptCompilerIOHost(string fileName)
+		public TypeScriptCompilerIOHost()
 		{
-			arguments = new string[] {
-				fileName
-			};
+			arguments = new string[0];
 			stderr = new StandardOutputTextWriter();
 			stdout = stderr;
+		}
+		
+		internal void AddFiles(FileName[] fileNames)
+		{
+			arguments = fileNames
+				.Select(fileName => fileName.ToString())
+				.ToArray();
 		}
 		
 		public string[] arguments { get; set; }
