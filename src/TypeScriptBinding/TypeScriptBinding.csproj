@@ -118,6 +118,7 @@
     <Compile Include="Hosting\SignatureResult.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
     <Compile Include="Hosting\TextFileWriter.cs" />
+    <Compile Include="Hosting\TypeScriptCompilerArguments.cs" />
     <Compile Include="Hosting\TypeScriptCompilerIOHost.cs" />
     <Compile Include="Hosting\IIO.cs" />
     <Compile Include="Hosting\IResolvedFile.cs" />

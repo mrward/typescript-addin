@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptCompiler.cs
+// TypeScriptCompilerArguments.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -28,53 +28,80 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ICSharpCode.Core;
-using Noesis.Javascript;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class TypeScriptCompiler : IDisposable
+	public class TypeScriptCompilerArguments
 	{
-		const int SuccessExitCode = 0;
-		const int ErrorExitCode = 1;
+		TypeScriptOptions options;
+		List<FileName> fileNames = new List<FileName>();
 		
-		JavascriptContext context = new JavascriptContext();
-		ScriptLoader scriptLoader = new ScriptLoader();
-		TypeScriptCompilerIOHost host;
-		TypeScriptCompilerArguments commandLineArguments;
-		
-		public TypeScriptCompiler()
-			: this(TypeScriptService.Options)
+		public TypeScriptCompilerArguments(TypeScriptOptions options)
 		{
+			this.options = options;
 		}
 		
-		public TypeScriptCompiler(TypeScriptOptions options)
+		public string GetCommandLine()
 		{
-			commandLineArguments = new TypeScriptCompilerArguments(options);
+			string[] args = GetArguments();
+			string[] quotedArgs = args
+				.Select(arg => QuoteStringIfContainsSpace(arg))
+				.ToArray();
+			
+			return "tsc " + String.Join(" ", quotedArgs);
 		}
 		
-		public TypeScriptCompilerResult Compile(params FileName[] fileNames)
+		string QuoteStringIfContainsSpace(string text)
 		{
-			commandLineArguments.AddTypeScriptFiles(fileNames);
-			host = new TypeScriptCompilerIOHost();
-			host.arguments = commandLineArguments.GetArguments();
-			
-			context.SetParameter("host", host);
-			context.Run(scriptLoader.GetTypeScriptCompilerScript());
-			
-			var result = new TypeScriptCompilerResult {
-				HasErrors = host.QuitExitCode != SuccessExitCode
-			};
-			
-			foreach (FileName fileName in fileNames) {
-				result.AddGeneratedFile(fileName, fileName.ChangeExtension(".js"));
+			if (text.Contains(" ")) {
+				return String.Format("\"{0}\"", text);
 			}
-			return result;
+			return text;
 		}
 		
-		public void Dispose()
+		public string[] GetArguments()
 		{
-			context.Dispose();
+			var args = new List<string>();
+			
+			AddCompilerArguments(args);
+			AddFileNames(args);
+			
+			return args.ToArray();
+		}
+		
+		void AddCompilerArguments(List<string> args)
+		{
+			if (options.IncludeComments) {
+				args.Add("--comments");
+			}
+			
+			if (options.GenerateSourceMap) {
+				args.Add("--sourcemap");
+			}
+			
+			if (!String.IsNullOrEmpty(options.ModuleKind)) {
+				args.Add("--module");
+				args.Add(options.ModuleKind);
+			}
+			
+			if (!String.IsNullOrEmpty(options.EcmaScriptTargetVersion)) {
+				args.Add("--target");
+				args.Add(options.EcmaScriptTargetVersion);
+			}
+		}
+		
+		void AddFileNames(List<string> args)
+		{
+			foreach (FileName fileName in fileNames) {
+				args.Add(fileName);
+			}
+		}
+		
+		public void AddTypeScriptFiles(params FileName[] fileNames)
+		{
+			this.fileNames.AddRange(fileNames);
 		}
 	}
 }

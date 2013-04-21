@@ -20,13 +20,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			stdout = stderr;
 		}
 		
-		internal void AddFiles(FileName[] fileNames)
-		{
-			arguments = fileNames
-				.Select(fileName => fileName.ToString())
-				.ToArray();
-		}
-		
 		public string[] arguments { get; set; }
 		
 		public ITextWriter stderr { get; set; }
