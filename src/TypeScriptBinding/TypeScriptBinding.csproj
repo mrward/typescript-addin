@@ -149,9 +149,11 @@
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptCompilationUnit.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
+    <Compile Include="TypeScriptFormattingStrategy.cs" />
     <Compile Include="TypeScriptInsightWindowHandler.cs" />
     <Compile Include="TypeScriptFunctionInsightItem.cs" />
     <Compile Include="TypeScriptFunctionInsightProvider.cs" />
+    <Compile Include="TypeScriptLanguageBinding.cs" />
     <Compile Include="TypeScriptOptions.cs" />
     <Compile Include="TypeScriptOptionsPanel.xaml.cs">
       <DependentUpon>TypeScriptOptionsPanel.xaml</DependentUpon>

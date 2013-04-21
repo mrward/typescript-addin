@@ -122,4 +122,11 @@
 			insertbefore="VBSpecificOptions"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
 	</Path>
+
+	<Path name="/SharpDevelop/Workbench/LanguageBindings">
+		<LanguageBinding
+			id="TypeScript"
+			class="ICSharpCode.TypeScriptBinding.TypeScriptLanguageBinding"
+			extensions=".ts"/>
+	</Path>
 </AddIn>
