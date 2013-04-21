@@ -111,16 +111,12 @@
 			type="Separator"/>
 	</Path>
 
-	<Path name="/SharpDevelop/Dialogs/OptionsDialog">
+	<Path name="/SharpDevelop/Dialogs/OptionsDialog/TextEditorOptions">
 		<OptionPanel
-			id="TypeScript"
+			id="TypeScriptOptions"
 			label="TypeScript"
-			insertafter="Tools"
-			insertbefore="FormsDesignerOptions">
-			<OptionPanel
-				id="TypeScriptOptions"
-				label="General"
-				class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
-		</OptionPanel>
+			insertafter="CodeCompletion"
+			insertbefore="VBSpecificOptions"
+			class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
 	</Path>
 </AddIn>
