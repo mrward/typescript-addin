@@ -28,7 +28,10 @@
 
 using System;
 using System.ComponentModel;
+using System.Linq;
+
 using ICSharpCode.AvalonEdit.AddIn;
+using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
@@ -52,18 +55,6 @@ namespace ICSharpCode.TypeScriptBinding
 			get { return contextProvider; }
 		}
 		
-		public static bool IsProjectOpen {
-			get { return ProjectService.CurrentProject != null; }
-		}
-		
-		public static TypeScriptProject GetCurrentTypeScriptProject()
-		{
-			if (IsProjectOpen) {
-				return new TypeScriptProject(ProjectService.CurrentProject);
-			}
-			return null;
-		}
-		
 		public static void Initialize()
 		{
 			WorkbenchSingleton.WorkbenchCreated += WorkbenchCreated;
@@ -81,6 +72,19 @@ namespace ICSharpCode.TypeScriptBinding
 		static void MainWindowClosing(object sender, CancelEventArgs e)
 		{
 			parserService.Stop();
+		}
+		
+		public static TypeScriptProject GetProjectForFile(FileName fileName)
+		{
+			if (ProjectService.OpenSolution == null)
+				return null;
+			
+			return ProjectService
+				.OpenSolution
+				.Projects
+				.Where(project => project.IsFileInProject(fileName))
+				.Select(project => new TypeScriptProject(project))
+				.FirstOrDefault();
 		}
 	}
 }

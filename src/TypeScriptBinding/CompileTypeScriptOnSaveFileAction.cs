@@ -43,8 +43,9 @@ namespace ICSharpCode.TypeScriptBinding
 			var compiler = new TypeScriptCompiler();
 			TypeScriptCompilerResult result = compiler.Compile(fileName);
 			
-			if (TypeScriptService.IsProjectOpen) {
-				UpdateProject(result.GeneratedFiles);
+			TypeScriptProject project = TypeScriptService.GetProjectForFile(fileName);
+			if (project != null) {
+				UpdateProject(project, result.GeneratedFiles);
 			}
 			
 			ReportCompileFinished(result.HasErrors);
@@ -80,10 +81,9 @@ namespace ICSharpCode.TypeScriptBinding
 				.BringPadToFront();
 		}
 		
-		void UpdateProject(IEnumerable<GeneratedTypeScriptFile> generatedFiles)
+		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
 		{
 			using (var updater = new ProjectBrowserUpdater()) {
-				TypeScriptProject project = TypeScriptService.GetCurrentTypeScriptProject();
 				project.AddMissingFiles(generatedFiles);
 			}
 		}
