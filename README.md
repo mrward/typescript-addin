@@ -5,12 +5,15 @@ This is a simple proof of concept that adds very basic [TypeScript](http://www.t
 ## Features
 
 1. Syntax highlighting for TypeScript files (.ts)
-2. TypeScript file template
+2. TypeScript file template.
 3. Code completion - using the TypeScript language services.
 4. Code folding.
 5. Quick Class Browser support.
 6. Rename refactoring.
-7. Generate JavaScript file when saving TypeScript file.
+7. Generate JavaScript file when saving TypeScript file or building the project.
+8. Configurable TypeScript compiler options in Tools Options dialog.
+9. Find References
+10. Go to Definition
 
 ## Dependencies
 
