@@ -67,5 +67,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string name { get; set; }
 		public string containerKind { get; set; }
 		public string containerName { get; set; }
+		
+		internal string FileName { get; set; }
 	}
 }

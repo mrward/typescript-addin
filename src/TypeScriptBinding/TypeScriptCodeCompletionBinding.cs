@@ -167,8 +167,16 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			DefinitionInfo definitionInfo = context.GetDefinition(editor.FileName, editor.Caret.Offset);
 			if (definitionInfo.IsValid) {
-				Location location = editor.Document.OffsetToPosition(definitionInfo.minChar);
-				FileService.JumpToFilePosition(editor.FileName, location.Line, location.Column);
+				GoToDefinition(definitionInfo);
+			}
+		}
+		
+		static void GoToDefinition(DefinitionInfo definition)
+		{
+			var provider = FileService.OpenFile(definition.FileName) as ITextEditorProvider;
+			if (provider != null) {
+				Location location = provider.TextEditor.Document.OffsetToPosition(definition.minChar);
+				FileService.JumpToFilePosition(definition.FileName, location.Line, location.Column);
 			}
 		}
 	}

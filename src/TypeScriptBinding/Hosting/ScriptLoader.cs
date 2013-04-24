@@ -70,7 +70,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string TypeScriptCompilerFileName {
 			get { return typeScriptCompilerFileName; }
 		}
-
+		
+		public string LibScriptFileName {
+			get { return libScriptFileName; }
+		}
+		
 		string GetFullPath(string fileName)
 		{
 			return Path.Combine(root, fileName);

@@ -127,6 +127,7 @@ namespace TypeScriptHosting
 		{
 			LogDebug(definition);
 			DefinitionInfo = new DefinitionInfo(definition);
+			DefinitionInfo.FileName = GetFileName(DefinitionInfo.unitIndex);
 		}
 		
 		internal DefinitionInfo DefinitionInfo { get; private set; }

@@ -34,6 +34,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		string RootFolder { get; }
 		string TypeScriptCompilerFileName { get; }
+		string LibScriptFileName { get; }
 		
 		string GetTypeScriptServicesScript();
 		string GetMainScript();

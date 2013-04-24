@@ -69,5 +69,9 @@ namespace TypeScriptBinding.Tests.Parsing
 		{
 			return GetScriptFromResource("navigation.js");
 		}
+		
+		public string LibScriptFileName {
+			get { return "lib.d.ts"; }
+		}
 	}
 }

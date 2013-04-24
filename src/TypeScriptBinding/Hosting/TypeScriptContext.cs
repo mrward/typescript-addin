@@ -46,7 +46,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			this.scriptLoader = scriptLoader;
 			host = new LanguageServiceShimHost(logger);
-			host.AddDefaultLibScript(new FileName("lib.d.ts"), scriptLoader.GetLibScript());
+			host.AddDefaultLibScript(new FileName(scriptLoader.LibScriptFileName), scriptLoader.GetLibScript());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptServicesScript());
 		}
