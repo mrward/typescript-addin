@@ -2,8 +2,7 @@
 	name="TypeScript Binding"
 	author="Matt Ward"
 	copyright="MIT"
-	description="Language binding for TypeScript"
-	addInManagerHidden="preinstalled">
+	description="Language binding for TypeScript">
 	
 	<Manifest>
 		<Identity name="ICSharpCode.TypeScriptBinding"/>
