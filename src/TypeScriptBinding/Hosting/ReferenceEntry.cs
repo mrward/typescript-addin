@@ -32,38 +32,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class ReferenceEntry
 	{
-		public ReferenceEntry(string entryInfo)
-		{
-			ParseEntryInfo(entryInfo);
-		}
-		
-		void ParseEntryInfo(string entryInfo)
-		{
-			string[] items = entryInfo.Split(' ');
-			if (items.Length == 4) {
-				unitIndex = ParseInt(items[0]);
-				minChar = ParseInt(items[1]);
-				limChar = ParseInt(items[2]);
-				isWriteAccess = ParseBool(items[3]);
-			}
-		}
-		
-		bool ParseBool(string text)
-		{
-			return bool.Parse(text);
-		}
-		
-		int ParseInt(string text)
-		{
-			return Int32.Parse(text);
-		}
-		
-		public int unitIndex { get; set; }
+		public string fileName { get; set; }
 		public int minChar { get; set; }
 		public int limChar { get; set; }
 		public bool isWriteAccess { get; set; }
-		
-		internal string FileName { get; set; }
 		
 		internal int length {
 			get { return limChar - minChar; }

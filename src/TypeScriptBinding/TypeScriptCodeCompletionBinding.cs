@@ -139,19 +139,18 @@ namespace ICSharpCode.TypeScriptBinding
 			TypeScriptContext context = GetContext(editor);
 			UpdateContext(context, editor);
 			
-			ReferenceInfo referenceInfo = context.FindReferences(editor.FileName, editor.Caret.Offset);
+			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
-			return referenceInfo
-				.entries
+			return entries
 				.Select(entry => CreateReference(entry))
 				.ToList();
 		}
 		
 		static Reference CreateReference(ReferenceEntry entry)
 		{
-			ITextBuffer fileContent = GetFileContent(entry.FileName);
+			ITextBuffer fileContent = GetFileContent(entry.fileName);
 			string expression = fileContent.GetText(entry.minChar, entry.length);
-			return new Reference(entry.FileName, entry.minChar, entry.length, expression, null);
+			return new Reference(entry.fileName, entry.minChar, entry.length, expression, null);
 		}
 		
 		static void ShowSearchResults(List<SearchResultMatch> searchResults)
@@ -165,18 +164,21 @@ namespace ICSharpCode.TypeScriptBinding
 			TypeScriptContext context = GetContext(editor);
 			UpdateContext(context, editor);
 			
-			DefinitionInfo definitionInfo = context.GetDefinition(editor.FileName, editor.Caret.Offset);
-			if (definitionInfo.IsValid) {
-				GoToDefinition(definitionInfo);
+			DefinitionInfo[] definitions = context.GetDefinition(editor.FileName, editor.Caret.Offset);
+			if (definitions.Length > 0) {
+				GoToDefinition(definitions[0]);
 			}
 		}
 		
 		static void GoToDefinition(DefinitionInfo definition)
 		{
-			var provider = FileService.OpenFile(definition.FileName) as ITextEditorProvider;
+			if (!definition.HasFileName())
+				return;
+			
+			var provider = FileService.OpenFile(definition.fileName) as ITextEditorProvider;
 			if (provider != null) {
 				Location location = provider.TextEditor.Document.OffsetToPosition(definition.minChar);
-				FileService.JumpToFilePosition(definition.FileName, location.Line, location.Column);
+				FileService.JumpToFilePosition(definition.fileName, location.Line, location.Column);
 			}
 		}
 	}

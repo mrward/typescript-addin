@@ -25,21 +25,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public ITextWriter stderr { get; set; }
 		public ITextWriter stdout { get; set; }
 		
-		public string readFile(string path)
+		public FileInformation readFile(string path)
 		{
 			LogFormat("readFile() '{0}'", path);
-			return File.ReadAllText(path);
+			string contents = File.ReadAllText(path);
+			return new FileInformation(contents, ByteOrderMark.None);
 		}
 		
-		public void writeFile(string path, string contents)
+		public void writeFile(string path, string contents, bool writeByteOrderMark)
 		{
 			LogFormat("writeFile() '{0}'", path);
-		}
-		
-		public ITextWriter createFile(string path, bool useUTF8)
-		{
-			LogFormat("createFile() '{0}', UTF8 {1}", path, useUTF8);
-			return new TextFileWriter(path, useUTF8);
 		}
 		
 		public void deleteFile(string path)

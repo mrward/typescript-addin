@@ -31,21 +31,8 @@ using System.Linq;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class NavigationInfo
+	public class NavigationResult
 	{
-		public NavigationInfo(string navigationInfo)
-		{
-			ParseNavigationInfo(navigationInfo);
-		}
-		
-		void ParseNavigationInfo(string navigationInfo)
-		{
-			items = navigationInfo
-				.Split(new char[] {'\n'}, StringSplitOptions.RemoveEmptyEntries)
-				.Select(item => new NavigateToItem(item))
-				.ToArray();
-		}
-		
-		public NavigateToItem[] items { get; set; }
+		public NavigateToItem[] result { get; set; }
 	}
 }

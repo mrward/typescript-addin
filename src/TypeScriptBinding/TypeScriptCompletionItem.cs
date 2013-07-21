@@ -50,16 +50,17 @@ namespace ICSharpCode.TypeScriptBinding
 			return String.Format(
 				"{0}: {1}{2}",
 				entry.name,
-				entry.type,
+				String.Empty, //entry.type - lazy load?,
 				GetDocCommentPrecededByNewLine(entry));
 		}
 		
 		string GetDocCommentPrecededByNewLine(CompletionEntry entry)
 		{
-			if (String.IsNullOrEmpty(entry.docComment))
-				return String.Empty;
-			
-			return String.Format("\r\n{0}", entry.docComment);
+			return String.Empty;
+//			if (String.IsNullOrEmpty(entry.docComment)) // Lazy load?
+//				return String.Empty;
+//			
+//			return String.Format("\r\n{0}", entry.docComment);
 		}
 		
 		IImage GetImage(CompletionEntry entry)

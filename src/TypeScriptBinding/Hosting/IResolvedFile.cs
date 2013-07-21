@@ -32,7 +32,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public interface IResolvedFile
 	{
-		string content { get; set; }
+		FileInformation fileInformation { get; set; }
 		string path { get; set; }
 	}
 }

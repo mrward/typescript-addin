@@ -28,6 +28,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+
 using ICSharpCode.Core;
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
@@ -37,9 +39,9 @@ namespace TypeScriptHosting
 {
 	public class LanguageServiceShimHost : ILanguageServiceShimHost
 	{
-		List<Script> scripts = new List<Script>();
-		int defaultLibScriptIndex = -1;
+		Dictionary<string, Script> scripts = new Dictionary<string, Script>();
 		ILogger logger;
+		FileName defaultLibScriptFileName;
 		
 		public LanguageServiceShimHost(ILogger logger)
 		{
@@ -48,13 +50,14 @@ namespace TypeScriptHosting
 		
 		internal void AddDefaultLibScript(FileName fileName, string text)
 		{
+			defaultLibScriptFileName = fileName;
 			AddFile(fileName, text);
-			defaultLibScriptIndex = scripts.Count - 1;
 		}
 		
 		internal void AddFile(FileName fileName, string text)
 		{
-			scripts.Add(new Script(fileName.ToLower(), text));
+			string lowercaseFileName = fileName.ToLower();
+			scripts.Add(lowercaseFileName, new Script(lowercaseFileName, text));
 		}
 		
 		internal void UpdateFile(FileName fileName, string text)
@@ -70,12 +73,16 @@ namespace TypeScriptHosting
 		Script FindScript(FileName fileName)
 		{
 			string matchFileName = fileName.ToLower();
-			return scripts.Find(s => s.Id == matchFileName);
+			Script script = null;
+			if (scripts.TryGetValue(matchFileName, out script)) {
+				return script;
+			}
+			return null;
 		}
 		
-		internal void UpdateFile(int index, string text)
+		internal void UpdateFile(string fileName, string text)
 		{
-			scripts[index].Update(text);
+			scripts[fileName.ToLowerInvariant()].Update(text);
 		}
 		
 		public int position { get; set; }
@@ -101,52 +108,34 @@ namespace TypeScriptHosting
 		public void updateReferencesAtPosition(string references)
 		{
 			LogDebug(references);
-			ReferenceInfo = CreateReferenceInfo(references);
+			ReferencesResult = JsonConvert.DeserializeObject<ReferencesResult>(references);
 		}
 		
-		ReferenceInfo CreateReferenceInfo(string references)
-		{
-			var referenceInfo = new ReferenceInfo(references);
-			foreach (ReferenceEntry entry in referenceInfo.entries) {
-				entry.FileName = GetFileName(entry.unitIndex);
-			}
-			return referenceInfo;
-		}
-		
-		string GetFileName(int index)
-		{
-			if ((index >= 0) && (index < scripts.Count)) {
-				return scripts[index].Id;
-			}
-			return null;
-		}
-		
-		internal ReferenceInfo ReferenceInfo { get; private set; }
+		internal ReferencesResult ReferencesResult { get; private set; }
 		
 		public void updateDefinitionAtPosition(string definition)
 		{
 			LogDebug(definition);
-			DefinitionInfo = new DefinitionInfo(definition);
-			DefinitionInfo.FileName = GetFileName(DefinitionInfo.unitIndex);
+			DefinitionResult = JsonConvert.DeserializeObject<DefinitionResult>(definition);
 		}
 		
-		internal DefinitionInfo DefinitionInfo { get; private set; }
+		internal DefinitionResult DefinitionResult { get; private set; }
 		
 		public void updateLexicalStructure(string structure)
 		{
 			LogDebug(structure);
-			LexicalStructure = new NavigationInfo(structure);
+			LexicalStructure = JsonConvert.DeserializeObject<NavigationResult>(structure);
 		}
 		
-		internal NavigationInfo LexicalStructure { get; private set; }
+		internal NavigationResult LexicalStructure { get; private set; }
 		
-		public void updateOutliningRegions(string regions)
-		{
-			LogDebug(regions);
-			OutlingRegions = new NavigationInfo(regions);
-		}
+		//public void updateOutliningRegions(string regions)
+		//{
+		//	LogDebug(regions);
+		//	OutlingRegions = new NavigationInfo(regions);
+		//}
 		
-		internal NavigationInfo OutlingRegions { get; private set; }
+		//internal NavigationInfo OutlingRegions { get; private set; }
 		
 		public bool information()
 		{
@@ -196,51 +185,10 @@ namespace TypeScriptHosting
 			return null;
 		}
 		
-		public int getScriptCount()
+		public int getScriptVersion(string fileName)
 		{
-			LogDebug("Host.getScriptCount. Count={0}", scripts.Count);
-			return scripts.Count;
-		}
-		
-		public string getScriptId(int scriptIndex)
-		{
-			LogDebug("Host.getScriptId: " + scriptIndex);
-			return scripts[scriptIndex].Id;
-		}
-		
-		public string getScriptSourceText(int scriptIndex, int start, int end)
-		{
-			LogDebug("Host.getScriptSourceText: index={0}, start={1}, end={2}", scriptIndex, start, end);
-			Script script = scripts[scriptIndex];
-			return script.Source.Substring(start, end - start);
-		}
-		
-		public int getScriptSourceLength(int scriptIndex)
-		{
-			LogDebug("Host.getScriptId: " + scriptIndex);
-			return scripts[scriptIndex].Source.Length;
-		}
-		
-		public bool getScriptIsResident(int scriptIndex)
-		{
-			LogDebug("Host.getScriptIsResident: " + scriptIndex);
-			return scriptIndex == defaultLibScriptIndex;
-		}
-		
-		public int getScriptVersion(int scriptIndex)
-		{
-			LogDebug("Host.getScriptVersion: " + scriptIndex);
-			return scripts[scriptIndex].Version;
-		}
-		
-		public string getScriptEditRangeSinceVersion(int scriptIndex, int scriptVersion)
-		{
-			LogDebug("Host.getScriptId: index={0}, version={1}", scriptIndex, scriptVersion);
-			Script script = scripts[scriptIndex];
-			if (script.Version == scriptVersion)
-				return null;
-			
-			return "{ \"minChar\": -1, \"limChar\": -1, \"delta\": -1}";
+			LogDebug("Host.getScriptVersion: " + fileName);
+			return scripts[fileName.ToLowerInvariant()].Version;
 		}
 		
 		internal void UpdateFileName(FileName fileName)
@@ -250,10 +198,40 @@ namespace TypeScriptHosting
 		
 		internal void RemoveFile(FileName fileName)
 		{
-			Script script = FindScript(fileName);
-			if (script != null) {
-				scripts.Remove(script);
+			scripts.Remove(fileName.ToLower());
+		}
+		
+		public IScriptSnapshotShim getScriptSnapshot(string fileName)
+		{
+			log("Host.getScriptSnapshot: " + fileName);
+			Script script = scripts[fileName];
+			return new ScriptSnapshotShim(logger, script);
+		}
+		
+		public bool getScriptIsOpen(string fileName)
+		{
+			log("Host.getScriptIsOpen: " + fileName);
+			if (defaultLibScriptFileName.Equals(new FileName(fileName))) {
+				return false;
 			}
+			return true;
+		}
+		
+		public ILanguageServicesDiagnostics getDiagnosticsObject()
+		{
+			log("Host.getDiagnosticsObject");
+			return new LanguageServicesDiagnostics(logger);
+		}
+		
+		public string getScriptFileNames()
+		{
+			log("Host.getScriptFileNames");
+			
+			string json = JsonConvert.SerializeObject(scripts.Keys.ToArray());
+			
+			log("Host.getScriptFileNames: " + json);
+			
+			return json;
 		}
 	}
 }

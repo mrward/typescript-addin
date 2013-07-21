@@ -31,30 +31,17 @@ using System.Linq;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class FormalSignatureInfo
-	{
-		public FormalSignatureInfo()
-		{
-			signatureGroup = new FormalSignatureItemInfo[0];
-		}
-		
-		public string name { get; set; }
-		public bool isNew { get; set; }
-		public string openParen { get; set; }
-		public string closeParen { get; set; }
-		public string docComment { get; set; }
-		public FormalSignatureItemInfo[] signatureGroup { get; set; }
-	}
-
 	public class FormalSignatureItemInfo
 	{
 		public FormalSignatureItemInfo()
 		{
 			parameters = new FormalParameterInfo[0];
+			typeParameters = new FormalTypeParameterInfo[0];
 		}
 		
+		public string signatureInfo { get; set; }
 		public FormalParameterInfo[] parameters { get; set; } // Array of parameters
-		public string returnType { get; set; } // String representation of parameter type
+		public FormalTypeParameterInfo[] typeParameters { get; set; }
 		public string docComment { get; set; } // Help for the signature
 		
 		public override string ToString()
@@ -62,7 +49,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return String.Format(
 				"({0}){1}",
 				GetParameterInfo(),
-				GetReturnTypeInfo());
+				GetTypeParameterInfo());
 		}
 		
 		string GetParameterInfo()
@@ -74,35 +61,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return String.Join(", ", text);
 		}
 		
-		string GetReturnTypeInfo()
+		string GetTypeParameterInfo()
 		{
-			return String.Format(": {0}", returnType);
-		}
-	}
-
-	public class FormalParameterInfo
-	{
-		public string name { get; set; }        // Parameter name
-		public string type { get; set; }        // String representation of parameter type
-		public bool isOptional { get; set; }    // true if parameter is optional
-		public bool isVariable { get; set; }    // true if parameter is var args
-		public string docComment { get; set; }  // Comments that contain help for the parameter
-		
-		public override string ToString()
-		{
-			return String.Format(
-				"{0}{1}: {2}",
-				name,
-				GetOptionalText(),
-				type);
-		}
-		
-		string GetOptionalText()
-		{
-			if (isOptional) {
-				return "?";
-			}
-			return String.Empty;
+			return String.Format(": {0}", "TYPEINFO HERE!!");
 		}
 	}
 }

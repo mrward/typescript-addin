@@ -35,37 +35,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class NavigateToItem
 	{
-		public NavigateToItem(string navigateToItem)
-		{
-			ParseNavigateToItem(navigateToItem);
-		}
-		
-		void ParseNavigateToItem(string navigateToItem)
-		{
-			string[] parts = navigateToItem.Split('\t');
-			if (parts.Length == 9) {
-				name = parts[0];
-				kind = parts[1];
-				kindModifiers = parts[2];
-				containerName = parts[3];
-				containerKind = parts[4];
-				matchKind = parts[5];
-				unitIndex = ParseInt(parts[6]);
-				minChar = ParseInt(parts[7]);
-				limChar = ParseInt(parts[8]);
-			}
-		}
-		
-		int ParseInt(string text)
-		{
-			return Int32.Parse(text);
-		}
-		
 		public string name { get; set; }
 		public string kind { get; set; }
 		public string kindModifiers { get; set; }
 		public string matchKind { get; set; }
-		public int unitIndex { get; set; }
+		public string fileName { get; set; }
 		public int minChar { get; set; }
 		public int limChar { get; set; }
 		public string containerName { get; set; }

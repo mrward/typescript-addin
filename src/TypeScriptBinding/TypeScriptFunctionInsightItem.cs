@@ -34,15 +34,11 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptFunctionInsightItem : IInsightItem
 	{
-		FormalSignatureInfo info;
 		FormalSignatureItemInfo itemInfo;
 		string header;
 		
-		public TypeScriptFunctionInsightItem(
-			FormalSignatureInfo info,
-			FormalSignatureItemInfo itemInfo)
+		public TypeScriptFunctionInsightItem(FormalSignatureItemInfo itemInfo)
 		{
-			this.info = info;
 			this.itemInfo = itemInfo;
 		}
 		
@@ -57,7 +53,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void GenerateHeader()
 		{
-			header = String.Format("{0}{1}", info.name, itemInfo.ToString());
+			// TODO: method name? Was FormalSignatureItem.name. SignatureInfo now?
+			header = String.Format("{0}{1}", itemInfo.signatureInfo, itemInfo.ToString());
 		}
 		
 		public object Content {

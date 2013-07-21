@@ -78,11 +78,11 @@ namespace ICSharpCode.TypeScriptBinding
 					context.AddFile(file, fileContent.Text);
 					context.RunInitialisationScript();
 					
-					NavigationInfo navigationInfo = context.GetOutliningRegions(file);
+					NavigateToItem[] navigation = context.GetLexicalStructure(file);
 					var unit = new TypeScriptCompilationUnit(projectContent) {
 						FileName = fileName
 					};
-					unit.AddNavigationInfo(navigationInfo, fileContent);
+					unit.AddNavigation(navigation, fileContent);
 					return unit;
 				}
 			} catch (Exception ex) {

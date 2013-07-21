@@ -32,9 +32,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public interface IIO
 	{
-		string readFile(string path);
-		void writeFile(string path, string contents);
-		ITextWriter createFile(string path, bool useUTF8);
+		FileInformation readFile(string path);
+		void writeFile(string path, string contents, bool writeByteOrderMark);
 		void deleteFile(string path);
 		string[] dir(string path, object spec, object options);
 		bool fileExists(string path);
@@ -48,7 +47,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string[] arguments { get; set; }
 		ITextWriter stderr { get; set; }
 		ITextWriter stdout { get; set; }
-		//watchFiles(files: string[], callback: () => void ): bool;
+		//watchFile(fileName: string, callback: (x:string) => void ): IFileWatcher;
 		void run(string source, string filename);
 		string getExecutingFilePath();
 		void quit(int exitCode);

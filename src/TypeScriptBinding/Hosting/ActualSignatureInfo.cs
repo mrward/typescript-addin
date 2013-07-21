@@ -32,20 +32,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class ActualSignatureInfo
 	{
-		public ActualSignatureInfo()
-		{
-			parameters = new ActualParameterInfo[0];
-		}
-		
-		public int openParenMinChar { get; set; }
-		public int closeParenLimChar { get; set; }
-		public int currentParameter { get; set; } // Index of active parameter in "parameters" array
-		public ActualParameterInfo[] parameters { get; set; }
-	}
-
-	public class ActualParameterInfo
-	{
-		public int minChar { get; set; }
-		public int limChar { get; set; }
+		public int parameterMinChar { get; set; }
+		public int parameterLimChar { get; set; }
+		public bool currentParameterIsTypeParameter { get; set; }
+		public int currentParameter { get; set; }
 	}
 }

@@ -32,8 +32,13 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class SignatureInfo
 	{
+		public SignatureInfo()
+		{
+			this.formal = new FormalSignatureItemInfo[0];
+		}
+		
 		public ActualSignatureInfo actual { get; set; }
-		public FormalSignatureInfo formal { get; set; }
+		public FormalSignatureItemInfo[] formal { get; set; }
 		public int activeFormal { get; set; } // Index of the "best match" formal signature
 	}
 }

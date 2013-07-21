@@ -1,4 +1,4 @@
 ﻿
 ls.refresh(true);
-var regions = ls.getOutliningRegions(host.fileName);
-host.updateOutliningRegions(regions);
+var structure = ls.getScriptLexicalStructure(host.fileName);
+host.updateLexicalStructure(structure);

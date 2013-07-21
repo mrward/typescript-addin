@@ -49,9 +49,9 @@ namespace ICSharpCode.TypeScriptBinding
 			if (info == null)
 				return new TypeScriptFunctionInsightItem[0];
 			
-			return info.formal
-				.signatureGroup
-				.Select(g => new TypeScriptFunctionInsightItem(info.formal, g))
+			return info
+				.formal
+				.Select(item => new TypeScriptFunctionInsightItem(item))
 				.ToArray();
 		}
 	}

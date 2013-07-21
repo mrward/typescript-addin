@@ -95,32 +95,32 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.SignatureResult.result;
 		}
 		
-		public ReferenceInfo FindReferences(FileName fileName, int offset)
+		public ReferenceEntry[] FindReferences(FileName fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
 			context.Run(scriptLoader.GetFindReferencesScript());
 			
-			return host.ReferenceInfo;
+			return host.ReferencesResult.result;
 		}
 		
-		public DefinitionInfo GetDefinition(FileName fileName, int offset)
+		public DefinitionInfo[] GetDefinition(FileName fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
 			context.Run(scriptLoader.GetDefinitionScript());
 			
-			return host.DefinitionInfo;
+			return host.DefinitionResult.result;
 		}
 		
-		public NavigationInfo GetOutliningRegions(FileName fileName)
+		public NavigateToItem[] GetLexicalStructure(FileName fileName)
 		{
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
-			return host.OutlingRegions;
+			return host.LexicalStructure.result;
 		}
 		
 		public void RemoveFile(FileName fileName)

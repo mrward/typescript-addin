@@ -59,7 +59,7 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			CompletionInfo result = context.GetCompletionItems(
 				editor.FileName,
-				editor.Caret.Offset - 1,
+				editor.Caret.Offset,
 				editor.Document.Text,
 				memberCompletion);
 			

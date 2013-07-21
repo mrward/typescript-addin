@@ -32,35 +32,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class DefinitionInfo
 	{
-		public DefinitionInfo(string definition)
-		{
-			ParseDefinition(definition);
-		}
-		
-		internal bool IsValid { get; private set; }
-		
-		void ParseDefinition(string definition)
-		{
-			string[] parts = definition.Split('\t');
-			if (parts.Length == 7) {
-				unitIndex = ParseInt(parts[0]);
-				minChar = ParseInt(parts[1]);
-				limChar = ParseInt(parts[2]);
-				kind = parts[3];
-				name = parts[4];
-				containerKind = parts[5];
-				containerName = parts[6];
-				
-				IsValid = true;
-			}
-		}
-		
-		int ParseInt(string text)
-		{
-			return Int32.Parse(text);
-		}
-		
-		public int unitIndex { get; set; }
+		public string fileName { get; set; }
 		public int minChar { get; set; }
 		public int limChar { get; set; }
 		public string kind { get; set; }
@@ -68,6 +40,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string containerKind { get; set; }
 		public string containerName { get; set; }
 		
-		internal string FileName { get; set; }
+		public bool HasFileName()
+		{
+			return !String.IsNullOrEmpty(fileName);
+		}
 	}
 }

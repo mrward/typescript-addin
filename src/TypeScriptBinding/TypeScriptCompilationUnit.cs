@@ -43,15 +43,15 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 		}
 		
-		public void AddNavigationInfo(NavigationInfo navigationInfo, ITextBuffer textBuffer)
+		public void AddNavigation(NavigateToItem[] navigation, ITextBuffer textBuffer)
 		{
 			IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(textBuffer);
-			AddNavigationInfo(navigationInfo, document);
+			AddNavigationInfo(navigation, document);
 		}
 		
-		public void AddNavigationInfo(NavigationInfo navigationInfo, IDocument document)
+		public void AddNavigationInfo(NavigateToItem[] navigation, IDocument document)
 		{
-			foreach (NavigateToItem item in navigationInfo.items) {
+			foreach (NavigateToItem item in navigation) {
 				switch (item.kind) {
 					case "class":
 						AddClass(item, document);
