@@ -46,24 +46,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public override string ToString()
 		{
-			return String.Format(
-				"({0}){1}",
-				GetParameterInfo(),
-				GetTypeParameterInfo());
-		}
-		
-		string GetParameterInfo()
-		{
-			string[] text = parameters
-				.Select(p => p.ToString())
-				.ToArray();
-			
-			return String.Join(", ", text);
-		}
-		
-		string GetTypeParameterInfo()
-		{
-			return String.Format(": {0}", "TYPEINFO HERE!!");
+			return signatureInfo;
 		}
 	}
 }

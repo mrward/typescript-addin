@@ -53,8 +53,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void GenerateHeader()
 		{
-			// TODO: method name? Was FormalSignatureItem.name. SignatureInfo now?
-			header = String.Format("{0}{1}", itemInfo.signatureInfo, itemInfo.ToString());
+			header = itemInfo.signatureInfo;
 		}
 		
 		public object Content {
