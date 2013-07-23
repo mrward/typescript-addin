@@ -64,7 +64,9 @@ namespace ICSharpCode.TypeScriptBinding
 				memberCompletion);
 			
 			var itemList = new DefaultCompletionItemList();
-			itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry)));
+			if (result != null) {
+				itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry)));
+			}
 			return itemList;
 		}
 	}
