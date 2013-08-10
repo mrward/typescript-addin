@@ -36,7 +36,13 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string getScriptFileNames();
 		int getScriptVersion(string fileName);
 		bool getScriptIsOpen(string fileName);
+		ByteOrderMark getScriptByteOrderMark(string fileName);
 		IScriptSnapshotShim getScriptSnapshot(string fileName);
+		string resolveRelativePath(string path, string directory);
+		bool fileExists(string path);
+		bool directoryExists(string path);
+		string getParentDirectory(string path);
 		ILanguageServicesDiagnostics getDiagnosticsObject();
+		string getLocalizedDiagnosticMessages();
 	}
 }

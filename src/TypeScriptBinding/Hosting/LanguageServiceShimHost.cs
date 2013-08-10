@@ -28,8 +28,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-
 using ICSharpCode.Core;
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
@@ -232,6 +232,46 @@ namespace TypeScriptHosting
 			log("Host.getScriptFileNames: " + json);
 			
 			return json;
+		}
+		
+		public ByteOrderMark getScriptByteOrderMark(string fileName)
+		{
+			log("Host.getScriptByteOrderMark: " + fileName);
+			return ByteOrderMark.None;
+		}
+		
+		public string resolveRelativePath(string path, string directory)
+		{
+			log("Host.resolveRelativePath: " + fileName);
+			
+			if (System.IO.Path.IsPathRooted(path) || String.IsNullOrEmpty(directory)) {
+				return path;
+			}
+			return System.IO.Path.Combine(path, directory);
+		}
+		
+		public bool fileExists(string path)
+		{
+			log("Host.fileExists: " + path);
+			return File.Exists(path);
+		}
+		
+		public bool directoryExists(string path)
+		{
+			log("Host.directoryExists: " + path);
+			return Directory.Exists(path);
+		}
+		
+		public string getParentDirectory(string path)
+		{
+			log("Host.getParentDirectory: " + path);
+			return Path.GetDirectoryName(path);
+		}
+		
+		public string getLocalizedDiagnosticMessages()
+		{
+			log("Host.getLocalizedDiagnosticMessages");
+			return null;
 		}
 	}
 }
