@@ -60,16 +60,29 @@ namespace ICSharpCode.TypeScriptBinding
 		string GetDescription()
 		{
 			CompletionEntryDetails entryDetails = completionDetailsProvider.GetCompletionEntryDetails(entry.name);
-			return GetDescription(entry, entryDetails);
+			return GetDescription(entryDetails);
 		}
 		
-		string GetDescription(CompletionEntry entry, CompletionEntryDetails entryDetails)
+		string GetDescription(CompletionEntryDetails entryDetails)
 		{
 			return String.Format(
-				"{0}: {1}{2}",
-				entry.name,
-				entryDetails.type,
+				"({0}) {1}{2}{3}",
+				entryDetails.kind,
+				entryDetails.fullSymbolName,
+				GetTypeName(entryDetails),
 				GetDocCommentPrecededByNewLine(entryDetails));
+		}
+		
+		string GetTypeName(CompletionEntryDetails entryDetails)
+		{
+			if (String.IsNullOrEmpty(entryDetails.type))
+				return String.Empty;
+			
+			if (entryDetails.type.StartsWith("(")) {
+				return entryDetails.type;
+			}
+			
+			return String.Format(": {0}", entryDetails.type);
 		}
 		
 		string GetDocCommentPrecededByNewLine(CompletionEntryDetails entryDetails)
