@@ -104,7 +104,9 @@
     <Compile Include="GoToTypeScriptDefinitionCommand.cs" />
     <Compile Include="Hosting\ActualSignatureInfo.cs" />
     <Compile Include="Hosting\ByteOrderMark.cs" />
+    <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
     <Compile Include="Hosting\CompletionEntryDetails.cs" />
+    <Compile Include="Hosting\CompletionEntryDetailsResult.cs" />
     <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\DefinitionResult.cs" />
     <Compile Include="Hosting\FileInformation.cs" />
@@ -195,6 +197,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\completion.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\completionDetails.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\definition.js">

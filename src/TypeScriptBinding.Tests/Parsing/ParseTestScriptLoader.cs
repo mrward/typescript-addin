@@ -73,5 +73,10 @@ namespace TypeScriptBinding.Tests.Parsing
 		public string LibScriptFileName {
 			get { return "lib.d.ts"; }
 		}
+		
+		public string GetCompletionDetailsScript()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

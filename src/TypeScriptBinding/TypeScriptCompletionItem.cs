@@ -36,31 +36,48 @@ namespace ICSharpCode.TypeScriptBinding
 	public class TypeScriptCompletionItem : DefaultCompletionItem
 	{
 		CompletionEntry entry;
+		CompletionEntryDetailsProvider completionDetailsProvider;
+		string description;
 		
-		public TypeScriptCompletionItem(CompletionEntry entry)
+		public TypeScriptCompletionItem(CompletionEntry entry, CompletionEntryDetailsProvider completionDetailsProvider)
 			: base(entry.name)
 		{
 			this.entry = entry;
-			Description = GetDescription(entry);
+			this.completionDetailsProvider = completionDetailsProvider;
 			Image = GetImage(entry);
 		}
 		
-		string GetDescription(CompletionEntry entry)
+		public override string Description {
+			get {
+				if (description == null) {
+					description = GetDescription();
+				}
+				return description;
+			}
+			set { }
+		}
+		
+		string GetDescription()
+		{
+			CompletionEntryDetails entryDetails = completionDetailsProvider.GetCompletionEntryDetails(entry.name);
+			return GetDescription(entry, entryDetails);
+		}
+		
+		string GetDescription(CompletionEntry entry, CompletionEntryDetails entryDetails)
 		{
 			return String.Format(
 				"{0}: {1}{2}",
 				entry.name,
-				String.Empty, //entry.type - lazy load?,
-				GetDocCommentPrecededByNewLine(entry));
+				entryDetails.type,
+				GetDocCommentPrecededByNewLine(entryDetails));
 		}
 		
-		string GetDocCommentPrecededByNewLine(CompletionEntry entry)
+		string GetDocCommentPrecededByNewLine(CompletionEntryDetails entryDetails)
 		{
-			return String.Empty;
-//			if (String.IsNullOrEmpty(entry.docComment)) // Lazy load?
-//				return String.Empty;
-//			
-//			return String.Format("\r\n{0}", entry.docComment);
+			if (String.IsNullOrEmpty(entryDetails.docComment))
+				return String.Empty;
+			
+			return String.Format("\r\n{0}", entryDetails.docComment);
 		}
 		
 		IImage GetImage(CompletionEntry entry)

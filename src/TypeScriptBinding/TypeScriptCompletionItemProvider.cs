@@ -65,7 +65,13 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			var itemList = new DefaultCompletionItemList();
 			if (result != null) {
-				itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry)));
+				
+				var completionDetailsProvider = new CompletionEntryDetailsProvider(
+					context,
+					editor.FileName,
+					editor.Caret.Offset);
+				
+				itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry, completionDetailsProvider)));
 			}
 			return itemList;
 		}

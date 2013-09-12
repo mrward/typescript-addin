@@ -45,5 +45,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string GetFindReferencesScript();
 		string GetDefinitionScript();
 		string GetNavigationScript();
+		string GetCompletionDetailsScript();
 	}
 }
