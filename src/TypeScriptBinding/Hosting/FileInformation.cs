@@ -7,20 +7,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class FileInformation
 	{
-		private string fileContents;
-		private ByteOrderMark byteOrder;
-		
 		public FileInformation(string contents, ByteOrderMark byteOrderMark) {
-			this.fileContents = contents;
-			this.byteOrder = byteOrderMark;
+			this.contents = contents;
+			this.byteOrderMark = byteOrderMark;
 		}
 		
-		public string contents() {
-			return this.fileContents;
-		}
-		
-		public ByteOrderMark byteOrderMark() {
-			return this.byteOrder;
-		}
+		public string contents { get; set; }
+		public ByteOrderMark byteOrderMark { get; set; }
 	}
 }

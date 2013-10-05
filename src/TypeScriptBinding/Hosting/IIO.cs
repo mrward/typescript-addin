@@ -32,10 +32,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public interface IIO
 	{
-		FileInformation readFile(string path);
+		FileInformation readFile(string path, int codepage);
 		void writeFile(string path, string contents, bool writeByteOrderMark);
 		void deleteFile(string path);
-		string[] dir(string path, object spec, object options);
+		string[] dir(string path, object re, object options);
 		bool fileExists(string path);
 		bool directoryExists(string path);
 		void createDirectory(string path);

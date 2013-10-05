@@ -11,23 +11,34 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptCompilerIOHost : IIO
 	{
-		string executingFilePath = new ScriptLoader().TypeScriptCompilerFileName;
+		string executingFilePath;
 		
 		public TypeScriptCompilerIOHost()
 		{
 			arguments = new string[0];
 			stderr = new StandardOutputTextWriter();
 			stdout = stderr;
+			SetExecutingFilePath();
+			
+			Environment = new TypeScriptCompilerEnvironment(this);
 		}
+		
+		void SetExecutingFilePath()
+		{
+			string fileName = new ScriptLoader().TypeScriptCompilerFileName;
+			executingFilePath = System.IO.Path.GetDirectoryName(fileName) + System.IO.Path.DirectorySeparatorChar;
+		}
+		
+		public TypeScriptCompilerEnvironment Environment { get; private set; }
 		
 		public string[] arguments { get; set; }
 		
 		public ITextWriter stderr { get; set; }
 		public ITextWriter stdout { get; set; }
 		
-		public FileInformation readFile(string path)
+		public FileInformation readFile(string path, int codepage)
 		{
-			LogFormat("readFile() '{0}'", path);
+			LogFormat("readFile() codepage {0} '{1}'", codepage, path);
 			string contents = File.ReadAllText(path);
 			return new FileInformation(contents, ByteOrderMark.None);
 		}
@@ -35,6 +46,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public void writeFile(string path, string contents, bool writeByteOrderMark)
 		{
 			LogFormat("writeFile() '{0}'", path);
+			File.WriteAllText(path, contents);
 		}
 		
 		public void deleteFile(string path)
@@ -71,7 +83,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			if (System.IO.Path.IsPathRooted(path)) {
 				return path;
 			}
-			return System.IO.Path.Combine(path, getExecutingFilePath());
+			return System.IO.Path.Combine(getExecutingFilePath(), path);
 		}
 		
 		public string dirName(string path)

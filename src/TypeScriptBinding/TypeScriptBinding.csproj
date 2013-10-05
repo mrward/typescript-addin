@@ -114,6 +114,7 @@
     <Compile Include="Hosting\FormalSignatureItemInfo.cs" />
     <Compile Include="Hosting\FormalTypeParameterInfo.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
+    <Compile Include="Hosting\IEnvironment.cs" />
     <Compile Include="Hosting\ILanguageServicesDiagnostics.cs" />
     <Compile Include="Hosting\IScriptLoader.cs" />
     <Compile Include="Hosting\IScriptSnapshotShim.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Hosting\TextSpanResult.cs" />
     <Compile Include="Hosting\TextSpans.cs" />
     <Compile Include="Hosting\TypeScriptCompilerArguments.cs" />
+    <Compile Include="Hosting\TypeScriptCompilerEnvironment.cs" />
     <Compile Include="Hosting\TypeScriptCompilerIOHost.cs" />
     <Compile Include="Hosting\IIO.cs" />
     <Compile Include="Hosting\IResolvedFile.cs" />

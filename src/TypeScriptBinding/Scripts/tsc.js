@@ -56294,5 +56294,6 @@ var TypeScript;
     TypeScript.BatchCompiler = BatchCompiler;
 })(TypeScript || (TypeScript = {}));
 
+Environment = host.Environment;
 var batch = new TypeScript.BatchCompiler(host);
 batch.batchCompile();
