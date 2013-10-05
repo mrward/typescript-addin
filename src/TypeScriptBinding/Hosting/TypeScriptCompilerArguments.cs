@@ -73,8 +73,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		void AddCompilerArguments(List<string> args)
 		{
-			if (options.IncludeComments) {
-				args.Add("--comments");
+			if (!options.IncludeComments) {
+				args.Add("--removeComments");
 			}
 			
 			if (options.GenerateSourceMap) {
