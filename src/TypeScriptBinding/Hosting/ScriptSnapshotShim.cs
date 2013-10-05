@@ -34,7 +34,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			int[] positions = script.GetLineStartPositions();
 			string json = JsonConvert.SerializeObject(positions);
 			
-			Log("ScriptSnapshotShim.getLineStartPositions: {0}", json);
+			//Log("ScriptSnapshotShim.getLineStartPositions: {0}", json);
 			
 			return json;
 		}
