@@ -56,6 +56,27 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return DomRegion.FromLocation(start, end);
 		}
 		
+		public DomRegion ToRegionStartingFromOpeningCurlyBrace(IDocument document)
+		{
+			int startOffset = GetOpeningCurlyBraceOffsetForRegion(document);
+			Location start = document.OffsetToPosition(startOffset);
+			Location end = document.OffsetToPosition(limChar);
+			return DomRegion.FromLocation(start, end);
+		}
+		
+		int GetOpeningCurlyBraceOffsetForRegion(IDocument document)
+		{
+			int offset = minChar;
+			while (offset < limChar) {
+				if (document.GetCharAt(offset) == '{') {
+					return offset - 1;
+				}
+				++offset;
+			}
+			
+			return minChar;
+		}
+		
 		public bool HasContainer()
 		{
 			return !String.IsNullOrEmpty(containerName);

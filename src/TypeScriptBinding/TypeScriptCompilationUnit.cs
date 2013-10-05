@@ -73,7 +73,7 @@ namespace ICSharpCode.TypeScriptBinding
 		DefaultClass AddClass(NavigateToItem item, IDocument document)
 		{
 			var defaultClass = new DefaultClass(this, item.GetFullName());
-			defaultClass.BodyRegion = item.ToRegion(document);
+			defaultClass.BodyRegion = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			defaultClass.Region = defaultClass.BodyRegion;
 			
 			if (item.HasContainer()) {
@@ -107,7 +107,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void UpdateMethodRegions(DefaultMethod method, NavigateToItem item, IDocument document)
 		{
-			DomRegion region = item.ToRegion(document);
+			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			method.Region = new DomRegion(
 				region.BeginLine,
 				region.BeginColumn,
