@@ -57,7 +57,9 @@ namespace TypeScriptHosting
 		internal void AddFile(FileName fileName, string text)
 		{
 			string lowercaseFileName = fileName.ToLower();
-			scripts.Add(lowercaseFileName, new Script(lowercaseFileName, text));
+			if (!scripts.ContainsKey(lowercaseFileName)) {
+				scripts.Add(lowercaseFileName, new Script(lowercaseFileName, text));
+			}
 		}
 		
 		internal void UpdateFile(FileName fileName, string text)
