@@ -20,7 +20,7 @@ namespace TypeScriptBinding.Tests.Hosting
 		{
 			properties = new Properties();
 			options = new TypeScriptOptions(properties);
-			options.IncludeComments = false;
+			options.IncludeComments = true;
 			options.GenerateSourceMap = false;
 			options.EcmaScriptTargetVersion = "";
 			options.ModuleKind = "";
@@ -108,15 +108,15 @@ namespace TypeScriptBinding.Tests.Hosting
 		}
 		
 		[Test]
-		public void GetArguments_IncludeComments_CommentsArgAdded()
+		public void GetArguments_IncludeCommentsIsFalse_RemoteCommentsArgAdded()
 		{
 			CreateCommandLine();
 			AddTypeScriptFiles("a.ts");
-			options.IncludeComments = true;
+			options.IncludeComments = false;
 			
 			string[] arguments = commandLine.GetArguments();
 			
-			AssertArgsAreEqual(arguments, "--comments", "a.ts");
+			AssertArgsAreEqual(arguments, "--removeComments", "a.ts");
 		}
 		
 		[Test]
