@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -104,12 +105,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public void print(string str)
 		{
-			Console.Write("print: " + str);
+			TaskService.BuildMessageViewCategory.AppendText(str);
 		}
 		
 		public void printLine(string str)
 		{
-			Console.WriteLine("printLine: " + str);
+			TaskService.BuildMessageViewCategory.AppendLine(str);
 		}
 		
 		public void run(string source, string filename)
