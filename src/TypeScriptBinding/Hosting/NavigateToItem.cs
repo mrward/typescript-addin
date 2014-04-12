@@ -42,6 +42,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string fileName { get; set; }
 		public int minChar { get; set; }
 		public int limChar { get; set; }
+		public SpanInfo[] additionalSpans { get; set; }
 		public string containerName { get; set; }
 		public string containerKind { get; set; }
 		

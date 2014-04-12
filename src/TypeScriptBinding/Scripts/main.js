@@ -1,3 +1,3 @@
 ﻿
-var ls = new Services.TypeScriptServicesFactory().createLanguageServiceShim(host);
+var ls = new TypeScript.Services.TypeScriptServicesFactory().createLanguageServiceShim(host);
 ls.refresh(true);

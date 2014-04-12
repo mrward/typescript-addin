@@ -97,7 +97,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return System.IO.Path.GetDirectoryName(path);
 		}
 		
-		public IResolvedFile findFile(string rootPath, string partialFilePath)
+		public IFindFileResult findFile(string rootPath, string partialFilePath)
 		{
 			LogFormat("findFile '{0}'", partialFilePath);
 			return null;
@@ -136,5 +136,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		}
 		
 		internal int QuitExitCode { get; set; }
+		
+		public void appendFile(string path, string contents)
+		{
+			LogFormat("appendFile() '{0}'", path);
+			File.AppendAllText(path, contents);
+		}
 	}
 }

@@ -130,6 +130,7 @@
     <Compile Include="Hosting\ScriptSnapshotShim.cs" />
     <Compile Include="Hosting\SignatureInfo.cs" />
     <Compile Include="Hosting\SignatureResult.cs" />
+    <Compile Include="Hosting\SpanInfo.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
     <Compile Include="Hosting\TextFileWriter.cs" />
     <Compile Include="Hosting\TextChangeRange.cs" />
@@ -141,7 +142,7 @@
     <Compile Include="Hosting\TypeScriptCompilerEnvironment.cs" />
     <Compile Include="Hosting\TypeScriptCompilerIOHost.cs" />
     <Compile Include="Hosting\IIO.cs" />
-    <Compile Include="Hosting\IResolvedFile.cs" />
+    <Compile Include="Hosting\IFindFileResult.cs" />
     <Compile Include="Hosting\ITextWriter.cs" />
     <Compile Include="Hosting\TypeScriptCompiler.cs" />
     <Compile Include="Hosting\TypeScriptCompilerResult.cs" />

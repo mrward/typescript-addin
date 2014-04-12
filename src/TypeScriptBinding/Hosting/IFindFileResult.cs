@@ -1,5 +1,5 @@
 ﻿// 
-// IIO.cs
+// IResolvedFile.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,27 +30,9 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public interface IIO
+	public interface IFindFileResult
 	{
-		FileInformation readFile(string path, int codepage);
-		void appendFile(string path, string contents);
-		void writeFile(string path, string contents, bool writeByteOrderMark);
-		void deleteFile(string path);
-		string[] dir(string path, object re, object options);
-		bool fileExists(string path);
-		bool directoryExists(string path);
-		void createDirectory(string path);
-		string resolvePath(string path);
-		string dirName(string path);
-		IFindFileResult findFile(string rootPath, string partialFilePath);
-		void print(string str);
-		void printLine(string str);
-		string[] arguments { get; set; }
-		ITextWriter stderr { get; set; }
-		ITextWriter stdout { get; set; }
-		//watchFile(fileName: string, callback: (x:string) => void ): IFileWatcher;
-		void run(string source, string fileName);
-		string getExecutingFilePath();
-		void quit(int exitCode);
+		FileInformation fileInformation { get; set; }
+		string path { get; set; }
 	}
 }
