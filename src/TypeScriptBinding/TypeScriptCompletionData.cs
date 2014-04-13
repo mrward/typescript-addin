@@ -59,7 +59,11 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			if (description == null) {
 				CompletionEntryDetails entryDetails = completionDetailsProvider.GetCompletionEntryDetails(entry.name);
-				description = GetDescription(entryDetails);
+				if (entryDetails == null) {
+					description = entry.name;
+				} else {
+					description = GetDescription(entryDetails);
+				}
 			}
 			return description;
 		}
