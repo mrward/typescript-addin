@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
 using NUnit.Framework;
 
 namespace TypeScriptBinding.Tests.Hosting
@@ -34,8 +36,8 @@ namespace TypeScriptBinding.Tests.Hosting
 		
 		void AddTypeScriptFiles(params string[] fileNames)
 		{
-			FileName[] convertedFileNames = fileNames
-				.Select(f => new FileName(f))
+			FilePath[] convertedFileNames = fileNames
+				.Select(f => new FilePath(f))
 				.ToArray();
 			commandLine.AddTypeScriptFiles(convertedFileNames);
 		}
