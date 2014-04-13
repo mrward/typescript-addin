@@ -1,5 +1,5 @@
 ﻿//// 
-//// RegisterTypeScriptCompileOnBuildCommand.cs
+//// RegisterTypeScriptCompileOnSaveFileCommand.cs
 //// 
 //// Author:
 ////   Matt Ward <ward.matt@gmail.com>
@@ -27,35 +27,37 @@
 ////
 //
 //using System;
+//using MonoDevelop.Components.Commands;
+//using MonoDevelop.Ide;
 //
 //namespace ICSharpCode.TypeScriptBinding
 //{
-//	public class RegisterTypeScriptCompileBuildOnCommand : AbstractCommand
+//	public class RegisterTypeScriptCompileOnSaveFileStartupHandler : CommandHandler
 //	{
 //		TypeScriptOptions options;
 //		
-//		public RegisterTypeScriptCompileBuildOnCommand()
+//		public RegisterTypeScriptCompileOnSaveFileStartupHandler()
 //			: this(TypeScriptService.Options)
 //		{
 //		}
 //		
-//		public RegisterTypeScriptCompileBuildOnCommand(TypeScriptOptions options)
+//		public RegisterTypeScriptCompileOnSaveFileStartupHandler(TypeScriptOptions options)
 //		{
 //			this.options = options;
 //		}
 //		
-//		public override void Run()
+//		protected override void Run()
 //		{
-//			ProjectService.BuildStarted += BuildStarted;
+//			IdeApp.Workspa
+//			FileUtility.FileSaved += FileSaved;
 //		}
 //
-//		void BuildStarted(object sender, BuildEventArgs e)
+//		void FileSaved(object sender, FileNameEventArgs e)
 //		{
-//			if (!options.CompileOnBuild)
-//				return;
-//			
-//			var action = new CompileTypeScriptFilesOnBuildAction();
-//			action.CompileFiles(e.Buildable);
+//			if (options.CompileOnSave && TypeScriptFileExtensions.IsTypeScriptFileName(e.FileName)) {
+//				var action = new CompileTypeScriptOnSaveFileAction();
+//				action.Compile(e.FileName);
+//			}
 //		}
 //	}
 //}

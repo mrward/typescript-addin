@@ -136,10 +136,10 @@
     <Compile Include="Hosting\TypeScriptCompilerResult.cs" />
     <Compile Include="Hosting\TypeScriptContextFactory.cs" />
     <Compile Include="Hosting\TypeScriptContextProvider.cs" />
-    <Compile Include="IBuildableExtensions.cs" />
+    <Compile Include="IBuildTargetExtensions.cs" />
     <Compile Include="ProjectBrowserUpdater.cs" />
-    <Compile Include="RegisterTypeScriptCompileBuildOnCommand.cs" />
-    <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />
+    <Compile Include="RegisterTypeScriptCompileOnBuildStartupHandler.cs" />
+    <Compile Include="RegisterTypeScriptCompileOnSaveFileStartupHandler.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
     <Compile Include="Hosting\CompletionInfo.cs" />
     <Compile Include="Hosting\CompletionResult.cs" />

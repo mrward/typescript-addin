@@ -1,5 +1,5 @@
 ﻿// 
-// TypeScriptOptions.cs
+// RegisterTypeScriptCompileOnBuildCommand.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,52 +27,38 @@
 //
 
 using System;
-using MonoDevelop.Core;
+using MonoDevelop.Components.Commands;
+using MonoDevelop.Ide;
+using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptOptions
+	public class RegisterTypeScriptCompileOnBuildStartupHandler : CommandHandler
 	{
-		Properties properties;
+		TypeScriptOptions options;
 		
-		public TypeScriptOptions()
-			: this(PropertyService.Get("TypeScriptBinding.Options", new Properties()))
+		public RegisterTypeScriptCompileOnBuildStartupHandler()
+			: this(TypeScriptService.Options)
 		{
 		}
 		
-		public TypeScriptOptions(Properties properties)
+		public RegisterTypeScriptCompileOnBuildStartupHandler(TypeScriptOptions options)
 		{
-			this.properties = properties;
+			this.options = options;
 		}
 		
-		public bool CompileOnSave {
-			get { return properties.Get("CompileOnSave", false); }
-			set { properties.Set("CompileOnSave", value); }
+		protected override void Run()
+		{
+			IdeApp.ProjectOperations.StartBuild += BuildStarted;
 		}
-		
-		public bool CompileOnBuild {
-			get { return properties.Get("CompileOnBuild", true); }
-			set { properties.Set("CompileOnBuild", value); }
-		}
-		
-		public bool IncludeComments {
-			get { return properties.Get("IncludeComments", false); }
-			set { properties.Set("IncludeComments", value); }
-		}
-		
-		public bool GenerateSourceMap {
-			get { return properties.Get("GenerateSourceMap", false); }
-			set { properties.Set("GenerateSourceMap", value); }
-		}
-		
-		public string ModuleKind {
-			get { return properties.Get("ModuleKind", "AMD"); }
-			set { properties.Set("ModuleKind", value); }
-		}
-		
-		public string EcmaScriptTargetVersion {
-			get { return properties.Get("EcmaScriptTargetVersion", "ES3"); }
-			set { properties.Set("EcmaScriptTargetVersion", value); }
+
+		void BuildStarted(object sender, BuildEventArgs e)
+		{
+			if (!options.CompileOnBuild)
+				return;
+			
+			var action = new CompileTypeScriptFilesOnBuildAction();
+			action.CompileFiles(IdeApp.ProjectOperations.CurrentSelectedBuildTarget);
 		}
 	}
 }

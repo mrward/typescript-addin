@@ -53,6 +53,7 @@
 -->
 	<Extension path="/MonoDevelop/Ide/StartupHandlers">
 		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
+		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
 	</Extension>
 	
 	<!--

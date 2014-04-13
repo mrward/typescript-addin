@@ -34,21 +34,11 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public static class FilePathExtensions
 	{
-//		public static FileName ChangeExtension(this FileName fileName, string extension)
-//		{
-//			return new FileName(Path.ChangeExtension(fileName, extension));
-//		}
-//		
-//		public static string GetFileNameWithoutPath(this FileName fileName)
-//		{
-//			return Path.GetFileName(fileName);
-//		}
+		public static string GetFileNameWithoutPath(this FilePath fileName)
+		{
+			return fileName.FileName;
+		}
 		
-//		public static string GetExtension(this FileName fileName)
-//		{
-//			return Path.GetExtension(fileName);
-//		}
-//		
 		public static string ToLower(this FilePath fileName)
 		{
 			return fileName.ToString().ToLowerInvariant();

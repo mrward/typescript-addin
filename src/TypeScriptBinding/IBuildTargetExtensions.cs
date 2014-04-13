@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptFilesOnBuildFileAction.cs
+// IBuildableExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,55 +30,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using ICSharpCode.TypeScriptBinding.Hosting;
-using MonoDevelop.Core;
 using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptFilesOnBuildAction : CompileTypeScriptAction
+	public static class IBuildTargetExtensions
 	{
-		public void CompileFiles(IBuildTarget buildTarget)
+		public static IEnumerable<TypeScriptProject> GetTypeScriptProjects(this IBuildTarget buildTarget)
 		{
-			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
-				foreach (TypeScriptProject project in buildTarget.GetTypeScriptProjects()) {
-					CompileFiles(project);
-				}
+			return GetProjects(buildTarget)
+				.Select(project => new TypeScriptProject(project));
+		}
+		
+		static IEnumerable<Project> GetProjects(IBuildTarget buildTarget)
+		{
+			var project = buildTarget as Project;
+			if (project != null) {
+				return new Project[] { project };
 			}
-		}
-		
-		void CompileFiles(TypeScriptProject project)
-		{
-			FilePath[] fileNames = project.GetTypeScriptFileNames().ToArray();
-			if (fileNames.Length == 0)
-				return;
 			
-			CompileFiles(project, fileNames);
-		}
-		
-		void CompileFiles(TypeScriptProject project, FilePath[] fileNames)
-		{
-			ReportCompileStarting(project);
+			var solution = buildTarget as Solution;
+			if (solution != null) {
+				return solution.GetAllProjects();
+			}
 			
-			var compiler = new TypeScriptCompiler();
-			compiler.AddFiles(fileNames);
-			
-			Report(compiler.GetCommandLine());
-			
-			TypeScriptCompilerResult result = compiler.Compile();
-			UpdateProject(project, result.GeneratedFiles);
-			
-			ReportCompileFinished(result.HasErrors);
-		}
-		
-		void ReportCompileStarting(TypeScriptProject project)
-		{
-			Report("Compiling TypeScript files for project: {0}", project.Name);
-		}
-		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
-		{
-			project.AddMissingFiles(generatedFiles);
+			return new Project[0];
 		}
 	}
 }
