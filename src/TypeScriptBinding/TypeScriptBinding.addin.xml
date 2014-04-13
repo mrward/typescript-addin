@@ -1,18 +1,35 @@
-﻿<AddIn
+﻿<Addin
 	name="TypeScript Binding"
+	id="TypeScript"
+	namespace="MonoDevelop"
 	author="Matt Ward"
 	copyright="MIT"
-	description="Language binding for TypeScript">
-	
-	<Manifest>
-		<Identity name="ICSharpCode.TypeScriptBinding"/>
-		<Dependency addin="ICSharpCode.AvalonEdit" requirePreload="true"/>
-	</Manifest>
+	url="https://github.com/mrward/typescript-addin"
+	description="Language binding for TypeScript"
+	category="IDE extensions"
+	version="0.1">
 	
 	<Runtime>
-		<Import assembly=":ICSharpCode.SharpDevelop"/>
-		<Import assembly="TypeScriptBinding.dll"/>
+		<Import assembly="TypeScriptBinding.dll" />
+		<Import assembly="Newtonsoft.Json.dll" />
+		
+		<Import file="msvcp100.dll"/>
+		<Import file="msvcr100.dll"/>
+		<Import file="Noesis.Javascript.dll"/>
+		
+		<Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
 	</Runtime>
+	
+	<Dependencies>
+		<Addin id="Core" version="4.0"/>
+		<Addin id="Ide" version="4.0"/>
+	</Dependencies>
+	
+	<!--
+	<Extension path="/MonoDevelop/Core/StockIcons">
+		<StockIcon stockid="TypeScript.ProjectBrowser.File" resource="TypeScript.ProjectBrowser.File.png" />
+		<StockIcon stockid="TypeScript.Template.EmptyFile" resource="TypeScript.Template.EmptyFile.png" />
+	</Extension>
 	
 	<Path name="/SharpDevelop/ViewContent/AvalonEdit/SyntaxModes">
 		<SyntaxMode
@@ -24,9 +41,6 @@
 	
 	<Path name="/Workspace/Autostart">
 		<Class
-			id="ICSharpCode.TypeScriptBinding.RegisterIcons"
-			class="ICSharpCode.TypeScriptBinding.RegisterIconsCommand"/>
-		<Class
 			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFile"
 			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileCommand"/>
 		<Class
@@ -36,25 +50,32 @@
 			id="ICSharpCode.TypeScriptBinding.InitializeTypeScriptService"
 			class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceCommand"/>
 	</Path>
+-->
+	<Extension path="/MonoDevelop/Ide/StartupHandlers">
+		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
+	</Extension>
 	
+	<!--
 	<Path name="/Workspace/Icons">
 		<Icon
 			id="TypeScript.File"
 			extensions=".ts"
 			resource="TypeScript.ProjectBrowser.File"/>
 	</Path>
+	-->
+	<Extension path="/MonoDevelop/Ide/FileTemplates">
+		<FileTemplate
+			id="TypeScript-Empty"
+			file="Templates/TypeScript.EmptyFile.xft.xml"/>
+	</Extension>
 	
-	<Path name="/SharpDevelop/BackendBindings/Templates">
-		<Directory id="TypeScript" path="./Templates" />
-	</Path>
+	<Extension path="/MonoDevelop/Ide/TextEditorExtensions">
+		<Class
+			fileExtensions=".ts"
+			class = "ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionTextEditorExtension" />
+	</Extension>
 	
-	<Path name="/AddIns/DefaultTextEditor/CodeCompletion">
-		<CodeCompletionBinding
-			id="TypeScript"
-			extensions=".ts"
-			class="ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionBinding"/>
-	</Path>
-	
+	<!--
 	<Path name="/Addins/TypeScript/TextEditor/ContextMenu">
 		<MenuItem
 			id="FindTypeScriptReferences"
@@ -121,11 +142,11 @@
 			insertbefore="VBSpecificOptions"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
 	</Path>
-
-	<Path name="/SharpDevelop/Workbench/LanguageBindings">
+-->
+	<Extension name="/MonoDevelop/ProjectModel/LanguageBindings">
 		<LanguageBinding
 			id="TypeScript"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptLanguageBinding"
-			extensions=".ts"/>
-	</Path>
-</AddIn>
+			supportedextensions=".ts"/>
+	</Extension>
+</Addin>

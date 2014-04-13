@@ -30,9 +30,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ICSharpCode.Core;
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
 using Newtonsoft.Json;
 
 namespace TypeScriptHosting
@@ -41,38 +41,28 @@ namespace TypeScriptHosting
 	{
 		Dictionary<string, Script> scripts = new Dictionary<string, Script>();
 		ILogger logger;
-		FileName defaultLibScriptFileName;
+		string defaultLibScriptFileName;
 		
 		public LanguageServiceShimHost(ILogger logger)
 		{
 			this.logger = logger;
 		}
 		
-		internal void AddDefaultLibScript(FileName fileName, string text)
+		internal void AddDefaultLibScript(FilePath fileName, string text)
 		{
 			defaultLibScriptFileName = fileName;
 			AddFile(fileName, text);
 		}
 		
-		internal void AddFile(FileName fileName, string text)
+		internal void AddFile(FilePath fileName, string text)
 		{
-			string lowercaseFileName = fileName.ToLower();
+			string lowercaseFileName = fileName.FullPath.ToLower();
 			if (!scripts.ContainsKey(lowercaseFileName)) {
 				scripts.Add(lowercaseFileName, new Script(lowercaseFileName, text));
 			}
 		}
 		
-		internal void UpdateFile(FileName fileName, string text)
-		{
-			Script script = FindScript(fileName);
-			if (script != null) {
-				script.Update(text);
-			} else {
-				AddFile(fileName, text);
-			}
-		}
-		
-		Script FindScript(FileName fileName)
+		Script FindScript(FilePath fileName)
 		{
 			string matchFileName = fileName.ToLower();
 			Script script = null;
@@ -82,9 +72,9 @@ namespace TypeScriptHosting
 			return null;
 		}
 		
-		internal void UpdateFile(string fileName, string text)
+		internal void UpdateFile(FilePath fileName, string text)
 		{
-			scripts[fileName.ToLowerInvariant()].Update(text);
+			scripts[fileName.FullPath.ToLower()].Update(text);
 		}
 		
 		public int position { get; set; }
@@ -202,12 +192,12 @@ namespace TypeScriptHosting
 			return scripts[fileName.ToLowerInvariant()].Version;
 		}
 		
-		internal void UpdateFileName(FileName fileName)
+		internal void UpdateFileName(FilePath fileName)
 		{
 			this.fileName = fileName.ToLower();
 		}
 		
-		internal void RemoveFile(FileName fileName)
+		internal void RemoveFile(FilePath fileName)
 		{
 			scripts.Remove(fileName.ToLower());
 		}
@@ -222,7 +212,7 @@ namespace TypeScriptHosting
 		public bool getScriptIsOpen(string fileName)
 		{
 			log("Host.getScriptIsOpen: " + fileName);
-			if (defaultLibScriptFileName.Equals(new FileName(fileName))) {
+			if (defaultLibScriptFileName.Equals(new FilePath(fileName))) {
 				return false;
 			}
 			return true;

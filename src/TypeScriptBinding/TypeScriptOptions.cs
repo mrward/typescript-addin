@@ -27,7 +27,7 @@
 //
 
 using System;
-using ICSharpCode.Core;
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding
 {

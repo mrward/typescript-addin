@@ -27,15 +27,12 @@
 //
 
 using System;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Dom;
-using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptParser : IParser
+	public class TypeScriptParser// : IParser
 	{
 		ITypeScriptContextFactory contextFactory;
 		
@@ -49,62 +46,62 @@ namespace ICSharpCode.TypeScriptBinding
 			this.contextFactory = contextFactory;
 		}
 		
-		public string[] LexerTags { get; set; }
+//		public string[] LexerTags { get; set; }
+//		
+//		public LanguageProperties Language {
+//			get { return LanguageProperties.None; }
+//		}
+//		
+//		public IExpressionFinder CreateExpressionFinder(string fileName)
+//		{
+//			return null;
+//		}
+//		
+//		public bool CanParse(string fileName)
+//		{
+//			return true;
+//		}
+//		
+//		public bool CanParse(IProject project)
+//		{
+//			return true;
+//		}
+//		
+//		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
+//		{
+//			try {
+//				using (TypeScriptContext context = contextFactory.CreateContext()) {
+//					var file = new FileName(fileName);
+//					context.AddFile(file, fileContent.Text);
+//					context.RunInitialisationScript();
+//					
+//					NavigateToItem[] navigation = context.GetLexicalStructure(file);
+//					var unit = new TypeScriptCompilationUnit(projectContent) {
+//						FileName = fileName
+//					};
+//					unit.AddNavigation(navigation, fileContent);
+//					return unit;
+//				}
+//			} catch (Exception ex) {
+//				Console.WriteLine(ex.ToString());
+//				LoggingService.Debug(ex.ToString());
+//			}
+//			return new DefaultCompilationUnit(projectContent);
+//		}
+//		
+//		public IResolver CreateResolver()
+//		{
+//			return null;
+//		}
 		
-		public LanguageProperties Language {
-			get { return LanguageProperties.None; }
-		}
-		
-		public IExpressionFinder CreateExpressionFinder(string fileName)
+		public static bool IsTypeScriptFileName(FilePath fileName)
 		{
-			return null;
-		}
-		
-		public bool CanParse(string fileName)
-		{
-			return true;
-		}
-		
-		public bool CanParse(IProject project)
-		{
-			return true;
-		}
-		
-		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
-		{
-			try {
-				using (TypeScriptContext context = contextFactory.CreateContext()) {
-					var file = new FileName(fileName);
-					context.AddFile(file, fileContent.Text);
-					context.RunInitialisationScript();
-					
-					NavigateToItem[] navigation = context.GetLexicalStructure(file);
-					var unit = new TypeScriptCompilationUnit(projectContent) {
-						FileName = fileName
-					};
-					unit.AddNavigation(navigation, fileContent);
-					return unit;
-				}
-			} catch (Exception ex) {
-				Console.WriteLine(ex.ToString());
-				LoggingService.Debug(ex.ToString());
-			}
-			return new DefaultCompilationUnit(projectContent);
-		}
-		
-		public IResolver CreateResolver()
-		{
-			return null;
-		}
-		
-		public static bool IsTypeScriptFileName(FileName fileName)
-		{
-			return String.Equals(".ts", fileName.GetExtension(), StringComparison.OrdinalIgnoreCase);
+			return String.Equals(".ts", fileName.Extension, StringComparison.OrdinalIgnoreCase);
 		}
 		
 		public static bool IsTypeScriptFileName(string fileName)
 		{
-			return IsTypeScriptFileName(new FileName(fileName));
+			return IsTypeScriptFileName(new FilePath(fileName));
 		}
 	}
 }

@@ -28,20 +28,21 @@
 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Project;
+using Mono.TextEditor;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
+using MonoDevelop.Ide.Gui;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptContextProvider
 	{
 		ITypeScriptContextFactory factory;
-		Dictionary<FileName, TypeScriptContext> cachedContexts = 
-			new Dictionary<FileName, TypeScriptContext>();
+		Dictionary<FilePath, TypeScriptContext> cachedContexts = 
+			new Dictionary<FilePath, TypeScriptContext>();
 		
-		Dictionary<FileName, TypeScriptContext> cachedContextsInsideProjects = 
-			new Dictionary<FileName, TypeScriptContext>();
+		Dictionary<FilePath, TypeScriptContext> cachedContextsInsideProjects = 
+			new Dictionary<FilePath, TypeScriptContext>();
 		
 		List<TypeScriptContext> projectContexts = new List<TypeScriptContext>();
 		
@@ -55,7 +56,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			this.factory = factory;
 		}
 		
-		public TypeScriptContext CreateContext(FileName fileName, string text)
+		public TypeScriptContext CreateContext(FilePath fileName, string text)
 		{
 			TypeScriptContext context = factory.CreateContext();
 			context.AddFile(fileName, text);
@@ -66,7 +67,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return context;
 		}
 		
-		public TypeScriptContext GetContext(FileName fileName)
+		public TypeScriptContext GetContext(FilePath fileName)
 		{
 			TypeScriptContext context = null;
 			if (cachedContexts.TryGetValue(fileName, out context)) {
@@ -77,12 +78,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return null;
 		}
 		
-		public bool IsFileInsideProject(FileName fileName)
+		public bool IsFileInsideProject(FilePath fileName)
 		{
 			return cachedContextsInsideProjects.ContainsKey(fileName);
 		}
 		
-		public void DisposeContext(FileName fileName)
+		public void DisposeContext(FilePath fileName)
 		{
 			TypeScriptContext context = GetContext(fileName);
 			if (context != null) {
@@ -97,7 +98,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			TypeScriptContext context = factory.CreateContext();
 			projectContexts.Add(context);
 			
-			foreach (FileName typeScriptFileName in project.GetTypeScriptFileNames()) {
+			foreach (FilePath typeScriptFileName in project.GetTypeScriptFileNames()) {
 				AddFileToProjectContext(context, typeScriptFileName);
 			}
 			
@@ -106,11 +107,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return context;
 		}
 		
-		void AddFileToProjectContext(TypeScriptContext context, FileName fileName)
+		void AddFileToProjectContext(TypeScriptContext context, FilePath fileName)
 		{
 			cachedContextsInsideProjects.Add(fileName, context);
-			ITextBuffer fileContent = ParserService.GetParseableFileContent(fileName);
-			context.AddFile(fileName, fileContent.Text);
+			TextEditorData textEditor = TextFileProvider.Instance.GetTextEditorData(fileName);
+			context.AddFile(fileName, textEditor.Text);
 		}
 		
 		public void DisposeAllProjectContexts()
@@ -118,11 +119,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			foreach (TypeScriptContext context in projectContexts) {
 				context.Dispose();
 			}
-			cachedContextsInsideProjects = new Dictionary<FileName, TypeScriptContext>();
+			cachedContextsInsideProjects = new Dictionary<FilePath, TypeScriptContext>();
 			projectContexts = new List<TypeScriptContext>();
 		}
 		
-		public void AddFileToProjectContext(TypeScriptProject project, FileName fileName)
+		public void AddFileToProjectContext(TypeScriptProject project, FilePath fileName)
 		{
 			if (projectContexts.Count == 0) {
 				CreateProjectContext(project);

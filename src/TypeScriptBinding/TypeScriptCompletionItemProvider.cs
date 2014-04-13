@@ -28,13 +28,13 @@
 
 using System;
 using System.Linq;
-using ICSharpCode.SharpDevelop.Editor;
-using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using Mono.TextEditor;
+using MonoDevelop.Ide.CodeCompletion;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptCompletionItemProvider : AbstractCompletionItemProvider
+	public class TypeScriptCompletionItemProvider
 	{
 		TypeScriptContext context;
 		bool memberCompletion;
@@ -44,26 +44,17 @@ namespace ICSharpCode.TypeScriptBinding
 			this.context = context;
 		}
 		
-		public bool ShowCompletion(ITextEditor editor, bool memberCompletion)
+		public ICompletionDataList GenerateCompletionList(TextEditorData editor, bool memberCompletion)
 		{
 			this.memberCompletion = memberCompletion;
-			ICompletionItemList list = GenerateCompletionList(editor);
-			if (list.Items.Any()) {
-				editor.ShowCompletionWindow(list);
-				return true;
-			}
-			return false;
-		}
-		
-		public override ICompletionItemList GenerateCompletionList(ITextEditor editor)
-		{
+			
 			CompletionInfo result = context.GetCompletionItems(
 				editor.FileName,
 				editor.Caret.Offset,
 				editor.Document.Text,
 				memberCompletion);
 			
-			var itemList = new DefaultCompletionItemList();
+			var itemList = new CompletionDataList();
 			if (result != null) {
 				
 				var completionDetailsProvider = new CompletionEntryDetailsProvider(
@@ -71,7 +62,7 @@ namespace ICSharpCode.TypeScriptBinding
 					editor.FileName,
 					editor.Caret.Offset);
 				
-				itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry, completionDetailsProvider)));
+				itemList.AddRange(result.entries.Select(entry => new TypeScriptCompletionData(entry, completionDetailsProvider)));
 			}
 			return itemList;
 		}

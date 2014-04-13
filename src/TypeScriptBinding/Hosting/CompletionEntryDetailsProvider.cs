@@ -2,17 +2,17 @@
 // This code is distributed under the GNU LGPL (for details please see \doc\license.txt)
 
 using System;
-using ICSharpCode.Core;
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class CompletionEntryDetailsProvider
 	{
 		TypeScriptContext context;
-		FileName fileName;
+		FilePath fileName;
 		int offset;
 		
-		public CompletionEntryDetailsProvider(TypeScriptContext context, FileName fileName, int offset)
+		public CompletionEntryDetailsProvider(TypeScriptContext context, FilePath fileName, int offset)
 		{
 			this.context = context;
 			this.fileName = fileName;

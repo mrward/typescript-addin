@@ -30,19 +30,16 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 
-using ICSharpCode.AvalonEdit.AddIn;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Dom;
-using ICSharpCode.SharpDevelop.Gui;
-using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public static class TypeScriptService
 	{
 		static readonly TypeScriptOptions options = new TypeScriptOptions();
-		static readonly TypeScriptParserService parserService = new TypeScriptParserService();
+		//static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
@@ -57,31 +54,35 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public static void Initialize()
 		{
-			WorkbenchSingleton.WorkbenchCreated += WorkbenchCreated;
+			if (IdeApp.IsInitialized) {
+				OnIdeInitialized();
+			} else {
+				IdeApp.Initialized += (sender, e) => OnIdeInitialized();
+			}
 		}
 		
-		static void WorkbenchCreated(object sender, EventArgs e)
+		static void OnIdeInitialized()
 		{
-			IWorkbench workbench = WorkbenchSingleton.Workbench;
-			workbench.MainWindow.Closing += MainWindowClosing;
-			workbenchMonitor = new TypeScriptWorkbenchMonitor(workbench, contextProvider);
+			IdeApp.Exiting += OnIdeExiting;
+			workbenchMonitor = new TypeScriptWorkbenchMonitor(IdeApp.Workbench, contextProvider);
 			projectMonitor = new TypeScriptProjectMonitor(contextProvider);
-			parserService.Start();
+//			parserService.Start();
 		}
 		
-		static void MainWindowClosing(object sender, CancelEventArgs e)
+		static void OnIdeExiting(object sender, ExitEventArgs e)
 		{
-			parserService.Stop();
+//			parserService.Stop();
 		}
 		
-		public static TypeScriptProject GetProjectForFile(FileName fileName)
+		public static TypeScriptProject GetProjectForFile(FilePath fileName)
 		{
-			if (ProjectService.OpenSolution == null)
+			if (IdeApp.ProjectOperations.CurrentSelectedSolution == null)
 				return null;
 			
-			return ProjectService
-				.OpenSolution
-				.Projects
+			return IdeApp
+				.ProjectOperations
+				.CurrentSelectedSolution
+				.GetAllProjects()
 				.Where(project => project.IsFileInProject(fileName))
 				.Select(project => new TypeScriptProject(project))
 				.FirstOrDefault();

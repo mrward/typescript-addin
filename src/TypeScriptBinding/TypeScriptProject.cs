@@ -30,18 +30,18 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
+using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptProject
 	{
-		IProject project;
+		Project project;
 		
-		public TypeScriptProject(IProject project)
+		public TypeScriptProject(Project project)
 		{
 			this.project = project;
 		}
@@ -55,7 +55,7 @@ namespace ICSharpCode.TypeScriptBinding
 			foreach (GeneratedTypeScriptFile file in filesGenerated) {
 				AddMissingFile(file);
 			}
-			project.Save();
+			IdeApp.ProjectOperations.Save(project);
 		}
 		
 		void AddMissingFile(GeneratedTypeScriptFile file)
@@ -64,14 +64,15 @@ namespace ICSharpCode.TypeScriptBinding
 				return;
 			}
 			
-			var projectItem = new FileProjectItem(project, ItemType.None);
-			projectItem.FileName = file.FileName;
-			projectItem.DependentUpon = file.GetDependentUpon();
-			
-			ProjectService.AddProjectItem(project, projectItem);
+			ProjectFile fileItem = new ProjectFile(file.FileName) {
+				BuildAction = BuildAction.None,
+				DependsOn = file.GetDependentUpon()
+			};
+			project.AddFile(fileItem);
+			IdeApp.ProjectOperations.Save(project);
 		}
 		
-		public bool IsFileInProject(FileName fileName)
+		public bool IsFileInProject(FilePath fileName)
 		{
 			return project.IsFileInProject(fileName);
 		}
@@ -80,15 +81,17 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			return project
 				.Items
-				.Any(item => TypeScriptParser.IsTypeScriptFileName(item.FileName));
+				.OfType<ProjectFile>()
+				.Any(item => TypeScriptParser.IsTypeScriptFileName(item.FilePath));
 		}
 		
-		public IEnumerable<FileName> GetTypeScriptFileNames()
+		public IEnumerable<FilePath> GetTypeScriptFileNames()
 		{
 			return project
 				.Items
-				.Where(item => TypeScriptParser.IsTypeScriptFileName(item.FileName))
-				.Select(item => new FileName(item.FileName));
+				.OfType<ProjectFile>()
+				.Where(item => TypeScriptParser.IsTypeScriptFileName(item.FilePath))
+				.Select(item => item.FilePath);
 		}
 	}
 }

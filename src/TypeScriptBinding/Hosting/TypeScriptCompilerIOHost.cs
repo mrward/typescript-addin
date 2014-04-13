@@ -5,9 +5,6 @@ using System;
 using System.IO;
 using System.Linq;
 
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptCompilerIOHost : IIO
@@ -105,12 +102,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public void print(string str)
 		{
-			TaskService.BuildMessageViewCategory.AppendText(str);
+//			TaskService.BuildMessageViewCategory.AppendText(str);
 		}
 		
 		public void printLine(string str)
 		{
-			TaskService.BuildMessageViewCategory.AppendLine(str);
+//			TaskService.BuildMessageViewCategory.AppendLine(str);
 		}
 		
 		public void run(string source, string filename)

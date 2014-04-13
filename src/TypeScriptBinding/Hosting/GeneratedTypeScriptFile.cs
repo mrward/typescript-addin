@@ -28,20 +28,20 @@
 
 using System;
 using System.IO;
-using ICSharpCode.Core;
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class GeneratedTypeScriptFile
 	{
-		public GeneratedTypeScriptFile(FileName parentFileName, FileName fileName)
+		public GeneratedTypeScriptFile(FilePath parentFileName, FilePath fileName)
 		{
 			this.ParentFileName = parentFileName;
 			this.FileName = fileName;
 		}
 		
-		public FileName FileName { get; private set; }
-		public FileName ParentFileName { get; private set; }
+		public FilePath FileName { get; private set; }
+		public FilePath ParentFileName { get; private set; }
 		
 		public string GetDependentUpon()
 		{

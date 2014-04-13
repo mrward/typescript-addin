@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<Template
+	Originator="Matt Ward"
+	Language="TypeScript"
+	Created="12/04/2014"
+	LastModified="12/04/2014">
+
+	<TemplateConfiguration>
+		<_Name>Empty TypeScript File</_Name>
+		<Icon>md-html-file-icon</Icon>
+		<_Category>Web</_Category>
+		<_Description>Creates an empty TypeScript file.</_Description>
+		<DefaultFilename>EmptyTypeScriptFile</DefaultFilename>
+	</TemplateConfiguration>
+	
+	<TemplateFiles>
+		<File DefaultExtension=".ts" />
+	</TemplateFiles>
+	
+	<FileOptions/>
+</Template>

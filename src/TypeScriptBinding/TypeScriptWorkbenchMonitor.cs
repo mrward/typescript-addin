@@ -28,13 +28,14 @@
 
 using System;
 using System.IO;
-using ICSharpCode.AvalonEdit.Utils;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Editor;
-using ICSharpCode.SharpDevelop.Gui;
-using ICSharpCode.SharpDevelop.Project;
+using System.Text;
+
 using ICSharpCode.TypeScriptBinding.Hosting;
+using Mono.TextEditor;
+using Mono.TextEditor.Utils;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
+using MonoDevelop.Ide.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -43,51 +44,46 @@ namespace ICSharpCode.TypeScriptBinding
 		TypeScriptContextProvider provider;
 		
 		public TypeScriptWorkbenchMonitor(
-			IWorkbench workbench,
+			Workbench workbench,
 			TypeScriptContextProvider provider)
 		{
-			workbench.ViewOpened += ViewOpened;
-			workbench.ViewClosed += ViewClosed;
+			workbench.DocumentOpened += DocumentOpened;
+			workbench.DocumentClosed += DocumentClosed;
 			this.provider = provider;
 		}
 		
-		void ViewOpened(object sender, ViewContentEventArgs e)
+		void DocumentOpened(object sender, DocumentEventArgs e)
 		{
 			if (StandaloneTypeScriptFileOpened(e)) {
-				CreateTypeScriptContext(e.Content);
+				CreateTypeScriptContext(e.Document);
 			}
 		}
 		
-		void CreateTypeScriptContext(IViewContent view)
+		void CreateTypeScriptContext(Document document)
 		{
-			provider.CreateContext(view.PrimaryFileName, GetText(view));
+			TextEditorData textEditor = TextFileProvider.Instance.GetTextEditorData(document.FileName);
+			provider.CreateContext(document.FileName, textEditor.Text);
 		}
 		
-		string GetText(IViewContent view)
+		bool StandaloneTypeScriptFileOpened(DocumentEventArgs e)
 		{
-			var provider = view as ITextEditorProvider;
-			return provider.TextEditor.Document.Text;
+			return StandaloneTypeScriptFileOpened(e.Document.FileName);
 		}
 		
-		bool StandaloneTypeScriptFileOpened(ViewContentEventArgs e)
-		{
-			return StandaloneTypeScriptFileOpened(e.Content.PrimaryFileName);
-		}
-		
-		bool StandaloneTypeScriptFileOpened(FileName fileName)
+		bool StandaloneTypeScriptFileOpened(FilePath fileName)
 		{
 			return TypeScriptParser.IsTypeScriptFileName(fileName) &&
 				!TypeScriptFileInAnyProject(fileName);
 		}
 		
-		bool TypeScriptFileInAnyProject(FileName fileName)
+		bool TypeScriptFileInAnyProject(FilePath fileName)
 		{
 			return TypeScriptService.ContextProvider.IsFileInsideProject(fileName);
 		}
 		
-		void ViewClosed(object sender, ViewContentEventArgs e)
+		void DocumentClosed(object sender, DocumentEventArgs e)
 		{
-			FileName fileName = e.Content.PrimaryFileName;
+			FilePath fileName = e.Document.FileName;
 			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
 				if (TypeScriptFileInAnyProject(fileName)) {
 					UpdateTypeScriptContextWithFileContentFromDisk(fileName);
@@ -97,13 +93,20 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
-		void UpdateTypeScriptContextWithFileContentFromDisk(FileName fileName)
+		void UpdateTypeScriptContextWithFileContentFromDisk(FilePath fileName)
 		{
 			if (File.Exists(fileName)) {
 				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
-				string fileContent = FileReader.ReadFileContent(fileName, ParserService.DefaultFileEncoding);
+				string fileContent = ReadFileContent(fileName);
 				context.UpdateFile(fileName, fileContent);
 			}
+		}
+		
+		string ReadFileContent(FilePath filePath)
+		{
+			bool hadBom;
+			Encoding encoding;
+			return TextFileUtility.ReadAllText(filePath, out hadBom, out encoding);
 		}
 	}
 }

@@ -29,14 +29,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ICSharpCode.Core;
+
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptCompilerArguments
 	{
 		TypeScriptOptions options;
-		List<FileName> fileNames = new List<FileName>();
+		List<FilePath> fileNames = new List<FilePath>();
 		
 		public TypeScriptCompilerArguments(TypeScriptOptions options)
 		{
@@ -94,17 +95,17 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		void AddFileNames(List<string> args)
 		{
-			foreach (FileName fileName in fileNames) {
+			foreach (FilePath fileName in fileNames) {
 				args.Add(fileName);
 			}
 		}
 		
-		public void AddTypeScriptFiles(params FileName[] fileNames)
+		public void AddTypeScriptFiles(params FilePath[] fileNames)
 		{
 			this.fileNames.AddRange(fileNames);
 		}
 		
-		public IList<FileName> Files {
+		public IList<FilePath> Files {
 			get { return fileNames; }
 		}
 	}

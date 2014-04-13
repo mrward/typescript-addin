@@ -1,5 +1,5 @@
 ﻿// 
-// RegisterIconsCommand.cs
+// FileNameExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,18 +27,31 @@
 //
 
 using System;
-using System.Reflection;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
+using System.IO;
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class RegisterIconsCommand : AbstractCommand
+	public static class FilePathExtensions
 	{
-		public override void Run()
+//		public static FileName ChangeExtension(this FileName fileName, string extension)
+//		{
+//			return new FileName(Path.ChangeExtension(fileName, extension));
+//		}
+//		
+//		public static string GetFileNameWithoutPath(this FileName fileName)
+//		{
+//			return Path.GetFileName(fileName);
+//		}
+		
+//		public static string GetExtension(this FileName fileName)
+//		{
+//			return Path.GetExtension(fileName);
+//		}
+//		
+		public static string ToLower(this FilePath fileName)
 		{
-			Assembly assembly = typeof(RegisterIconsCommand).Assembly;
-			ResourceService.RegisterImages("ICSharpCode.TypeScriptBinding.Resources.ImageResources", assembly);
+			return fileName.ToString().ToLowerInvariant();
 		}
 	}
 }

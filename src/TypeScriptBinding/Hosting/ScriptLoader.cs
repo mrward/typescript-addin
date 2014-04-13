@@ -28,7 +28,6 @@
 
 using System;
 using System.IO;
-using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -48,7 +47,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public ScriptLoader()
 		{
-			root = Path.Combine(StringParser.Parse("${addinpath:ICSharpCode.TypeScriptBinding}"), "Scripts");
+			string addinPath = Path.GetDirectoryName(typeof(ScriptLoader).Assembly.Location);
+			root = Path.Combine(addinPath, "Scripts");
 			root = Path.GetFullPath(root);
 			
 			typeScriptServicesFileName = GetFullPath("typescriptServices.js");

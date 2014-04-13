@@ -41,32 +41,20 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ICSharpCode.AvalonEdit">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.AvalonEdit.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICSharpCode.AvalonEdit.AddIn">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.AvalonEdit.AddIn.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICSharpCode.Core">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="ICSharpCode.Core.Presentation">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.Core.Presentation.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.NRefactory.dll</HintPath>
+      <HintPath>..\..\lib\MonoDevelop\ICSharpCode.NRefactory.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.SharpDevelop.dll</HintPath>
+    <Reference Include="Mono.TextEditor">
+      <HintPath>..\..\lib\MonoDevelop\Mono.TextEditor.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICSharpCode.SharpDevelop.Dom">
-      <HintPath>..\..\lib\SharpDevelop\ICSharpCode.SharpDevelop.Dom.dll</HintPath>
+    <Reference Include="MonoDevelop.Core">
+      <HintPath>..\..\lib\MonoDevelop\MonoDevelop.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MonoDevelop.Ide">
+      <HintPath>..\..\lib\MonoDevelop\MonoDevelop.Ide.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
@@ -98,7 +86,7 @@
     <Compile Include="CompileTypeScriptAction.cs" />
     <Compile Include="CompileTypeScriptFilesOnBuildAction.cs" />
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
-    <Compile Include="FileNameExtensions.cs" />
+    <Compile Include="FilePathExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommand.cs" />
     <Compile Include="GoToTypeScriptDefinitionCommand.cs" />
@@ -162,24 +150,21 @@
     <Compile Include="Hosting\Script.cs" />
     <Compile Include="Hosting\TypeScriptContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterIconsCommand.cs" />
     <Compile Include="RenameTypeScriptReferenceCommand.cs" />
-    <Compile Include="InitializeTypeScriptServiceCommand.cs" />
-    <Compile Include="TypeScriptCodeCompletionBinding.cs" />
-    <Compile Include="TypeScriptCompletionItem.cs" />
+    <Compile Include="InitializeTypeScriptServiceStartupHandler.cs" />
+    <Compile Include="TypeScriptCodeCompletionTextEditorExtension.cs" />
+    <Compile Include="TypeScriptCompletionData.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptCompilationUnit.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
-    <Compile Include="TypeScriptInsightWindowHandler.cs" />
-    <Compile Include="TypeScriptFunctionInsightItem.cs" />
-    <Compile Include="TypeScriptFunctionInsightProvider.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />
     <Compile Include="TypeScriptOptions.cs" />
     <Compile Include="TypeScriptOptionsPanel.xaml.cs">
       <DependentUpon>TypeScriptOptionsPanel.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TypeScriptParameterDataProvider.cs" />
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
@@ -232,12 +217,12 @@
     <None Include="Scripts\typescriptServices.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Templates\TypeScript.EmptyFile.xft">
+    <None Include="Templates\TypeScript.EmptyFile.xft.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="TypeScriptBinding.addin">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <EmbeddedResource Include="TypeScriptBinding.addin.xml">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Hosting" />
@@ -246,7 +231,7 @@
     <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="TypeScriptOptionsPanel.xaml" />
+    <None Include="TypeScriptOptionsPanel.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -27,10 +27,10 @@
 //
 
 using System;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
+using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -41,20 +41,20 @@ namespace ICSharpCode.TypeScriptBinding
 		public TypeScriptProjectMonitor(TypeScriptContextProvider contextProvider)
 		{
 			this.contextProvider = contextProvider;
-			ProjectService.SolutionLoaded += SolutionLoaded;
-			ProjectService.SolutionClosed += SolutionClosed;
-			ProjectService.ProjectItemRemoved += ProjectItemRemoved;
-			ProjectService.ProjectItemAdded += ProjectItemAdded;
+			IdeApp.Workspace.SolutionLoaded += SolutionLoaded;
+			IdeApp.Workspace.SolutionUnloaded += SolutionClosed;
+			IdeApp.Workspace.FileRemovedFromProject += ProjectItemRemoved;
+			IdeApp.Workspace.FileAddedToProject += ProjectItemAdded;
 		}
 		
 		void SolutionLoaded(object sender, SolutionEventArgs e)
 		{
-			foreach (IProject project in e.Solution.Projects) {
+			foreach (Project project in e.Solution.GetAllProjects()) {
 				CreateTypeScriptContextIfProjectHasTypeScriptFiles(project);
 			}
 		}
 		
-		void CreateTypeScriptContextIfProjectHasTypeScriptFiles(IProject project)
+		void CreateTypeScriptContextIfProjectHasTypeScriptFiles(Project project)
 		{
 			var typeScriptProject = new TypeScriptProject(project);
 			if (typeScriptProject.HasTypeScriptFiles()) {
@@ -67,12 +67,14 @@ namespace ICSharpCode.TypeScriptBinding
 			contextProvider.DisposeAllProjectContexts();
 		}
 		
-		void ProjectItemRemoved(object sender, ProjectItemEventArgs e)
+		void ProjectItemRemoved(object sender, ProjectFileEventArgs e)
 		{
-			RemoveTypeScriptFileFromContext(new FileName(e.ProjectItem.FileName));
+			foreach (ProjectFileEventInfo info in e) {
+				RemoveTypeScriptFileFromContext(info.ProjectFile.FilePath);
+			}
 		}
 		
-		void RemoveTypeScriptFileFromContext(FileName fileName)
+		void RemoveTypeScriptFileFromContext(FilePath fileName)
 		{
 			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
 				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
@@ -80,12 +82,14 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
-		void ProjectItemAdded(object sender, ProjectItemEventArgs e)
+		void ProjectItemAdded(object sender, ProjectFileEventArgs e)
 		{
-			AddTypeScriptFileToContext(e.Project, new FileName(e.ProjectItem.FileName));
+			foreach (ProjectFileEventInfo info in e) {
+				AddTypeScriptFileToContext(info.Project, info.ProjectFile.FilePath);
+			}
 		}
 		
-		void AddTypeScriptFileToContext(IProject project, FileName fileName)
+		void AddTypeScriptFileToContext(Project project, FilePath fileName)
 		{
 			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
 				var typeScriptProject = new TypeScriptProject(project);

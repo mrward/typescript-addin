@@ -27,9 +27,8 @@
 //
 
 using System;
-using ICSharpCode.NRefactory;
-using ICSharpCode.SharpDevelop.Dom;
-using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.NRefactory.TypeSystem;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -50,33 +49,33 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			get { return limChar - minChar; }
 		}
 		
-		public DomRegion ToRegion(IDocument document)
-		{
-			Location start = document.OffsetToPosition(minChar);
-			Location end = document.OffsetToPosition(limChar);
-			return DomRegion.FromLocation(start, end);
-		}
-		
-		public DomRegion ToRegionStartingFromOpeningCurlyBrace(IDocument document)
-		{
-			int startOffset = GetOpeningCurlyBraceOffsetForRegion(document);
-			Location start = document.OffsetToPosition(startOffset);
-			Location end = document.OffsetToPosition(limChar);
-			return DomRegion.FromLocation(start, end);
-		}
-		
-		int GetOpeningCurlyBraceOffsetForRegion(IDocument document)
-		{
-			int offset = minChar;
-			while (offset < limChar) {
-				if (document.GetCharAt(offset) == '{') {
-					return offset - 1;
-				}
-				++offset;
-			}
-			
-			return minChar;
-		}
+//		public DomRegion ToRegion(IDocument document)
+//		{
+//			Location start = document.OffsetToPosition(minChar);
+//			Location end = document.OffsetToPosition(limChar);
+//			return DomRegion.FromLocation(start, end);
+//		}
+//		
+//		public DomRegion ToRegionStartingFromOpeningCurlyBrace(IDocument document)
+//		{
+//			int startOffset = GetOpeningCurlyBraceOffsetForRegion(document);
+//			Location start = document.OffsetToPosition(startOffset);
+//			Location end = document.OffsetToPosition(limChar);
+//			return DomRegion.FromLocation(start, end);
+//		}
+//		
+//		int GetOpeningCurlyBraceOffsetForRegion(IDocument document)
+//		{
+//			int offset = minChar;
+//			while (offset < limChar) {
+//				if (document.GetCharAt(offset) == '{') {
+//					return offset - 1;
+//				}
+//				++offset;
+//			}
+//			
+//			return minChar;
+//		}
 		
 		public bool HasContainer()
 		{

@@ -27,20 +27,39 @@
 //
 
 using System;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Dom;
-using ICSharpCode.SharpDevelop.Editor;
+using MonoDevelop.Core;
+using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptLanguageBinding : DefaultLanguageBinding
+	public class TypeScriptLanguageBinding : ILanguageBinding
 	{
-		public override IFormattingStrategy FormattingStrategy {
-			get { return new TypeScriptFormattingStrategy(); }
+		public static readonly string TypeScriptLanguage = "TypeScript";
+		
+		public string Language {
+			get { return TypeScriptLanguage; }
 		}
 		
-		public override LanguageProperties Properties {
-			get { return LanguageProperties.None; }
+		public string SingleLineCommentTag {
+			get { return "//"; }
+		}
+		
+		public string BlockCommentStartTag {
+			get { return "/*"; }
+		}
+		
+		public string BlockCommentEndTag {
+			get { return "*/"; }
+		}
+		
+		public bool IsSourceCodeFile(FilePath fileName)
+		{
+			return TypeScriptParser.IsTypeScriptFileName(fileName);
+		}
+		
+		public FilePath GetFileName(FilePath fileNameWithoutExtension)
+		{
+			return fileNameWithoutExtension.ChangeExtension(".ts");
 		}
 	}
 }

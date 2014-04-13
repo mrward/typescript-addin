@@ -27,40 +27,41 @@
 //
 
 using System;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Core;
+using MonoDevelop.Ide.CodeCompletion;
+using MonoDevelop.Ide.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptCompletionItem : DefaultCompletionItem
+	public class TypeScriptCompletionData : CompletionData
 	{
 		CompletionEntry entry;
 		CompletionEntryDetailsProvider completionDetailsProvider;
 		string description;
 		
-		public TypeScriptCompletionItem(CompletionEntry entry, CompletionEntryDetailsProvider completionDetailsProvider)
+		public TypeScriptCompletionData(CompletionEntry entry, CompletionEntryDetailsProvider completionDetailsProvider)
 			: base(entry.name)
 		{
 			this.entry = entry;
 			this.completionDetailsProvider = completionDetailsProvider;
-			Image = GetImage(entry);
+			Icon = GetIcon(entry);
 		}
 		
-		public override string Description {
-			get {
-				if (description == null) {
-					description = GetDescription();
-				}
-				return description;
-			}
-			set { }
+		public override TooltipInformation CreateTooltipInformation(bool smartWrap)
+		{
+			return new TooltipInformation {
+				SignatureMarkup = GetDescription()
+			};
 		}
 		
 		string GetDescription()
 		{
-			CompletionEntryDetails entryDetails = completionDetailsProvider.GetCompletionEntryDetails(entry.name);
-			return GetDescription(entryDetails);
+			if (description == null) {
+				CompletionEntryDetails entryDetails = completionDetailsProvider.GetCompletionEntryDetails(entry.name);
+				description = GetDescription(entryDetails);
+			}
+			return description;
 		}
 		
 		string GetDescription(CompletionEntryDetails entryDetails)
@@ -93,29 +94,29 @@ namespace ICSharpCode.TypeScriptBinding
 			return String.Format("\r\n{0}", entryDetails.docComment);
 		}
 		
-		IImage GetImage(CompletionEntry entry)
+		IconId GetIcon(CompletionEntry entry)
 		{
 			switch (entry.kind) {
 				case "property":
-					return ClassBrowserIconService.Property;
+					return Stock.Property;
 				case "constructor":
 				case "getter":
 				case "setter":
 				case "method":
 				case "function":
 				case "local function":
-					return ClassBrowserIconService.Method;
+					return Stock.Method;
 				case "keyword":
-					return ClassBrowserIconService.Keyword;
+					return Stock.Literal;
 				case "class":
-					return ClassBrowserIconService.Class;
+					return Stock.Class;
 				case "var":
 				case "local var":
-					return ClassBrowserIconService.LocalVariable;
+					return Stock.PrivateField;
 				case "interface":
-					return ClassBrowserIconService.Interface;
+					return Stock.Interface;
 				case "module":
-					return ClassBrowserIconService.Namespace;
+					return Stock.NameSpace;
 				default:
 					return null;
 			}

@@ -28,8 +28,7 @@
 
 using System;
 using System.IO;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Project;
+using MonoDevelop.Core;
 using Noesis.Javascript;
 using TypeScriptHosting;
 
@@ -46,7 +45,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			this.scriptLoader = scriptLoader;
 			host = new LanguageServiceShimHost(logger);
-			host.AddDefaultLibScript(new FileName(scriptLoader.LibScriptFileName), scriptLoader.GetLibScript());
+			host.AddDefaultLibScript(new FilePath(scriptLoader.LibScriptFileName), scriptLoader.GetLibScript());
 			context.SetParameter("host", host);
 			context.Run(scriptLoader.GetTypeScriptServicesScript());
 		}
@@ -56,7 +55,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			context.Dispose();
 		}
 		
-		public void AddFile(FileName fileName, string text)
+		public void AddFile(FilePath fileName, string text)
 		{
 			host.AddFile(fileName, text);
 		}
@@ -69,12 +68,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 		}
 		
-		public void UpdateFile(FileName fileName, string text)
+		public void UpdateFile(FilePath fileName, string text)
 		{
 			host.UpdateFile(fileName, text);
 		}
 		
-		public CompletionInfo GetCompletionItems(FileName fileName, int offset, string text, bool memberCompletion)
+		public CompletionInfo GetCompletionItems(FilePath fileName, int offset, string text, bool memberCompletion)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
@@ -85,7 +84,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.CompletionResult.result;
 		}
 		
-		public CompletionEntryDetails GetCompletionEntryDetails(FileName fileName, int offset, string entryName)
+		public CompletionEntryDetails GetCompletionEntryDetails(FilePath fileName, int offset, string entryName)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
@@ -96,7 +95,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.CompletionEntryDetailsResult.result;
 		}
 		
-		public SignatureInfo GetSignature(FileName fileName, int offset)
+		public SignatureInfo GetSignature(FilePath fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
@@ -106,7 +105,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.SignatureResult.result;
 		}
 		
-		public ReferenceEntry[] FindReferences(FileName fileName, int offset)
+		public ReferenceEntry[] FindReferences(FilePath fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
@@ -116,7 +115,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.ReferencesResult.result;
 		}
 		
-		public DefinitionInfo[] GetDefinition(FileName fileName, int offset)
+		public DefinitionInfo[] GetDefinition(FilePath fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
@@ -126,7 +125,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.DefinitionResult.result;
 		}
 		
-		public NavigateToItem[] GetLexicalStructure(FileName fileName)
+		public NavigateToItem[] GetLexicalStructure(FilePath fileName)
 		{
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
@@ -134,7 +133,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.LexicalStructure.result;
 		}
 		
-		public void RemoveFile(FileName fileName)
+		public void RemoveFile(FilePath fileName)
 		{
 			host.RemoveFile(fileName);
 		}
