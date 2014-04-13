@@ -72,6 +72,7 @@ namespace ICSharpCode.TypeScriptBinding
 					editor.Caret.Offset);
 				
 				itemList.Items.AddRange(result.entries.Select(entry => new TypeScriptCompletionItem(entry, completionDetailsProvider)));
+				itemList.SortItems();
 			}
 			return itemList;
 		}
