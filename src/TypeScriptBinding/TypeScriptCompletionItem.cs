@@ -60,6 +60,10 @@ namespace ICSharpCode.TypeScriptBinding
 		string GetDescription()
 		{
 			CompletionEntryDetails entryDetails = completionDetailsProvider.GetCompletionEntryDetails(entry.name);
+			if (entryDetails == null) {
+				return entry.name;
+			}
+			
 			return GetDescription(entryDetails);
 		}
 		
