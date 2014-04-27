@@ -1,5 +1,5 @@
 ﻿// 
-// GoToTypeScriptDefinitionCommand.cs
+// FindTypeScriptReferences.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,16 +27,23 @@
 //
 
 using System;
-using MonoDevelop.Components.Commands;
+using System.Collections.Generic;
+using System.Linq;
+
+using MonoDevelop.Ide;
+using MonoDevelop.Ide.FindInFiles;
 using MonoDevelop.Ide.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class GoToTypeScriptDefinitionCommandHandler : TypeScriptCommandHandler
+	public class FindTypeScriptReferencesCommandHandler : TypeScriptCommandHandler
 	{
 		protected override void Run(Document document)
 		{
-			TypeScriptCodeCompletionTextEditorExtension.GoToDefinition(document.Editor);
+			using (ISearchProgressMonitor monitor = IdeApp.Workbench.ProgressMonitors.GetSearchProgressMonitor (true, true)) {
+				List<SearchResult> references = TypeScriptCodeCompletionTextEditorExtension.GetReferences(document.Editor);
+				monitor.ReportResults(references);
+			}
 		}
 	}
 }

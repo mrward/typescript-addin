@@ -88,7 +88,7 @@
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
     <Compile Include="FilePathExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
-    <Compile Include="FindTypeScriptReferencesCommand.cs" />
+    <Compile Include="FindTypeScriptReferencesCommandHandler.cs" />
     <Compile Include="GoToTypeScriptDefinitionCommandHandler.cs" />
     <Compile Include="Hosting\ActualSignatureInfo.cs" />
     <Compile Include="Hosting\ByteOrderMark.cs" />
@@ -153,6 +153,7 @@
     <Compile Include="RenameTypeScriptReferenceCommand.cs" />
     <Compile Include="InitializeTypeScriptServiceStartupHandler.cs" />
     <Compile Include="TypeScriptCodeCompletionTextEditorExtension.cs" />
+    <Compile Include="TypeScriptCommandHandler.cs" />
     <Compile Include="TypeScriptCompletionData.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptCompilationUnit.cs" />

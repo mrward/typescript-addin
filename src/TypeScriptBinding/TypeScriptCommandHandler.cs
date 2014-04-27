@@ -1,10 +1,10 @@
 ﻿// 
-// GoToTypeScriptDefinitionCommand.cs
+// TypeScriptCommandHandler.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,15 +28,27 @@
 
 using System;
 using MonoDevelop.Components.Commands;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
 using MonoDevelop.Ide.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class GoToTypeScriptDefinitionCommandHandler : TypeScriptCommandHandler
+	public abstract class TypeScriptCommandHandler : CommandHandler
 	{
-		protected override void Run(Document document)
+		protected override void Run()
 		{
-			TypeScriptCodeCompletionTextEditorExtension.GoToDefinition(document.Editor);
+			Document document = IdeApp.Workbench.ActiveDocument;
+			if (IsValid(document)) {
+				Run(document);
+			}
 		}
+		
+		bool IsValid(Document document)
+		{
+			return (document != null) && (document.FileName != FilePath.Null);
+		}
+		
+		protected abstract void Run(Document document);
 	}
 }

@@ -29,14 +29,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.TypeScriptBinding.Hosting;
 using Mono.TextEditor;
 using MonoDevelop.Core;
 using MonoDevelop.Ide;
 using MonoDevelop.Ide.CodeCompletion;
+using MonoDevelop.Ide.FindInFiles;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Content;
+using SearchResult = MonoDevelop.Ide.FindInFiles.SearchResult;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -113,31 +114,24 @@ namespace ICSharpCode.TypeScriptBinding
 			return GetCompletionData(completionContext, false);
 		}
 		
-//		public static List<Reference> GetReferences(ITextEditor editor)
-//		{
-//			TypeScriptContext context = GetContext(editor);
-//			UpdateContext(context, editor);
-//			
-//			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
-//			
-//			return entries
-//				.Select(entry => CreateReference(entry))
-//				.ToList();
-//		}
-//		
-//		static Reference CreateReference(ReferenceEntry entry)
-//		{
-//			ITextBuffer fileContent = GetFileContent(entry.fileName);
-//			string expression = fileContent.GetText(entry.minChar, entry.length);
-//			return new Reference(entry.fileName, entry.minChar, entry.length, expression, null);
-//		}
-//		
-//		static void ShowSearchResults(List<SearchResultMatch> searchResults)
-//		{
-//			SearchResultsPad.Instance.ShowSearchResults("References", searchResults);
-//			SearchResultsPad.Instance.BringToFront();
-//		}
-//		
+		public static List<SearchResult> GetReferences(TextEditorData editor)
+		{
+			TypeScriptContext context = GetContext(editor);
+			UpdateContext(context, editor);
+			
+			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
+			
+			return entries
+				.Select(entry => CreateSearchResult(entry))
+				.ToList();
+		}
+		
+		static SearchResult CreateSearchResult(ReferenceEntry entry)
+		{
+			var provider = new FileProvider(entry.fileName, null, entry.minChar, entry.limChar);
+			return new SearchResult(provider, entry.minChar, entry.length);
+		}
+		
 		public static void GoToDefinition(TextEditorData editor)
 		{
 			TypeScriptContext context = GetContext(editor);
