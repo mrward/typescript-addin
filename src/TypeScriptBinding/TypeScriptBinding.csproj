@@ -57,6 +57,10 @@
       <HintPath>..\..\lib\MonoDevelop\MonoDevelop.Ide.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="MonoDevelop.Refactoring">
+      <HintPath>..\..\lib\MonoDevelop\MonoDevelop.Refactoring.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -150,7 +154,7 @@
     <Compile Include="Hosting\Script.cs" />
     <Compile Include="Hosting\TypeScriptContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RenameTypeScriptReferenceCommand.cs" />
+    <Compile Include="RenameTypeScriptReferenceCommandHandler.cs" />
     <Compile Include="InitializeTypeScriptServiceStartupHandler.cs" />
     <Compile Include="TypeScriptCodeCompletionTextEditorExtension.cs" />
     <Compile Include="TypeScriptCommandHandler.cs" />

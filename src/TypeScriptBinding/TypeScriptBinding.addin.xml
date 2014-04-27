@@ -24,6 +24,7 @@
 		<Addin id="Core" version="4.0"/>
 		<Addin id="Ide" version="4.0"/>
 		<Addin id="SourceEditor2" version="4.0" />
+		<Addin id="Refactoring" version="4.0" />
 	</Dependencies>
 	
 	<!--
@@ -84,12 +85,19 @@
 			_label="_Go to Declaration"
 			shortcut="F12"
 			macShortcut="Meta|D"/>
-			<Command
-				id="MonoDevelop.TypeScriptBinding.Commands.FindReferences"
-				defaultHandler="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommandHandler"
-				_label="_Find References"
-				shortcut="Shift|F12"
-				macShortcut="Shift|Meta|R"/>
+		<Command
+			id="MonoDevelop.TypeScriptBinding.Commands.FindReferences"
+			defaultHandler="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommandHandler"
+			_label="_Find References"
+			shortcut="Shift|F12"
+			macShortcut="Shift|Meta|R"/>
+		<Command
+			id="MonoDevelop.TypeScriptBinding.Commands.Rename"
+			defaultHandler="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommandHandler"
+			_label="Re_name"
+			_description="Rename the selection"
+			shortcut="F2"
+			macShortcut="Meta|R"/>
 	</Extension>
 	
 	<Extension path="/MonoDevelop/SourceEditor2/ContextMenu/Editor">
@@ -100,33 +108,13 @@
 			<CommandItem
 				id="MonoDevelop.TypeScriptBinding.Commands.FindReferences"
 				insertafter="MonoDevelop.TypeScriptBinding.Commands.GotoDeclaration" />
-<!--
-		<MenuItem
-			id="RenameTypeScriptReference"
-			label="Rename"
-			class="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommand"/>-->
+			<CommandItem
+				id="MonoDevelop.TypeScriptBinding.Commands.Rename"
+				insertafter="MonoDevelop.TypeScriptBinding.Commands.FindReferences" />
 		</Condition>
 	</Extension>
 	
 <!--
-	<Path name="/SharpDevelop/Workbench/MainMenu/Search">
-		<Include
-			id="GoToTypeScriptDefinition"
-			insertafter="Separator2"
-			insertbefore="GotoLineNr"
-			item="/Addins/TypeScript/TextEditor/ContextMenu/GoToTypeScriptDefinition"/>
-		<Include
-			id="FindTypeScriptReferences"
-			insertafter="Separator2"
-			insertbefore="GotoLineNr"
-			item="/Addins/TypeScript/TextEditor/ContextMenu/FindTypeScriptReferences"/>
-		<MenuItem
-			id="TypeScriptSeparator"
-			insertafter="FindTypeScriptReferences"
-			insertbefore="GotoLineNr"
-			type="Separator"/>
-	</Path>
-
 	<Path name="/SharpDevelop/Dialogs/OptionsDialog/TextEditorOptions">
 		<OptionPanel
 			id="TypeScriptOptions"
