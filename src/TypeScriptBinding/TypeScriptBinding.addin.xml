@@ -27,45 +27,12 @@
 		<Addin id="Refactoring" version="4.0" />
 	</Dependencies>
 	
-	<!--
-	<Extension path="/MonoDevelop/Core/StockIcons">
-		<StockIcon stockid="TypeScript.ProjectBrowser.File" resource="TypeScript.ProjectBrowser.File.png" />
-		<StockIcon stockid="TypeScript.Template.EmptyFile" resource="TypeScript.Template.EmptyFile.png" />
-	</Extension>
-	
-	<Path name="/SharpDevelop/ViewContent/AvalonEdit/SyntaxModes">
-		<SyntaxMode
-			id="TypeScript.SyntaxMode"
-			extensions=".ts"
-			name="TypeScript"
-			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.xshd"/>
-	</Path>
-	
-	<Path name="/Workspace/Autostart">
-		<Class
-			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFile"
-			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileCommand"/>
-		<Class
-			id="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuild"
-			class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileBuildOnCommand"/>
-		<Class
-			id="ICSharpCode.TypeScriptBinding.InitializeTypeScriptService"
-			class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceCommand"/>
-	</Path>
--->
 	<Extension path="/MonoDevelop/Ide/StartupHandlers">
 		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
 		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
+		<!--<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileStartupHandler"/>-->
 	</Extension>
 	
-	<!--
-	<Path name="/Workspace/Icons">
-		<Icon
-			id="TypeScript.File"
-			extensions=".ts"
-			resource="TypeScript.ProjectBrowser.File"/>
-	</Path>
-	-->
 	<Extension path="/MonoDevelop/Ide/FileTemplates">
 		<FileTemplate
 			id="TypeScript-Empty"

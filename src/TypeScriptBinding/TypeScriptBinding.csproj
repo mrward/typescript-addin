@@ -179,8 +179,6 @@
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\ImageResources.resx" />
-    <EmbeddedResource Include="Resources\TypeScript.xshd" />
     <None Include="..\..\lib\Noesis.Javascript\x86\msvcp100.dll">
       <Link>msvcp100.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -233,7 +231,6 @@
     <Folder Include="Hosting" />
     <Folder Include="Scripts" />
     <Folder Include="Templates" />
-    <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TypeScriptOptionsPanel.xaml" />
