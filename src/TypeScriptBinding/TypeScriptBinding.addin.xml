@@ -23,6 +23,7 @@
 	<Dependencies>
 		<Addin id="Core" version="4.0"/>
 		<Addin id="Ide" version="4.0"/>
+		<Addin id="SourceEditor2" version="4.0" />
 	</Dependencies>
 	
 	<!--
@@ -73,12 +74,24 @@
 	<Extension path="/MonoDevelop/Ide/TextEditorExtensions">
 		<Class
 			fileExtensions=".ts"
-			class = "ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionTextEditorExtension" />
+			class="ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionTextEditorExtension" />
 	</Extension>
 	
-	<!--
-	<Path name="/Addins/TypeScript/TextEditor/ContextMenu">
-		<MenuItem
+	<Extension path="/MonoDevelop/Ide/Commands">
+		<Command
+			id="MonoDevelop.TypeScriptBinding.Commands.GotoDeclaration"
+			defaultHandler="ICSharpCode.TypeScriptBinding.GoToTypeScriptDefinitionCommandHandler"
+			_label="_Go to Declaration" 
+			shortcut="F12"
+			macShortcut="Meta|D"/>
+	</Extension>
+	
+	<Extension path="/MonoDevelop/SourceEditor2/ContextMenu/Editor">
+		<Condition id="FileType" fileExtensions=".ts">
+			<CommandItem
+				id="MonoDevelop.TypeScriptBinding.Commands.GotoDeclaration"
+				insertafter="MonoDevelop.SourceEditor.SourceEditorCommands.MarkerOperations" />
+<!--		<MenuItem
 			id="FindTypeScriptReferences"
 			label="Find TypeScript References"
 			icon="Icons.16x16.SelectionArrow"
@@ -91,9 +104,11 @@
 		<MenuItem
 			id="RenameTypeScriptReference"
 			label="Rename"
-			class="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommand"/>
-	</Path>
+			class="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommand"/>-->
+		</Condition>
+	</Extension>
 	
+<!--
 	<Path name="/SharpDevelop/ViewContent/TextEditor/ContextMenu">
 		<Include
 			id="GoToTypeScriptDefinition"

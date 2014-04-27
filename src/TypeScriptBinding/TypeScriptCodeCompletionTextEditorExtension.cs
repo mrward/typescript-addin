@@ -138,27 +138,25 @@ namespace ICSharpCode.TypeScriptBinding
 //			SearchResultsPad.Instance.BringToFront();
 //		}
 //		
-//		public static void GoToDefinition(ITextEditor editor)
-//		{
-//			TypeScriptContext context = GetContext(editor);
-//			UpdateContext(context, editor);
-//			
-//			DefinitionInfo[] definitions = context.GetDefinition(editor.FileName, editor.Caret.Offset);
-//			if (definitions.Length > 0) {
-//				GoToDefinition(definitions[0]);
-//			}
-//		}
-//		
-//		static void GoToDefinition(DefinitionInfo definition)
-//		{
-//			if (!definition.HasFileName())
-//				return;
-//			
-//			var provider = FileService.OpenFile(definition.fileName) as ITextEditorProvider;
-//			if (provider != null) {
-//				Location location = provider.TextEditor.Document.OffsetToPosition(definition.minChar);
-//				FileService.JumpToFilePosition(definition.fileName, location.Line, location.Column);
-//			}
-//		}
+		public static void GoToDefinition(TextEditorData editor)
+		{
+			TypeScriptContext context = GetContext(editor);
+			UpdateContext(context, editor);
+			
+			DefinitionInfo[] definitions = context.GetDefinition(editor.FileName, editor.Caret.Offset);
+			if (definitions.Length > 0) {
+				GoToDefinition(definitions[0]);
+			}
+		}
+		
+		static void GoToDefinition(DefinitionInfo definition)
+		{
+			if (!definition.HasFileName())
+				return;
+			
+			Document document = IdeApp.Workbench.OpenDocument(definition.fileName, OpenDocumentOptions.TryToReuseViewer);
+			DocumentLocation location = document.Editor.OffsetToLocation(definition.minChar);
+			IdeApp.Workbench.OpenDocument(definition.fileName, location.Line, location.Column, OpenDocumentOptions.Default);
+		}
 	}
 }

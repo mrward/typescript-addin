@@ -89,7 +89,7 @@
     <Compile Include="FilePathExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommand.cs" />
-    <Compile Include="GoToTypeScriptDefinitionCommand.cs" />
+    <Compile Include="GoToTypeScriptDefinitionCommandHandler.cs" />
     <Compile Include="Hosting\ActualSignatureInfo.cs" />
     <Compile Include="Hosting\ByteOrderMark.cs" />
     <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
