@@ -1,10 +1,10 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// BuildConfiguration.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,42 +27,18 @@
 //
 
 using System;
-using System.Collections.Generic;
-using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Gui;
-using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
+	public class BuildConfiguration
 	{
-		public void Compile(FileName fileName, TypeScriptProject project)
+		public BuildConfiguration(string configuration, string platform)
 		{
-			ReportCompileStarting(fileName);
-			
-			var compiler = new TypeScriptCompiler(project);
-			compiler.AddFiles(fileName);
-			
-			Report(compiler.GetCommandLine());
-			
-			TypeScriptCompilerResult result = compiler.Compile();
-			
-			UpdateProject(project, result.GeneratedFiles);
-			
-			ReportCompileFinished(result.HasErrors);
+			Configuration = configuration;
+			Platform = platform;
 		}
 		
-		void ReportCompileStarting(FileName fileName)
-		{
-			ClearOutputWindow();
-			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
-		}
-		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
-		{
-			using (var updater = new ProjectBrowserUpdater()) {
-				project.AddMissingFiles(generatedFiles);
-			}
-		}
+		public string Configuration { get; private set; }
+		public string Platform { get; private set; }
 	}
 }

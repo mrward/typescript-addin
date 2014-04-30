@@ -1,10 +1,10 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// TypeScriptProjectOpenConditionEvaluator.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,42 +27,20 @@
 //
 
 using System;
-using System.Collections.Generic;
 using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Gui;
-using ICSharpCode.TypeScriptBinding.Hosting;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
+	public class TypeScriptProjectOpenConditionEvaluator : IConditionEvaluator
 	{
-		public void Compile(FileName fileName, TypeScriptProject project)
+		public bool IsValid(object caller, Condition condition)
 		{
-			ReportCompileStarting(fileName);
+			if (ProjectService.CurrentProject == null)
+				return false;
 			
-			var compiler = new TypeScriptCompiler(project);
-			compiler.AddFiles(fileName);
-			
-			Report(compiler.GetCommandLine());
-			
-			TypeScriptCompilerResult result = compiler.Compile();
-			
-			UpdateProject(project, result.GeneratedFiles);
-			
-			ReportCompileFinished(result.HasErrors);
-		}
-		
-		void ReportCompileStarting(FileName fileName)
-		{
-			ClearOutputWindow();
-			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
-		}
-		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
-		{
-			using (var updater = new ProjectBrowserUpdater()) {
-				project.AddMissingFiles(generatedFiles);
-			}
+			var project = new TypeScriptProject(ProjectService.CurrentProject);
+			return project.HasTypeScriptFiles();
 		}
 	}
 }

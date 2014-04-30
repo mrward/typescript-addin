@@ -95,9 +95,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildConfiguration.cs" />
     <Compile Include="CompileTypeScriptAction.cs" />
     <Compile Include="CompileTypeScriptFilesOnBuildAction.cs" />
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
+    <Compile Include="DisplayValue.cs" />
     <Compile Include="FileNameExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommand.cs" />
@@ -184,6 +186,11 @@
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptProjectMonitor.cs" />
+    <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
+    <Compile Include="TypeScriptProjectOptionsPanel.xaml.cs">
+      <DependentUpon>TypeScriptProjectOptionsPanel.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
@@ -247,6 +254,7 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="TypeScriptOptionsPanel.xaml" />
+    <Page Include="TypeScriptProjectOptionsPanel.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

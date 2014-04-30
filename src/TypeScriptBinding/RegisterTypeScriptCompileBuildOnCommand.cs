@@ -34,16 +34,8 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class RegisterTypeScriptCompileBuildOnCommand : AbstractCommand
 	{
-		TypeScriptOptions options;
-		
 		public RegisterTypeScriptCompileBuildOnCommand()
-			: this(TypeScriptService.Options)
 		{
-		}
-		
-		public RegisterTypeScriptCompileBuildOnCommand(TypeScriptOptions options)
-		{
-			this.options = options;
 		}
 		
 		public override void Run()
@@ -53,9 +45,6 @@ namespace ICSharpCode.TypeScriptBinding
 
 		void BuildStarted(object sender, BuildEventArgs e)
 		{
-			if (!options.CompileOnBuild)
-				return;
-			
 			var action = new CompileTypeScriptFilesOnBuildAction();
 			action.CompileFiles(e.Buildable);
 		}

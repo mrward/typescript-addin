@@ -40,10 +40,22 @@ namespace ICSharpCode.TypeScriptBinding
 	public class TypeScriptProject
 	{
 		IProject project;
+		MSBuildBasedProject msbuildProject;
+		
+		public static readonly string CompileOnSavePropertyName = "TypeScriptCompileOnSaveEnabled";
+		public static readonly string CompileOnBuildPropertyName = "TypeScriptCompileOnBuildEnabled";
+		public static readonly string RemoveCommentsPropertyName = "TypeScriptRemoveComments";
+		public static readonly string GenerateSourceMapPropertyName = "TypeScriptSourceMap";
+		public static readonly string ModuleKindPropertyName = "TypeScriptModuleKind";
+		public static readonly string TargetPropertyName = "TypeScriptTarget";
+		
+		static readonly string DefaultEcmaScriptVersion = "ES5";
+		static readonly string DefaultModuleKind = "none";
 		
 		public TypeScriptProject(IProject project)
 		{
 			this.project = project;
+			this.msbuildProject = (MSBuildBasedProject)project;
 		}
 		
 		public string Name {
@@ -89,6 +101,145 @@ namespace ICSharpCode.TypeScriptBinding
 				.Items
 				.Where(item => TypeScriptParser.IsTypeScriptFileName(item.FileName))
 				.Select(item => new FileName(item.FileName));
+		}
+		
+		string GetStringProperty(BuildConfiguration buildConfig, string name, string defaultValue)
+		{
+			string propertyValue = msbuildProject.GetProperty(buildConfig.Configuration, buildConfig.Platform, name);
+			if (!String.IsNullOrEmpty(propertyValue)) {
+				return propertyValue;
+			}
+			return defaultValue;
+		}
+		
+		bool GetBooleanProperty(BuildConfiguration buildConfig, string name, bool defaultValue)
+		{
+			string propertyValue = msbuildProject.GetProperty(buildConfig.Configuration, buildConfig.Platform, name);
+			return ConvertBooleanValue(propertyValue, defaultValue);
+		}
+		
+		bool ConvertBooleanValue(string propertyValue, bool defaultValue)
+		{
+			bool convertedValue = false;
+			if (Boolean.TryParse(propertyValue, out convertedValue)) {
+				return convertedValue;
+			}
+			return defaultValue;
+		}
+		
+		void SetBooleanProperty(BuildConfiguration buildConfig, string name, bool value)
+		{
+			SetStringProperty(buildConfig, name, value.ToString());
+		}
+		
+		void SetStringProperty(BuildConfiguration buildConfig, string name, string value)
+		{
+			msbuildProject.SetProperty(
+				buildConfig.Configuration,
+				buildConfig.Platform,
+				name,
+				value,
+				PropertyStorageLocations.Unchanged,
+				false);
+		}
+		
+		bool GetBooleanProperty(string name, bool defaultValue)
+		{
+			string propertyValue = msbuildProject.GetEvaluatedProperty(name);
+			return ConvertBooleanValue(propertyValue, defaultValue);
+		}
+		
+		string GetStringProperty(string name, string defaultValue)
+		{
+			string propertyValue = msbuildProject.GetEvaluatedProperty(name);
+			if (!String.IsNullOrEmpty(propertyValue)) {
+				return propertyValue;
+			}
+			return defaultValue;
+		}
+		
+		public bool CompileOnSave {
+			get { return GetBooleanProperty(CompileOnSavePropertyName, false); }
+		}
+		
+		public bool GetCompileOnSave(BuildConfiguration buildConfig)
+		{
+			return GetBooleanProperty(buildConfig, CompileOnSavePropertyName, false);
+		}
+		
+		public void SetCompileOnSave(BuildConfiguration buildConfig, bool value)
+		{
+			SetBooleanProperty(buildConfig, CompileOnSavePropertyName, value);
+		}
+		
+		public bool CompileOnBuild {
+			get { return GetBooleanProperty(CompileOnBuildPropertyName, true); }
+		}
+		
+		public bool GetCompileOnBuild(BuildConfiguration buildConfig)
+		{
+			return GetBooleanProperty(buildConfig, CompileOnBuildPropertyName, true);
+		}
+		
+		public void SetCompileOnBuild(BuildConfiguration buildConfig, bool value)
+		{
+			SetBooleanProperty(buildConfig, CompileOnBuildPropertyName, value);
+		}
+		
+		public bool RemoveComments {
+			get { return GetBooleanProperty(RemoveCommentsPropertyName, true); }
+		}
+		
+		public bool GetRemoveComments(BuildConfiguration buildConfig)
+		{
+			return GetBooleanProperty(buildConfig, RemoveCommentsPropertyName, false);
+		}
+		
+		public void SetRemoveComments(BuildConfiguration buildConfig, bool value)
+		{
+			SetBooleanProperty(buildConfig, RemoveCommentsPropertyName, value);
+		}
+		
+		public bool GenerateSourceMap {
+			get { return GetBooleanProperty(GenerateSourceMapPropertyName, true); }
+		}
+		
+		public bool GetGenerateSourceMap(BuildConfiguration buildConfig)
+		{
+			return GetBooleanProperty(buildConfig, GenerateSourceMapPropertyName, false);
+		}
+		
+		public void SetGenerateSourceMap(BuildConfiguration buildConfig, bool value)
+		{
+			SetBooleanProperty(buildConfig, GenerateSourceMapPropertyName, value);
+		}
+		
+		public string EcmaScriptVersion {
+			get { return GetStringProperty(TargetPropertyName, DefaultEcmaScriptVersion); }
+		}
+		
+		public string GetEcmaScriptVersion(BuildConfiguration buildConfig)
+		{
+			return GetStringProperty(buildConfig, TargetPropertyName, DefaultEcmaScriptVersion);
+		}
+		
+		public void SetEcmaScriptVersion(BuildConfiguration buildConfig, string value)
+		{
+			SetStringProperty(buildConfig, TargetPropertyName, value);
+		}
+		
+		public string ModuleKind {
+			get { return GetStringProperty(ModuleKindPropertyName, DefaultModuleKind); }
+		}
+		
+		public string GetModuleKind(BuildConfiguration buildConfig)
+		{
+			return GetStringProperty(buildConfig, ModuleKindPropertyName, DefaultModuleKind);
+		}
+		
+		public void SetModuleKind(BuildConfiguration buildConfig, string value)
+		{
+			SetStringProperty(buildConfig, ModuleKindPropertyName, value);
 		}
 	}
 }

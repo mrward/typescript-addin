@@ -43,14 +43,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		TypeScriptCompilerIOHost host;
 		TypeScriptCompilerArguments commandLineArguments;
 		
-		public TypeScriptCompiler()
-			: this(TypeScriptService.Options)
+		public TypeScriptCompiler(TypeScriptProject project)
 		{
-		}
-		
-		public TypeScriptCompiler(TypeScriptOptions options)
-		{
-			commandLineArguments = new TypeScriptCompilerArguments(options);
+			commandLineArguments = new TypeScriptCompilerArguments(project);
 		}
 		
 		public void AddFiles(params FileName[] fileNames)

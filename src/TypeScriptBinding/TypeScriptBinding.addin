@@ -11,7 +11,9 @@
 	
 	<Runtime>
 		<Import assembly=":ICSharpCode.SharpDevelop"/>
-		<Import assembly="TypeScriptBinding.dll"/>
+		<Import assembly="TypeScriptBinding.dll">
+			<ConditionEvaluator name="IsTypeScriptProjectOpen" class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOpenConditionEvaluator"/>
+		</Import>
 	</Runtime>
 	
 	<Path name="/SharpDevelop/ViewContent/AvalonEdit/SyntaxModes">
@@ -113,15 +115,24 @@
 			type="Separator"/>
 	</Path>
 
-	<Path name="/SharpDevelop/Dialogs/OptionsDialog/TextEditorOptions">
+<!--	<Path name="/SharpDevelop/Dialogs/OptionsDialog/TextEditorOptions">
 		<OptionPanel
 			id="TypeScriptOptions"
 			label="TypeScript"
 			insertafter="CodeCompletion"
 			insertbefore="VBSpecificOptions"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
+	</Path>-->
+	
+	<Path path="/SharpDevelop/BackendBindings/ProjectOptions/AllManaged">
+		<Condition name="IsTypeScriptProjectOpen">
+			<OptionPanel
+				id="TypeScript"
+				label="TypeScript Build"
+				class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"/>
+		</Condition>
 	</Path>
-
+	
 	<Path name="/SharpDevelop/Workbench/LanguageBindings">
 		<LanguageBinding
 			id="TypeScript"

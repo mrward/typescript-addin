@@ -29,21 +29,14 @@
 using System;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class RegisterTypeScriptCompileOnSaveFileCommand : AbstractCommand
 	{
-		TypeScriptOptions options;
-		
 		public RegisterTypeScriptCompileOnSaveFileCommand()
-			: this(TypeScriptService.Options)
 		{
-		}
-		
-		public RegisterTypeScriptCompileOnSaveFileCommand(TypeScriptOptions options)
-		{
-			this.options = options;
 		}
 		
 		public override void Run()
@@ -53,9 +46,16 @@ namespace ICSharpCode.TypeScriptBinding
 
 		void FileSaved(object sender, FileNameEventArgs e)
 		{
-			if (options.CompileOnSave && TypeScriptFileExtensions.IsTypeScriptFileName(e.FileName)) {
+			if (!TypeScriptFileExtensions.IsTypeScriptFileName(e.FileName))
+				return;
+			
+			TypeScriptProject project = TypeScriptService.GetProjectForFile(e.FileName);
+			if (project == null)
+				return;
+			
+			if (project.CompileOnSave) {
 				var action = new CompileTypeScriptOnSaveFileAction();
-				action.Compile(e.FileName);
+				action.Compile(e.FileName, project);
 			}
 		}
 	}
