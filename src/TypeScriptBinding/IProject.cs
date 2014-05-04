@@ -1,5 +1,5 @@
 ﻿// 
-// IProjectExtensions.cs
+// IProject.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,51 +27,19 @@
 //
 
 using System;
-using MonoDevelop.Core.Serialization;
-using MonoDevelop.Ide;
+using MonoDevelop.Core;
 using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public static class IProjectExtensions
+	public interface IProject
 	{
-		public static string GetProperty(this IProject project, string name)
-		{
-			SolutionItemConfiguration config = GetActiveConfiguration(project);
-			return project.GetProperty(config, name);
-		}
+		SolutionItemConfiguration GetConfiguration(ConfigurationSelector configuration);
+		bool IsFileInProject(FilePath fileName);
+		void Save();
+		void AddFile(ProjectFile fileItem);
 		
-		static SolutionItemConfiguration GetActiveConfiguration(IProject project)
-		{
-			return project.GetConfiguration(TypeScriptService.ActiveConfiguration);
-		}
-		
-		public static string GetProperty(this IProject project, SolutionItemConfiguration config, string name)
-		{
-			DataItem rawData = GetRawData(config);
-			
-			var dataValue = rawData[name] as DataValue;
-			if (dataValue == null)
-				return null;
-			
-			return dataValue.Value;
-		}
-		
-		static DataItem GetRawData(SolutionItemConfiguration config)
-		{
-			var dataItem = config.ExtendedProperties["__raw_data"] as DataItem;
-			if (dataItem != null) {
-				return dataItem;
-			}
-			return new DataItem();
-		}
-		
-		public static void SetProperty(this IProject project, string name, string value)
-		{
-			SolutionItemConfiguration config = GetActiveConfiguration(project);
-			DataItem rawData = GetRawData(config);
-			rawData.Extract(name);
-			rawData.ItemData.Add(new DataValue(name, value));
-		}
+		string Name { get; }
+		ProjectItemCollection Items { get; }
 	}
 }

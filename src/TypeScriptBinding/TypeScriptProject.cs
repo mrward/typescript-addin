@@ -41,7 +41,7 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptProject
 	{
-		Project project;
+		IProject project;
 		
 		public static readonly string CompileOnSavePropertyName = "TypeScriptCompileOnSaveEnabled";
 		public static readonly string CompileOnBuildPropertyName = "TypeScriptCompileOnBuildEnabled";
@@ -54,6 +54,11 @@ namespace ICSharpCode.TypeScriptBinding
 		static readonly string DefaultModuleKind = "none";
 		
 		public TypeScriptProject(Project project)
+			: this(new ProjectWrapper(project))
+		{
+		}
+		
+		public TypeScriptProject(IProject project)
 		{
 			this.project = project;
 		}
@@ -67,7 +72,7 @@ namespace ICSharpCode.TypeScriptBinding
 			foreach (GeneratedTypeScriptFile file in filesGenerated) {
 				AddMissingFile(file);
 			}
-			IdeApp.ProjectOperations.Save(project);
+			project.Save();
 		}
 		
 		void AddMissingFile(GeneratedTypeScriptFile file)
@@ -81,7 +86,7 @@ namespace ICSharpCode.TypeScriptBinding
 				DependsOn = file.GetDependentUpon()
 			};
 			project.AddFile(fileItem);
-			IdeApp.ProjectOperations.Save(project);
+			project.Save();
 		}
 		
 		public bool IsFileInProject(FilePath fileName)

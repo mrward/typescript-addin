@@ -1,5 +1,5 @@
 ﻿// 
-// IProjectExtensions.cs
+// ProjectWrapper.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,51 +27,47 @@
 //
 
 using System;
-using MonoDevelop.Core.Serialization;
+using MonoDevelop.Core;
 using MonoDevelop.Ide;
 using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public static class IProjectExtensions
+	public class ProjectWrapper : IProject
 	{
-		public static string GetProperty(this IProject project, string name)
+		Project project;
+		
+		public ProjectWrapper(Project project)
 		{
-			SolutionItemConfiguration config = GetActiveConfiguration(project);
-			return project.GetProperty(config, name);
+			this.project = project;
 		}
 		
-		static SolutionItemConfiguration GetActiveConfiguration(IProject project)
+		public SolutionItemConfiguration GetConfiguration(ConfigurationSelector configuration)
 		{
-			return project.GetConfiguration(TypeScriptService.ActiveConfiguration);
+			return project.GetConfiguration(configuration);
 		}
 		
-		public static string GetProperty(this IProject project, SolutionItemConfiguration config, string name)
+		public void Save()
 		{
-			DataItem rawData = GetRawData(config);
-			
-			var dataValue = rawData[name] as DataValue;
-			if (dataValue == null)
-				return null;
-			
-			return dataValue.Value;
+			IdeApp.ProjectOperations.Save(project);
 		}
 		
-		static DataItem GetRawData(SolutionItemConfiguration config)
-		{
-			var dataItem = config.ExtendedProperties["__raw_data"] as DataItem;
-			if (dataItem != null) {
-				return dataItem;
-			}
-			return new DataItem();
+		public ProjectItemCollection Items {
+			get { return project.Items; }
 		}
 		
-		public static void SetProperty(this IProject project, string name, string value)
+		public string Name {
+			get { return project.Name; }
+		}
+		
+		public bool IsFileInProject(FilePath fileName)
 		{
-			SolutionItemConfiguration config = GetActiveConfiguration(project);
-			DataItem rawData = GetRawData(config);
-			rawData.Extract(name);
-			rawData.ItemData.Add(new DataValue(name, value));
+			return project.IsFileInProject(fileName);
+		}
+		
+		public void AddFile(ProjectFile file)
+		{
+			project.AddFile(file);
 		}
 	}
 }
