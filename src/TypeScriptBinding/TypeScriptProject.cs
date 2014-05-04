@@ -139,7 +139,7 @@ namespace ICSharpCode.TypeScriptBinding
 				buildConfig.Platform,
 				name,
 				value,
-				PropertyStorageLocations.Unchanged,
+				PropertyStorageLocations.ConfigurationSpecific,
 				false);
 		}
 		
