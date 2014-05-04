@@ -177,11 +177,6 @@
     <Compile Include="TypeScriptFunctionInsightItem.cs" />
     <Compile Include="TypeScriptFunctionInsightProvider.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />
-    <Compile Include="TypeScriptOptions.cs" />
-    <Compile Include="TypeScriptOptionsPanel.xaml.cs">
-      <DependentUpon>TypeScriptOptionsPanel.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
@@ -253,7 +248,6 @@
     <Folder Include="Resources" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="TypeScriptOptionsPanel.xaml" />
     <Page Include="TypeScriptProjectOptionsPanel.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

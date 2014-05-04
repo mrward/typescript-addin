@@ -41,15 +41,10 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public static class TypeScriptService
 	{
-		static readonly TypeScriptOptions options = new TypeScriptOptions();
 		static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
-		
-		public static TypeScriptOptions Options {
-			get { return options; }
-		}
 		
 		public static TypeScriptContextProvider ContextProvider {
 			get { return contextProvider; }
