@@ -35,22 +35,19 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
 	{
-		public void Compile(FilePath fileName)
+		public void Compile(FilePath fileName, TypeScriptProject project)
 		{
 			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
 				ReportCompileStarting(fileName);
 				
-				var compiler = new TypeScriptCompiler();
+				var compiler = new TypeScriptCompiler(project);
 				compiler.AddFiles(fileName);
 				
 				Report(compiler.GetCommandLine());
 				
 				TypeScriptCompilerResult result = compiler.Compile();
 				
-				TypeScriptProject project = TypeScriptService.GetProjectForFile(fileName);
-				if (project != null) {
-					UpdateProject(project, result.GeneratedFiles);
-				}
+				UpdateProject(project, result.GeneratedFiles);
 				
 				ReportCompileFinished(result.HasErrors);
 			}

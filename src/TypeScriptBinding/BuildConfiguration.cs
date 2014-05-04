@@ -1,10 +1,10 @@
 ﻿// 
-// RegisterTypeScriptCompileOnBuildCommand.cs
+// BuildConfiguration.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,28 +27,18 @@
 //
 
 using System;
-using MonoDevelop.Components.Commands;
-using MonoDevelop.Ide;
-using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class RegisterTypeScriptCompileOnBuildStartupHandler : CommandHandler
+	public class BuildConfiguration
 	{
-		public RegisterTypeScriptCompileOnBuildStartupHandler()
+		public BuildConfiguration(string configuration, string platform)
 		{
+			Configuration = configuration;
+			Platform = platform;
 		}
 		
-		
-		protected override void Run()
-		{
-			IdeApp.ProjectOperations.StartBuild += BuildStarted;
-		}
-
-		void BuildStarted(object sender, BuildEventArgs e)
-		{
-			var action = new CompileTypeScriptFilesOnBuildAction();
-			action.CompileFiles(IdeApp.ProjectOperations.CurrentSelectedBuildTarget);
-		}
+		public string Configuration { get; private set; }
+		public string Platform { get; private set; }
 	}
 }

@@ -29,24 +29,20 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Core;
 using MonoDevelop.Ide;
+using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public static class TypeScriptService
 	{
-		static readonly TypeScriptOptions options = new TypeScriptOptions();
 		//static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
-		
-		public static TypeScriptOptions Options {
-			get { return options; }
-		}
+		static ConfigurationSelector activeConfiguration;
 		
 		public static TypeScriptContextProvider ContextProvider {
 			get { return contextProvider; }
@@ -86,6 +82,16 @@ namespace ICSharpCode.TypeScriptBinding
 				.Where(project => project.IsFileInProject(fileName))
 				.Select(project => new TypeScriptProject(project))
 				.FirstOrDefault();
+		}
+		
+		public static ConfigurationSelector ActiveConfiguration {
+			get {
+				if (activeConfiguration == null) {
+					return IdeApp.Workspace.ActiveConfiguration;
+				}
+				return activeConfiguration;
+			}
+			set { activeConfiguration = value; }
 		}
 	}
 }

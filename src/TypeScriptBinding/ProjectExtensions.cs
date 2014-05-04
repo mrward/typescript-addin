@@ -1,10 +1,10 @@
 ﻿// 
-// RegisterTypeScriptCompileOnBuildCommand.cs
+// ProjectExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,28 +27,50 @@
 //
 
 using System;
-using MonoDevelop.Components.Commands;
+using MonoDevelop.Core.Serialization;
 using MonoDevelop.Ide;
 using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class RegisterTypeScriptCompileOnBuildStartupHandler : CommandHandler
+	public static class ProjectExtensions
 	{
-		public RegisterTypeScriptCompileOnBuildStartupHandler()
+		public static string GetProperty(this Project project, string name)
 		{
+			SolutionItemConfiguration config = GetActiveConfiguration(project);
+			return project.GetProperty(config, name);
 		}
 		
-		
-		protected override void Run()
+		static SolutionItemConfiguration GetActiveConfiguration(Project project)
 		{
-			IdeApp.ProjectOperations.StartBuild += BuildStarted;
+			return project.GetConfiguration(IdeApp.Workspace.ActiveConfiguration);
 		}
-
-		void BuildStarted(object sender, BuildEventArgs e)
+		
+		public static string GetProperty(this Project project, SolutionItemConfiguration config, string name)
 		{
-			var action = new CompileTypeScriptFilesOnBuildAction();
-			action.CompileFiles(IdeApp.ProjectOperations.CurrentSelectedBuildTarget);
+			DataItem rawData = GetRawData(config);
+			
+			DataNode node = rawData.Extract(name);
+			if (node == null)
+				return null;
+			
+			return node.ToString();
+		}
+		
+		static DataItem GetRawData(SolutionItemConfiguration config)
+		{
+			var dataItem = config.ExtendedProperties["__raw_data"] as DataItem;
+			if (dataItem != null) {
+				return dataItem;
+			}
+			return new DataItem();
+		}
+		
+		public static void SetProperty(this Project project, string name, string value)
+		{
+			SolutionItemConfiguration config = GetActiveConfiguration(project);
+			DataItem rawData = GetRawData(config);
+			rawData.ItemData.Add(new DataValue(name, value));
 		}
 	}
 }

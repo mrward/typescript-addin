@@ -42,7 +42,9 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
 				foreach (TypeScriptProject project in buildTarget.GetTypeScriptProjects()) {
-					CompileFiles(project);
+					if (project.CompileOnBuild) {
+						CompileFiles(project);
+					}
 				}
 			}
 		}
@@ -60,7 +62,7 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			ReportCompileStarting(project);
 			
-			var compiler = new TypeScriptCompiler();
+			var compiler = new TypeScriptCompiler(project);
 			compiler.AddFiles(fileNames);
 			
 			Report(compiler.GetCommandLine());

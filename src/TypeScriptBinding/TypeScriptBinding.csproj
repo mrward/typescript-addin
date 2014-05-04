@@ -87,9 +87,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuildConfiguration.cs" />
     <Compile Include="CompileTypeScriptAction.cs" />
     <Compile Include="CompileTypeScriptFilesOnBuildAction.cs" />
     <Compile Include="CompileTypeScriptOnSaveFileAction.cs" />
+    <Compile Include="DisplayValue.cs" />
     <Compile Include="FilePathExtensions.cs" />
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommandHandler.cs" />
@@ -142,6 +144,7 @@
     <Compile Include="Hosting\TypeScriptContextProvider.cs" />
     <Compile Include="IBuildTargetExtensions.cs" />
     <Compile Include="ProjectBrowserUpdater.cs" />
+    <Compile Include="ProjectExtensions.cs" />
     <Compile Include="RegisterTypeScriptCompileOnBuildStartupHandler.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileStartupHandler.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
@@ -164,16 +167,16 @@
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />
-    <Compile Include="TypeScriptOptions.cs" />
-    <Compile Include="TypeScriptOptionsPanel.xaml.cs">
-      <DependentUpon>TypeScriptOptionsPanel.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TypeScriptParameterDataProvider.cs" />
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptProjectMonitor.cs" />
+    <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
+    <Compile Include="TypeScriptProjectOptionsPanel.xaml.cs">
+      <DependentUpon>TypeScriptProjectOptionsPanel.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
@@ -233,7 +236,7 @@
     <Folder Include="Templates" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="TypeScriptOptionsPanel.xaml" />
+    <None Include="TypeScriptProjectOptionsPanel.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
