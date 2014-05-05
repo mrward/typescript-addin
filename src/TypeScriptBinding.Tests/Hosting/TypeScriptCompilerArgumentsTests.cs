@@ -2,14 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop.Internal.Templates;
-using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using NUnit.Framework;
-using Rhino.Mocks;
 
 namespace TypeScriptBinding.Tests.Hosting
 {
@@ -17,29 +13,17 @@ namespace TypeScriptBinding.Tests.Hosting
 	public class TypeScriptCompilerArgumentsTests
 	{
 		TypeScriptCompilerArguments commandLine;
-		TypeScriptProject project;
-		MSBuildBasedProject msbuildProject;
+		TestTypeScriptOptions options;
 		
 		void CreateCommandLine()
 		{
-			var watcher = MockRepository.GenerateStub<IProjectChangeWatcher>();
-			var solution = new Solution(watcher);
-			var createInfo = new ProjectCreateInformation {
-				Solution = solution,
-				SolutionPath = @"d:\projects\MyProject\MyProject.sln",
-				ProjectBasePath = @"d:\projects\MyProject",
-				OutputProjectFileName = @"d:\projects\MyProject\MyProject.csproj"
-			};
+			options = new TestTypeScriptOptions();
+			options.RemoveComments = false;
+			options.GenerateSourceMap = false;
+			options.EcmaScriptVersion = "";
+			options.ModuleKind = "";
 			
-			msbuildProject = new MSBuildBasedProject(createInfo);
-			
-			project = new TypeScriptProject(msbuildProject);
-			msbuildProject.SetProperty(TypeScriptProject.RemoveCommentsPropertyName, "False");
-			msbuildProject.SetProperty(TypeScriptProject.GenerateSourceMapPropertyName, "False");
-			msbuildProject.SetProperty(TypeScriptProject.TargetPropertyName, "");
-			msbuildProject.SetProperty(TypeScriptProject.ModuleKindPropertyName, "");
-			
-			commandLine = new TypeScriptCompilerArguments(project);
+			commandLine = new TypeScriptCompilerArguments(options);
 		}
 		
 		void AssertArgsAreEqual(string[] actual, params string[] expected)
@@ -63,7 +47,7 @@ namespace TypeScriptBinding.Tests.Hosting
 			
 			string args = commandLine.GetCommandLine();
 			
-			Assert.AreEqual("tsc --target ES5 \"d:\\projects\\My Project\\test.ts\"", args);
+			Assert.AreEqual(args, "tsc \"d:\\projects\\My Project\\test.ts\"");
 		}
 		
 		[Test]
@@ -74,7 +58,7 @@ namespace TypeScriptBinding.Tests.Hosting
 			
 			string args = commandLine.GetCommandLine();
 			
-			Assert.AreEqual("tsc --target ES5 d:\\projects\\MyProject\\test.ts", args);
+			Assert.AreEqual("tsc d:\\projects\\MyProject\\test.ts", args);
 		}
 		
 		[Test]
@@ -85,7 +69,7 @@ namespace TypeScriptBinding.Tests.Hosting
 			
 			string[] arguments = commandLine.GetArguments();
 			
-			AssertArgsAreEqual(arguments, "--target", "ES5", @"d:\projects\MyProject\test.ts");
+			AssertArgsAreEqual(arguments, @"d:\projects\MyProject\test.ts");
 		}
 		
 		[Test]
@@ -96,7 +80,7 @@ namespace TypeScriptBinding.Tests.Hosting
 			
 			string args = commandLine.GetCommandLine();
 			
-			Assert.AreEqual("tsc --target ES5 d:\\projects\\MyProject\\test.ts", args);
+			Assert.AreEqual("tsc d:\\projects\\MyProject\\test.ts", args);
 		}
 		
 		[Test]
@@ -107,7 +91,7 @@ namespace TypeScriptBinding.Tests.Hosting
 			
 			string args = commandLine.GetCommandLine();
 			
-			Assert.AreEqual("tsc --target ES5 a.ts b.ts", args);
+			Assert.AreEqual("tsc a.ts b.ts", args);
 		}
 		
 		[Test]
@@ -118,19 +102,19 @@ namespace TypeScriptBinding.Tests.Hosting
 			
 			string[] arguments = commandLine.GetArguments();
 			
-			AssertArgsAreEqual(arguments, "--target", "ES5", "a.ts", "b.ts");
+			AssertArgsAreEqual(arguments, "a.ts", "b.ts");
 		}
 		
 		[Test]
-		public void GetArguments_IncludeCommentsIsFalse_RemoteCommentsArgAdded()
+		public void GetArguments_RemoveCommentsIsFalse_RemoteCommentsArgAdded()
 		{
 			CreateCommandLine();
 			AddTypeScriptFiles("a.ts");
-			msbuildProject.SetProperty(TypeScriptProject.RemoveCommentsPropertyName, "True");
+			options.RemoveComments = true;
 			
 			string[] arguments = commandLine.GetArguments();
 			
-			AssertArgsAreEqual(arguments, "--removeComments", "--target", "ES5", "a.ts");
+			AssertArgsAreEqual(arguments, "--removeComments", "a.ts");
 		}
 		
 		[Test]
@@ -138,11 +122,11 @@ namespace TypeScriptBinding.Tests.Hosting
 		{
 			CreateCommandLine();
 			AddTypeScriptFiles("a.ts");
-			msbuildProject.SetProperty(TypeScriptProject.GenerateSourceMapPropertyName, "True");
+			options.GenerateSourceMap = true;
 			
 			string args = commandLine.GetCommandLine();
 			
-			Assert.AreEqual("tsc --sourcemap --target ES5 a.ts", args);
+			Assert.AreEqual("tsc --sourcemap a.ts", args);
 		}
 		
 		[Test]
@@ -150,11 +134,11 @@ namespace TypeScriptBinding.Tests.Hosting
 		{
 			CreateCommandLine();
 			AddTypeScriptFiles("a.ts");
-			msbuildProject.SetProperty(TypeScriptProject.ModuleKindPropertyName, "AMD");
+			options.ModuleKind = "AMD";
 			
 			string args = commandLine.GetCommandLine();
 			
-			Assert.AreEqual("tsc --module AMD --target ES5 a.ts", args);
+			Assert.AreEqual("tsc --module AMD a.ts", args);
 		}
 		
 		[Test]
@@ -162,7 +146,7 @@ namespace TypeScriptBinding.Tests.Hosting
 		{
 			CreateCommandLine();
 			AddTypeScriptFiles("a.ts");
-			msbuildProject.SetProperty(TypeScriptProject.TargetPropertyName, "ES3");
+			options.EcmaScriptVersion = "ES3";
 			
 			string args = commandLine.GetCommandLine();
 			

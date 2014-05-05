@@ -151,6 +151,7 @@
     <Compile Include="Hosting\TypeScriptContextFactory.cs" />
     <Compile Include="Hosting\TypeScriptContextProvider.cs" />
     <Compile Include="IBuildableExtensions.cs" />
+    <Compile Include="ITypeScriptOptions.cs" />
     <Compile Include="ProjectBrowserUpdater.cs" />
     <Compile Include="RegisterTypeScriptCompileBuildOnCommand.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileCommand.cs" />

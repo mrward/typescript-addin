@@ -37,7 +37,7 @@ using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptProject
+	public class TypeScriptProject : ITypeScriptOptions
 	{
 		IProject project;
 		MSBuildBasedProject msbuildProject;
