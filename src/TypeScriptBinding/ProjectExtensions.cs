@@ -33,20 +33,20 @@ using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public static class IProjectExtensions
+	public static class ProjectExtensions
 	{
-		public static string GetProperty(this IProject project, string name)
+		public static string GetProperty(this Project project, string name)
 		{
 			SolutionItemConfiguration config = GetActiveConfiguration(project);
 			return project.GetProperty(config, name);
 		}
 		
-		static SolutionItemConfiguration GetActiveConfiguration(IProject project)
+		static SolutionItemConfiguration GetActiveConfiguration(Project project)
 		{
 			return project.GetConfiguration(TypeScriptService.ActiveConfiguration);
 		}
 		
-		public static string GetProperty(this IProject project, SolutionItemConfiguration config, string name)
+		public static string GetProperty(this Project project, SolutionItemConfiguration config, string name)
 		{
 			DataItem rawData = GetRawData(config);
 			
@@ -66,12 +66,17 @@ namespace ICSharpCode.TypeScriptBinding
 			return new DataItem();
 		}
 		
-		public static void SetProperty(this IProject project, string name, string value)
+		public static void SetProperty(this Project project, string name, string value)
 		{
 			SolutionItemConfiguration config = GetActiveConfiguration(project);
 			DataItem rawData = GetRawData(config);
 			rawData.Extract(name);
 			rawData.ItemData.Add(new DataValue(name, value));
+		}
+		
+		public static void Save(this Project project)
+		{
+			IdeApp.ProjectOperations.Save(project);
 		}
 	}
 }

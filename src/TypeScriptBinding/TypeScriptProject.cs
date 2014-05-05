@@ -41,7 +41,7 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptProject : ITypeScriptOptions
 	{
-		IProject project;
+		Project project;
 		
 		public static readonly string CompileOnSavePropertyName = "TypeScriptCompileOnSaveEnabled";
 		public static readonly string CompileOnBuildPropertyName = "TypeScriptCompileOnBuildEnabled";
@@ -54,11 +54,6 @@ namespace ICSharpCode.TypeScriptBinding
 		static readonly string DefaultModuleKind = "none";
 		
 		public TypeScriptProject(Project project)
-			: this(new ProjectWrapper(project))
-		{
-		}
-		
-		public TypeScriptProject(IProject project)
 		{
 			this.project = project;
 		}

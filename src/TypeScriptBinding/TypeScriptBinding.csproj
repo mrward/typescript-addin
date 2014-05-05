@@ -147,7 +147,6 @@
     <Compile Include="ITypeScriptOptions.cs" />
     <Compile Include="ProjectBrowserUpdater.cs" />
     <Compile Include="ProjectExtensions.cs" />
-    <Compile Include="ProjectWrapper.cs" />
     <Compile Include="RegisterTypeScriptCompileOnBuildStartupHandler.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileStartupHandler.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
