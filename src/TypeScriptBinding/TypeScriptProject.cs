@@ -106,20 +106,19 @@ namespace ICSharpCode.TypeScriptBinding
 				.Select(item => item.FilePath);
 		}
 		
-		string GetStringProperty(BuildConfiguration buildConfig, string name, string defaultValue)
+		string GetStringProperty(ProjectConfiguration config, string name, string defaultValue)
 		{
-//			string propertyValue = msbuildProject.GetProperty(buildConfig.Configuration, buildConfig.Platform, name);
-//			if (!String.IsNullOrEmpty(propertyValue)) {
-//				return propertyValue;
-//			}
+			string propertyValue = project.GetProperty(config, name);
+			if (!String.IsNullOrEmpty(propertyValue)) {
+				return propertyValue;
+			}
 			return defaultValue;
 		}
 		
-		bool GetBooleanProperty(BuildConfiguration buildConfig, string name, bool defaultValue)
+		bool GetBooleanProperty(ProjectConfiguration config, string name, bool defaultValue)
 		{
-//			string propertyValue = msbuildProject.GetProperty(buildConfig.Configuration, buildConfig.Platform, name);
-//			return ConvertBooleanValue(propertyValue, defaultValue);
-			return defaultValue;
+			string propertyValue = project.GetProperty(config, name);
+			return ConvertBooleanValue(propertyValue, defaultValue);
 		}
 		
 		bool ConvertBooleanValue(string propertyValue, bool defaultValue)
@@ -131,20 +130,14 @@ namespace ICSharpCode.TypeScriptBinding
 			return defaultValue;
 		}
 		
-		void SetBooleanProperty(BuildConfiguration buildConfig, string name, bool value)
+		void SetBooleanProperty(ProjectConfiguration config, string name, bool value)
 		{
-			SetStringProperty(buildConfig, name, value.ToString());
+			SetStringProperty(config, name, value.ToString());
 		}
 		
-		void SetStringProperty(BuildConfiguration buildConfig, string name, string value)
+		void SetStringProperty(ProjectConfiguration config, string name, string value)
 		{
-//			msbuildProject.SetProperty(
-//				buildConfig.Configuration,
-//				buildConfig.Platform,
-//				name,
-//				value,
-//				PropertyStorageLocations.ConfigurationSpecific,
-//				false);
+			project.SetProperty(config, name, value);
 		}
 		
 		bool GetBooleanProperty(string name, bool defaultValue)
@@ -166,84 +159,84 @@ namespace ICSharpCode.TypeScriptBinding
 			get { return GetBooleanProperty(CompileOnSavePropertyName, false); }
 		}
 		
-		public bool GetCompileOnSave(BuildConfiguration buildConfig)
+		public bool GetCompileOnSave(ProjectConfiguration config)
 		{
-			return GetBooleanProperty(buildConfig, CompileOnSavePropertyName, false);
+			return GetBooleanProperty(config, CompileOnSavePropertyName, false);
 		}
 		
-		public void SetCompileOnSave(BuildConfiguration buildConfig, bool value)
+		public void SetCompileOnSave(ProjectConfiguration config, bool value)
 		{
-			SetBooleanProperty(buildConfig, CompileOnSavePropertyName, value);
+			SetBooleanProperty(config, CompileOnSavePropertyName, value);
 		}
 		
 		public bool CompileOnBuild {
 			get { return GetBooleanProperty(CompileOnBuildPropertyName, true); }
 		}
 		
-		public bool GetCompileOnBuild(BuildConfiguration buildConfig)
+		public bool GetCompileOnBuild(ProjectConfiguration config)
 		{
-			return GetBooleanProperty(buildConfig, CompileOnBuildPropertyName, true);
+			return GetBooleanProperty(config, CompileOnBuildPropertyName, true);
 		}
 		
-		public void SetCompileOnBuild(BuildConfiguration buildConfig, bool value)
+		public void SetCompileOnBuild(ProjectConfiguration config, bool value)
 		{
-			SetBooleanProperty(buildConfig, CompileOnBuildPropertyName, value);
+			SetBooleanProperty(config, CompileOnBuildPropertyName, value);
 		}
 		
 		public bool RemoveComments {
 			get { return GetBooleanProperty(RemoveCommentsPropertyName, true); }
 		}
 		
-		public bool GetRemoveComments(BuildConfiguration buildConfig)
+		public bool GetRemoveComments(ProjectConfiguration config)
 		{
-			return GetBooleanProperty(buildConfig, RemoveCommentsPropertyName, true);
+			return GetBooleanProperty(config, RemoveCommentsPropertyName, true);
 		}
 		
-		public void SetRemoveComments(BuildConfiguration buildConfig, bool value)
+		public void SetRemoveComments(ProjectConfiguration config, bool value)
 		{
-			SetBooleanProperty(buildConfig, RemoveCommentsPropertyName, value);
+			SetBooleanProperty(config, RemoveCommentsPropertyName, value);
 		}
 		
 		public bool GenerateSourceMap {
 			get { return GetBooleanProperty(GenerateSourceMapPropertyName, true); }
 		}
 		
-		public bool GetGenerateSourceMap(BuildConfiguration buildConfig)
+		public bool GetGenerateSourceMap(ProjectConfiguration config)
 		{
-			return GetBooleanProperty(buildConfig, GenerateSourceMapPropertyName, true);
+			return GetBooleanProperty(config, GenerateSourceMapPropertyName, true);
 		}
 		
-		public void SetGenerateSourceMap(BuildConfiguration buildConfig, bool value)
+		public void SetGenerateSourceMap(ProjectConfiguration config, bool value)
 		{
-			SetBooleanProperty(buildConfig, GenerateSourceMapPropertyName, value);
+			SetBooleanProperty(config, GenerateSourceMapPropertyName, value);
 		}
 		
 		public string EcmaScriptVersion {
 			get { return GetStringProperty(TargetPropertyName, DefaultEcmaScriptVersion); }
 		}
 		
-		public string GetEcmaScriptVersion(BuildConfiguration buildConfig)
+		public string GetEcmaScriptVersion(ProjectConfiguration config)
 		{
-			return GetStringProperty(buildConfig, TargetPropertyName, DefaultEcmaScriptVersion);
+			return GetStringProperty(config, TargetPropertyName, DefaultEcmaScriptVersion);
 		}
 		
-		public void SetEcmaScriptVersion(BuildConfiguration buildConfig, string value)
+		public void SetEcmaScriptVersion(ProjectConfiguration config, string value)
 		{
-			SetStringProperty(buildConfig, TargetPropertyName, value);
+			SetStringProperty(config, TargetPropertyName, value);
 		}
 		
 		public string ModuleKind {
 			get { return GetStringProperty(ModuleKindPropertyName, DefaultModuleKind); }
 		}
 		
-		public string GetModuleKind(BuildConfiguration buildConfig)
+		public string GetModuleKind(ProjectConfiguration config)
 		{
-			return GetStringProperty(buildConfig, ModuleKindPropertyName, DefaultModuleKind);
+			return GetStringProperty(config, ModuleKindPropertyName, DefaultModuleKind);
 		}
 		
-		public void SetModuleKind(BuildConfiguration buildConfig, string value)
+		public void SetModuleKind(ProjectConfiguration config, string value)
 		{
-			SetStringProperty(buildConfig, ModuleKindPropertyName, value);
+			SetStringProperty(config, ModuleKindPropertyName, value);
 		}
 	}
 }

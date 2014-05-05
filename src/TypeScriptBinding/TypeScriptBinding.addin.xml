@@ -81,16 +81,15 @@
 		</Condition>
 	</Extension>
 	
-<!--
-	<Path name="/SharpDevelop/Dialogs/OptionsDialog/TextEditorOptions">
-		<OptionPanel
-			id="TypeScriptOptions"
-			label="TypeScript"
-			insertafter="CodeCompletion"
-			insertbefore="VBSpecificOptions"
-			class="ICSharpCode.TypeScriptBinding.TypeScriptOptionsPanel"/>
-	</Path>
--->
+	<Extension path="/MonoDevelop/ProjectModel/Gui/ItemOptionPanels/Build">
+		<!--<Condition id="ActiveLanguage" value="C#">-->
+		<Section
+			id="TypeScriptProjectOptions"
+			_label="TypeScript"
+			fill="true"
+			class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"/>
+	</Extension>
+	
 	<Extension name="/MonoDevelop/ProjectModel/LanguageBindings">
 		<LanguageBinding
 			id="TypeScript"

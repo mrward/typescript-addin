@@ -67,24 +67,19 @@
     <Reference Include="Noesis.Javascript">
       <HintPath>..\..\lib\Noesis.Javascript\x86\Noesis.Javascript.dll</HintPath>
     </Reference>
-    <Reference Include="PresentationCore">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="PresentationFramework">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildConfiguration.cs" />
@@ -175,6 +170,7 @@
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptProjectMonitor.cs" />
     <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
+    <Compile Include="TypeScriptProjectOptionsPanel.cs" />
     <Compile Include="TypeScriptProjectOptionsPanel.xaml.cs">
       <DependentUpon>TypeScriptProjectOptionsPanel.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -182,6 +178,9 @@
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="TypeScriptProjectOptionsPanelWidget.cs" />
+    <Compile Include="gtk-gui\ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanelWidget.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\Noesis.Javascript\x86\msvcp100.dll">
@@ -228,14 +227,10 @@
     <None Include="Templates\TypeScript.EmptyFile.xft.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="TypeScriptBinding.addin.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    <EmbeddedResource Include="TypeScriptBinding.addin.xml" />
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hosting" />
-    <Folder Include="Scripts" />
-    <Folder Include="Templates" />
   </ItemGroup>
   <ItemGroup>
     <None Include="TypeScriptProjectOptionsPanel.xaml" />

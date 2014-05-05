@@ -1,5 +1,5 @@
 ﻿// 
-// IProjectExtensions.cs
+// ProjectExtensions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -69,6 +69,11 @@ namespace ICSharpCode.TypeScriptBinding
 		public static void SetProperty(this Project project, string name, string value)
 		{
 			SolutionItemConfiguration config = GetActiveConfiguration(project);
+			project.SetProperty(config, name, value);
+		}
+		
+		public static void SetProperty(this Project project, SolutionItemConfiguration config, string name, string value)
+		{
 			DataItem rawData = GetRawData(config);
 			rawData.Extract(name);
 			rawData.ItemData.Add(new DataValue(name, value));
