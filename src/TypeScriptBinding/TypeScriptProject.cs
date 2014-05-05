@@ -39,7 +39,7 @@ using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptProject
+	public class TypeScriptProject : ITypeScriptOptions
 	{
 		IProject project;
 		
@@ -201,7 +201,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public bool GetRemoveComments(BuildConfiguration buildConfig)
 		{
-			return GetBooleanProperty(buildConfig, RemoveCommentsPropertyName, false);
+			return GetBooleanProperty(buildConfig, RemoveCommentsPropertyName, true);
 		}
 		
 		public void SetRemoveComments(BuildConfiguration buildConfig, bool value)
@@ -215,7 +215,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public bool GetGenerateSourceMap(BuildConfiguration buildConfig)
 		{
-			return GetBooleanProperty(buildConfig, GenerateSourceMapPropertyName, false);
+			return GetBooleanProperty(buildConfig, GenerateSourceMapPropertyName, true);
 		}
 		
 		public void SetGenerateSourceMap(BuildConfiguration buildConfig, bool value)

@@ -36,12 +36,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptCompilerArguments
 	{
-		TypeScriptProject project;
+		ITypeScriptOptions options;
 		List<FilePath> fileNames = new List<FilePath>();
 		
-		public TypeScriptCompilerArguments(TypeScriptProject project)
+		public TypeScriptCompilerArguments(ITypeScriptOptions options)
 		{
-			this.project = project;
+			this.options = options;
 		}
 		
 		public string GetCommandLine()
@@ -74,22 +74,22 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		void AddCompilerArguments(List<string> args)
 		{
-			if (project.RemoveComments) {
+			if (options.RemoveComments) {
 				args.Add("--removeComments");
 			}
 			
-			if (project.GenerateSourceMap) {
+			if (options.GenerateSourceMap) {
 				args.Add("--sourcemap");
 			}
 			
-			if (!String.IsNullOrEmpty(project.ModuleKind) && (project.ModuleKind.ToLowerInvariant() != "none")) {
+			if (!String.IsNullOrEmpty(options.ModuleKind) && (options.ModuleKind.ToLowerInvariant() != "none")) {
 				args.Add("--module");
-				args.Add(project.ModuleKind);
+				args.Add(options.ModuleKind);
 			}
 			
-			if (!String.IsNullOrEmpty(project.EcmaScriptVersion)) {
+			if (!String.IsNullOrEmpty(options.EcmaScriptVersion)) {
 				args.Add("--target");
-				args.Add(project.EcmaScriptVersion);
+				args.Add(options.EcmaScriptVersion);
 			}
 		}
 		
