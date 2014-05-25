@@ -6,7 +6,7 @@
 	copyright="MIT"
 	url="https://github.com/mrward/typescript-addin"
 	description="Language binding for TypeScript"
-	category="IDE extensions"
+	category="Language bindings"
 	version="0.1">
 	
 	<Runtime>
