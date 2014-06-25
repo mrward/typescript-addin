@@ -38,7 +38,6 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public static class TypeScriptService
 	{
-		//static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
@@ -59,15 +58,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void OnIdeInitialized()
 		{
-			IdeApp.Exiting += OnIdeExiting;
 			workbenchMonitor = new TypeScriptWorkbenchMonitor(IdeApp.Workbench, contextProvider);
 			projectMonitor = new TypeScriptProjectMonitor(contextProvider);
-//			parserService.Start();
-		}
-		
-		static void OnIdeExiting(object sender, ExitEventArgs e)
-		{
-//			parserService.Stop();
 		}
 		
 		public static TypeScriptProject GetProjectForFile(FilePath fileName)

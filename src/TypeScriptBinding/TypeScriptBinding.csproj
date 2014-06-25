@@ -167,7 +167,6 @@
     <Compile Include="TypeScriptParameterDataProvider.cs" />
     <Compile Include="TypeScriptParsedDocument.cs" />
     <Compile Include="TypeScriptParser.cs" />
-    <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
     <Compile Include="TypeScriptProjectMonitor.cs" />
     <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
