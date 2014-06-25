@@ -97,15 +97,10 @@
 			supportedextensions=".ts"/>
 	</Extension>
 
-	<Extension path="/MonoDevelop/TypeSystem/FoldingParser">
+	<Extension path="/MonoDevelop/TypeSystem/Parser">
 		<Parser
-			class="ICSharpCode.TypeScriptBinding.TypeScriptFoldingParser"
-			mimeType="application/typescript" />
-	</Extension>
-	
-	<Extension path="/MonoDevelop/TypeSystem/FoldingParser">
-		<Parser
-			class="ICSharpCode.TypeScriptBinding.TypeScriptFoldingParser"
-			mimeType="text/typescript" />
+			id="TypeScriptParser"
+			class="ICSharpCode.TypeScriptBinding.TypeScriptParser"
+			mimeType="text/typescript, application/typescript"/>
 	</Extension>
 </Addin>

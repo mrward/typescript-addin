@@ -27,13 +27,16 @@
 //
 
 using System;
+using System.IO;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Core;
+using MonoDevelop.Ide.TypeSystem;
+using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptParser
+	public class TypeScriptParser : TypeSystemParser
 	{
 		ITypeScriptContextFactory contextFactory;
 		
@@ -73,28 +76,6 @@ namespace ICSharpCode.TypeScriptBinding
 			return new TypeScriptParsedDocument(fileName);
 		}
 		
-//		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
-//		{
-//			try {
-//				using (TypeScriptContext context = contextFactory.CreateContext()) {
-//					var file = new FileName(fileName);
-//					context.AddFile(file, fileContent.Text);
-//					context.RunInitialisationScript();
-//					
-//					NavigateToItem[] navigation = context.GetLexicalStructure(file);
-//					var unit = new TypeScriptCompilationUnit(projectContent) {
-//						FileName = fileName
-//					};
-//					unit.AddNavigation(navigation, fileContent);
-//					return unit;
-//				}
-//			} catch (Exception ex) {
-//				Console.WriteLine(ex.ToString());
-//				LoggingService.Debug(ex.ToString());
-//			}
-//			return new DefaultCompilationUnit(projectContent);
-//		}
-		
 		public static bool IsTypeScriptFileName(FilePath fileName)
 		{
 			return String.Equals(".ts", fileName.Extension, StringComparison.OrdinalIgnoreCase);
@@ -103,6 +84,11 @@ namespace ICSharpCode.TypeScriptBinding
 		public static bool IsTypeScriptFileName(string fileName)
 		{
 			return IsTypeScriptFileName(new FilePath(fileName));
+		}
+		
+		public override ParsedDocument Parse(bool storeAst, string fileName, TextReader content, Project project)
+		{
+			return Parse(fileName, content.ReadToEnd());
 		}
 	}
 }

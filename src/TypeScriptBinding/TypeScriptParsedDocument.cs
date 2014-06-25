@@ -39,6 +39,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public TypeScriptParsedDocument(string fileName)
 			: base(fileName)
 		{
+			Flags = ParsedDocumentFlags.NonSerializable;
 		}
 		
 		public void AddNavigation(NavigateToItem[] navigation, IDocument document)

@@ -39,7 +39,6 @@ namespace ICSharpCode.TypeScriptBinding
 	public static class TypeScriptService
 	{
 		//static readonly TypeScriptParserService parserService = new TypeScriptParserService();
-		static readonly TypeScriptParser parser = new TypeScriptParser();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
@@ -93,10 +92,6 @@ namespace ICSharpCode.TypeScriptBinding
 				return activeConfiguration;
 			}
 			set { activeConfiguration = value; }
-		}
-		
-		public static TypeScriptParser Parser {
-			get { return parser; }
 		}
 	}
 }
