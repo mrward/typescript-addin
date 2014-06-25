@@ -69,6 +69,7 @@
     <Compile Include="Hosting\TestableProject.cs" />
     <Compile Include="Hosting\TestTypeScriptOptions.cs" />
     <Compile Include="Hosting\TypeScriptCompilerArgumentsTests.cs" />
+    <Compile Include="Parsing\FakeTypeScriptContextFactory.cs" />
     <Compile Include="Parsing\ParseClassTests.cs" />
     <Compile Include="Parsing\ParseTests.cs" />
     <Compile Include="Parsing\ParseTestScriptLoader.cs" />

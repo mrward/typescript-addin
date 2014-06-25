@@ -27,14 +27,20 @@
 //
 
 using System;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptParser// : IParser
+	public class TypeScriptParser
 	{
 		ITypeScriptContextFactory contextFactory;
+		
+		public TypeScriptParser()
+			: this(new LanguageServiceNullLogger())
+		{
+		}
 		
 		public TypeScriptParser(ILogger logger)
 			: this(new TypeScriptContextFactory(new ScriptLoader(), logger))
@@ -46,27 +52,27 @@ namespace ICSharpCode.TypeScriptBinding
 			this.contextFactory = contextFactory;
 		}
 		
-//		public string[] LexerTags { get; set; }
-//		
-//		public LanguageProperties Language {
-//			get { return LanguageProperties.None; }
-//		}
-//		
-//		public IExpressionFinder CreateExpressionFinder(string fileName)
-//		{
-//			return null;
-//		}
-//		
-//		public bool CanParse(string fileName)
-//		{
-//			return true;
-//		}
-//		
-//		public bool CanParse(IProject project)
-//		{
-//			return true;
-//		}
-//		
+		public TypeScriptParsedDocument Parse(string fileName, string content)
+		{
+			try {
+				using (TypeScriptContext context = contextFactory.CreateContext()) {
+					var file = new FilePath(fileName);
+					context.AddFile(file, content);
+					context.RunInitialisationScript();
+					
+					NavigateToItem[] navigation = context.GetLexicalStructure(file);
+					var document = new ReadOnlyDocument(content);
+					var parsedDocument = new TypeScriptParsedDocument(fileName);
+					parsedDocument.AddNavigation(navigation, document);
+					return parsedDocument;
+				}
+			} catch (Exception ex) {
+				Console.WriteLine(ex.ToString());
+				LoggingService.LogDebug(ex.ToString());
+			}
+			return new TypeScriptParsedDocument(fileName);
+		}
+		
 //		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
 //		{
 //			try {
@@ -87,11 +93,6 @@ namespace ICSharpCode.TypeScriptBinding
 //				LoggingService.Debug(ex.ToString());
 //			}
 //			return new DefaultCompilationUnit(projectContent);
-//		}
-//		
-//		public IResolver CreateResolver()
-//		{
-//			return null;
 //		}
 		
 		public static bool IsTypeScriptFileName(FilePath fileName)

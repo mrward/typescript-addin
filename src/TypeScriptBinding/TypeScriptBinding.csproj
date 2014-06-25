@@ -162,9 +162,11 @@
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptCompilationUnit.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
+    <Compile Include="TypeScriptFoldingParser.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />
     <Compile Include="TypeScriptParameterDataProvider.cs" />
+    <Compile Include="TypeScriptParsedDocument.cs" />
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
