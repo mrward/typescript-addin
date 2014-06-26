@@ -28,6 +28,8 @@
 
 using System;
 using System.IO;
+using System.Linq;
+
 using MonoDevelop.Core;
 using Noesis.Javascript;
 using TypeScriptHosting;
@@ -65,6 +67,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			if (runInitialization) {
 				runInitialization = false;
 				context.Run(scriptLoader.GetMainScript());
+			}
+		}
+		
+		public void GetCompletionItemsForTheFirstTime()
+		{
+			// HACK - run completion on first file so the user does not have to wait about 
+			// 1-2 seconds for the completion list to appear the first time it is triggered.
+			string fileName = host.GetFileNames().FirstOrDefault();
+			if (fileName != null) {
+				GetCompletionItems(fileName, 1, null, false);
 			}
 		}
 		
