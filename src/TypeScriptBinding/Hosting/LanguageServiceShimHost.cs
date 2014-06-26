@@ -212,6 +212,11 @@ namespace TypeScriptHosting
 			scripts.Remove(fileName.ToLower());
 		}
 		
+		internal IEnumerable<string> GetFileNames()
+		{
+			return scripts.Keys.AsEnumerable();
+		}
+		
 		public IScriptSnapshotShim getScriptSnapshot(string fileName)
 		{
 			log("Host.getScriptSnapshot: " + fileName);
