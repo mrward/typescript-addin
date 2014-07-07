@@ -1,10 +1,10 @@
 ﻿// 
-// LanguageServiceLogger.cs
+// EmitOutputResult.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,40 +27,14 @@
 //
 
 using System;
-using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServiceLogger : ILogger
+	public enum EmitOutputResult
 	{
-		public bool information()
-		{
-			return true;
-		}
-		
-		public bool debug()
-		{
-			return true;
-		}
-		
-		public bool warning()
-		{
-			return true;
-		}
-		
-		public bool error()
-		{
-			return true;
-		}
-		
-		public bool fatal()
-		{
-			return true;
-		}
-		
-		public void log(string s)
-		{
-			LoggingService.Debug(s);
-		}
+		Succeeded,
+		FailedBecauseOfSyntaxErrors,
+		FailedBecauseOfCompilerOptionsErrors,
+		FailedToGenerateDeclarationsBecauseOfSemanticErrors
 	}
 }

@@ -42,6 +42,7 @@ namespace TypeScriptHosting
 		Dictionary<string, Script> scripts = new Dictionary<string, Script>();
 		ILogger logger;
 		FileName defaultLibScriptFileName;
+		CompilerSettings compilerSettings = new CompilerSettings();
 		
 		public LanguageServiceShimHost(ILogger logger)
 		{
@@ -193,7 +194,12 @@ namespace TypeScriptHosting
 		public string getCompilationSettings()
 		{
 			LogDebug("Host.getCompilationSettings");
-			return null;
+			return JsonConvert.SerializeObject(compilerSettings);
+		}
+		
+		internal void UpdateCompilerSettings(ITypeScriptOptions options)
+		{
+			compilerSettings = new CompilerSettings(options);
 		}
 		
 		public int getScriptVersion(string fileName)
@@ -289,5 +295,19 @@ namespace TypeScriptHosting
 			log("Host.getLocalizedDiagnosticMessages");
 			return null;
 		}
+		
+		public string ResolvePath(string path)
+		{
+			log("ResolvePath: '" + path + "'");
+			return path;
+		}
+		
+		public void updateCompilerResult(string result)
+		{
+			log(result);
+			CompilerResult = JsonConvert.DeserializeObject<CompilerResult>(result);
+		}
+		
+		internal CompilerResult CompilerResult { get; private set; }
 	}
 }

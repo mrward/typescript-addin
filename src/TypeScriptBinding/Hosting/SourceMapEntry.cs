@@ -1,10 +1,10 @@
 ﻿// 
-// LanguageServiceLogger.cs
+// SourceMapEntry.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,40 +27,17 @@
 //
 
 using System;
-using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServiceLogger : ILogger
+	public class SourceMapEntry
 	{
-		public bool information()
-		{
-			return true;
-		}
-		
-		public bool debug()
-		{
-			return true;
-		}
-		
-		public bool warning()
-		{
-			return true;
-		}
-		
-		public bool error()
-		{
-			return true;
-		}
-		
-		public bool fatal()
-		{
-			return true;
-		}
-		
-		public void log(string s)
-		{
-			LoggingService.Debug(s);
-		}
+		public string emittedFile { get; set; }
+		public int emittedLine { get; set; }
+		public int emittedColumn { get; set; }
+		public string sourceFile { get; set; }
+		public int sourceLine { get; set; }
+		public int sourceColumn { get; set; }
+		public string sourceName { get; set; }
 	}
 }

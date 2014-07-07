@@ -1,10 +1,10 @@
 ﻿// 
-// LanguageServiceLogger.cs
+// OutputFile.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -25,42 +25,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 using System;
-using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServiceLogger : ILogger
+	public class OutputFile
 	{
-		public bool information()
+		public OutputFile()
 		{
-			return true;
+			sourceMapEntries = new SourceMapEntry[0];
 		}
 		
-		public bool debug()
-		{
-			return true;
-		}
-		
-		public bool warning()
-		{
-			return true;
-		}
-		
-		public bool error()
-		{
-			return true;
-		}
-		
-		public bool fatal()
-		{
-			return true;
-		}
-		
-		public void log(string s)
-		{
-			LoggingService.Debug(s);
-		}
+		public string name { get; set; }
+		public bool writeByteOrderMark { get; set; }
+		public string text { get; set; }
+		public OutputFileType fileType { get; set; }
+		public SourceMapEntry[] sourceMapEntries;
 	}
 }

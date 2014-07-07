@@ -27,6 +27,7 @@
 //
 
 using System;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -36,5 +37,8 @@ namespace ICSharpCode.TypeScriptBinding
 		bool GenerateSourceMap { get; }
 		string ModuleKind { get; }
 		string EcmaScriptVersion { get; }
+		
+		LanguageVersion GetLanguageVersion();
+		ModuleGenTarget GetModulearget();
 	}
 }

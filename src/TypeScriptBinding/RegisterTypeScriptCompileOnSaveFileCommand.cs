@@ -30,6 +30,7 @@ using System;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Project;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -55,7 +56,8 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			if (project.CompileOnSave) {
 				var action = new CompileTypeScriptOnSaveFileAction();
-				action.Compile(e.FileName, project);
+				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(e.FileName);
+				action.Compile(e.FileName, project, context);
 			}
 		}
 	}

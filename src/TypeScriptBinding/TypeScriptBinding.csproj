@@ -106,11 +106,15 @@
     <Compile Include="GoToTypeScriptDefinitionCommand.cs" />
     <Compile Include="Hosting\ActualSignatureInfo.cs" />
     <Compile Include="Hosting\ByteOrderMark.cs" />
+    <Compile Include="Hosting\CompilerResult.cs" />
+    <Compile Include="Hosting\CompilerSettings.cs" />
     <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
     <Compile Include="Hosting\CompletionEntryDetails.cs" />
     <Compile Include="Hosting\CompletionEntryDetailsResult.cs" />
     <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\DefinitionResult.cs" />
+    <Compile Include="Hosting\EmitOutput.cs" />
+    <Compile Include="Hosting\EmitOutputResult.cs" />
     <Compile Include="Hosting\FileInformation.cs" />
     <Compile Include="Hosting\FormalParameterInfo.cs" />
     <Compile Include="Hosting\FormalSignatureItemInfo.cs" />
@@ -123,15 +127,22 @@
     <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
     <Compile Include="Hosting\LanguageServiceNullLogger.cs" />
     <Compile Include="Hosting\LanguageServiceLogger.cs" />
+    <Compile Include="Hosting\LanguageServicesCompiler.cs" />
+    <Compile Include="Hosting\LanguageServicesCompilerResult.cs" />
     <Compile Include="Hosting\LanguageServicesDiagnostics.cs" />
+    <Compile Include="Hosting\LanguageVersion.cs" />
+    <Compile Include="Hosting\ModuleGenTarget.cs" />
     <Compile Include="Hosting\NavigateToItem.cs" />
     <Compile Include="Hosting\NavigationInfo.cs" />
+    <Compile Include="Hosting\OutputFile.cs" />
+    <Compile Include="Hosting\OutputFileType.cs" />
     <Compile Include="Hosting\ReferenceEntry.cs" />
     <Compile Include="Hosting\ReferencesResult.cs" />
     <Compile Include="Hosting\ScriptsContainer.cs" />
     <Compile Include="Hosting\ScriptSnapshotShim.cs" />
     <Compile Include="Hosting\SignatureInfo.cs" />
     <Compile Include="Hosting\SignatureResult.cs" />
+    <Compile Include="Hosting\SourceMapEntry.cs" />
     <Compile Include="Hosting\SpanInfo.cs" />
     <Compile Include="Hosting\StandardOutputTextWriter.cs" />
     <Compile Include="Hosting\TextFileWriter.cs" />
@@ -200,6 +211,9 @@
     </None>
     <None Include="..\..\lib\Noesis.Javascript\x86\msvcr100.dll">
       <Link>msvcr100.dll</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\compile.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\completion.js">

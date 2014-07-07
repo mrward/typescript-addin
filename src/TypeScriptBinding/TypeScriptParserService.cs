@@ -58,7 +58,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void TimerTick(object sender, EventArgs e)
 		{
-			Run();
+			//Run();
 		}
 		
 		void Run()

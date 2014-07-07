@@ -1,10 +1,10 @@
 ﻿// 
-// LanguageServiceLogger.cs
+// LanguageServicesCompiler.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,40 +27,41 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+
 using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServiceLogger : ILogger
+	public class LanguageServicesCompiler
 	{
-		public bool information()
+		TypeScriptContext context;
+		
+		public LanguageServicesCompiler(TypeScriptContext context)
 		{
-			return true;
+			this.context = context;
 		}
 		
-		public bool debug()
+		public LanguageServicesCompilerResult Compile(FileName fileName, ITypeScriptOptions options)
 		{
-			return true;
+			try {
+				EmitOutput result = context.Compile(fileName, options);
+				var compilerResult = new LanguageServicesCompilerResult(result, fileName);
+				if (compilerResult.HasOutputFiles()) {
+					WriteOutputFiles(result.outputFiles);
+				}
+				return compilerResult;
+			} catch (Exception ex) {
+				return new LanguageServicesCompilerResult(ex);
+			}
 		}
 		
-		public bool warning()
+		void WriteOutputFiles(OutputFile[] outputFiles)
 		{
-			return true;
-		}
-		
-		public bool error()
-		{
-			return true;
-		}
-		
-		public bool fatal()
-		{
-			return true;
-		}
-		
-		public void log(string s)
-		{
-			LoggingService.Debug(s);
+			foreach (OutputFile outputFile in outputFiles) {
+				File.WriteAllText(outputFile.name, outputFile.text);
+			}
 		}
 	}
 }
