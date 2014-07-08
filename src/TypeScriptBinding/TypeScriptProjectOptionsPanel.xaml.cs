@@ -73,8 +73,6 @@ namespace ICSharpCode.TypeScriptBinding
 			set {
 				UpdateDirtyFlag(compileOnSave, value);
 				compileOnSave = value;
-				compileOnBuild = !compileOnSave;
-				RaisePropertyChanged(() => CompileOnBuild);
 				RaisePropertyChanged(() => CompileOnSave);
 			}
 		}
@@ -84,8 +82,6 @@ namespace ICSharpCode.TypeScriptBinding
 			set {
 				UpdateDirtyFlag(compileOnBuild, value);
 				compileOnBuild = value;
-				compileOnSave = !compileOnBuild;
-				RaisePropertyChanged(() => CompileOnSave);
 				RaisePropertyChanged(() => CompileOnBuild);
 			}
 		}
