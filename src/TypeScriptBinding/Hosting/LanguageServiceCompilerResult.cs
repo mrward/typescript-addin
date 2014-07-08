@@ -1,5 +1,5 @@
 ﻿// 
-// LanguageServicesCompilerResult.cs
+// LanguageServiceCompilerResult.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -34,19 +34,19 @@ using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServicesCompilerResult
+	public class LanguageServiceCompilerResult
 	{
 		EmitOutput emitOutput;
 		FileName inputFileName;
 		string errorMessage;
 		
-		public LanguageServicesCompilerResult(Exception ex)
+		public LanguageServiceCompilerResult(Exception ex)
 		{
 			HasErrors = true;
 			errorMessage = ex.Message;
 		}
 		
-		public LanguageServicesCompilerResult(EmitOutput emitOutput, FileName inputFileName)
+		public LanguageServiceCompilerResult(EmitOutput emitOutput, FileName inputFileName)
 		{
 			this.emitOutput = emitOutput;
 			this.inputFileName = inputFileName;

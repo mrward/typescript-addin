@@ -40,8 +40,8 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			ReportCompileStarting(fileName);
 			
-			var compiler = new LanguageServicesCompiler(context);
-			LanguageServicesCompilerResult result = compiler.Compile(fileName, project);
+			var compiler = new LanguageServiceCompiler(context);
+			LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
 			
 			UpdateProject(project, result.GetGeneratedFiles());
 			

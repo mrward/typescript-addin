@@ -1,5 +1,5 @@
 ﻿// 
-// LanguageServicesCompiler.cs
+// LanguageServiceCompiler.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -34,26 +34,26 @@ using ICSharpCode.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServicesCompiler
+	public class LanguageServiceCompiler
 	{
 		TypeScriptContext context;
 		
-		public LanguageServicesCompiler(TypeScriptContext context)
+		public LanguageServiceCompiler(TypeScriptContext context)
 		{
 			this.context = context;
 		}
 		
-		public LanguageServicesCompilerResult Compile(FileName fileName, ITypeScriptOptions options)
+		public LanguageServiceCompilerResult Compile(FileName fileName, ITypeScriptOptions options)
 		{
 			try {
 				EmitOutput result = context.Compile(fileName, options);
-				var compilerResult = new LanguageServicesCompilerResult(result, fileName);
+				var compilerResult = new LanguageServiceCompilerResult(result, fileName);
 				if (compilerResult.HasOutputFiles()) {
 					WriteOutputFiles(result.outputFiles);
 				}
 				return compilerResult;
 			} catch (Exception ex) {
-				return new LanguageServicesCompilerResult(ex);
+				return new LanguageServiceCompilerResult(ex);
 			}
 		}
 		

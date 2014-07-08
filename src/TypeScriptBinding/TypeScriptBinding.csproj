@@ -127,8 +127,8 @@
     <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
     <Compile Include="Hosting\LanguageServiceNullLogger.cs" />
     <Compile Include="Hosting\LanguageServiceLogger.cs" />
-    <Compile Include="Hosting\LanguageServicesCompiler.cs" />
-    <Compile Include="Hosting\LanguageServicesCompilerResult.cs" />
+    <Compile Include="Hosting\LanguageServiceCompiler.cs" />
+    <Compile Include="Hosting\LanguageServiceCompilerResult.cs" />
     <Compile Include="Hosting\LanguageServicesDiagnostics.cs" />
     <Compile Include="Hosting\LanguageVersion.cs" />
     <Compile Include="Hosting\ModuleGenTarget.cs" />
