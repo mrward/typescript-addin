@@ -1,63 +1,73 @@
-﻿//// 
-//// RegisterTypeScriptCompileOnSaveFileCommand.cs
-//// 
-//// Author:
-////   Matt Ward <ward.matt@gmail.com>
-//// 
-//// Copyright (C) 2013 Matthew Ward
-//// 
-//// Permission is hereby granted, free of charge, to any person obtaining
-//// a copy of this software and associated documentation files (the
-//// "Software"), to deal in the Software without restriction, including
-//// without limitation the rights to use, copy, modify, merge, publish,
-//// distribute, sublicense, and/or sell copies of the Software, and to
-//// permit persons to whom the Software is furnished to do so, subject to
-//// the following conditions:
-//// 
-//// The above copyright notice and this permission notice shall be
-//// included in all copies or substantial portions of the Software.
-//// 
-//// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-//// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-//// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-//// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-//// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-//// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-//// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-////
+﻿// 
+// RegisterTypeScriptCompileOnSaveFileStartupHandler.cs
+// 
+// Author:
+//   Matt Ward <ward.matt@gmail.com>
+// 
+// Copyright (C) 2014 Matthew Ward
+// 
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-//using System;
-//using MonoDevelop.Components.Commands;
-//using MonoDevelop.Ide;
-//
-//namespace ICSharpCode.TypeScriptBinding
-//{
-//	public class RegisterTypeScriptCompileOnSaveFileStartupHandler : CommandHandler
-//	{
-//		TypeScriptOptions options;
-//		
-//		public RegisterTypeScriptCompileOnSaveFileStartupHandler()
-//			: this(TypeScriptService.Options)
-//		{
-//		}
-//		
-//		public RegisterTypeScriptCompileOnSaveFileStartupHandler(TypeScriptOptions options)
-//		{
-//			this.options = options;
-//		}
-//		
-//		protected override void Run()
-//		{
-//			IdeApp.Workspa
-//			FileUtility.FileSaved += FileSaved;
-//		}
-//
-//		void FileSaved(object sender, FileNameEventArgs e)
-//		{
-//			if (options.CompileOnSave && TypeScriptFileExtensions.IsTypeScriptFileName(e.FileName)) {
-//				var action = new CompileTypeScriptOnSaveFileAction();
-//				action.Compile(e.FileName);
-//			}
-//		}
-//	}
-//}
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using ICSharpCode.TypeScriptBinding.Hosting;
+using MonoDevelop.Components.Commands;
+using MonoDevelop.Core;
+using MonoDevelop.Ide;
+
+namespace ICSharpCode.TypeScriptBinding
+{
+	public class RegisterTypeScriptCompileOnSaveFileStartupHandler : CommandHandler
+	{
+		protected override void Run()
+		{
+			FileService.FileChanged += FileChanged;
+		}
+		
+		void FileChanged(object sender, FileEventArgs e)
+		{
+			List<FilePath> files = GetTypeScriptFileNames(e);
+			if (!files.Any())
+				return;
+
+			foreach (FilePath file in files) {
+				TypeScriptProject project = TypeScriptService.GetProjectForFile(file);
+				if (project == null)
+					return;
+	
+				if (project.CompileOnSave) {
+					var action = new CompileTypeScriptOnSaveFileAction();
+					TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(file);
+					action.Compile(file, project, context);
+				}
+			}
+		}
+		
+		List<FilePath> GetTypeScriptFileNames(FileEventArgs eventArgs)
+		{
+			return eventArgs.Where(info => TypeScriptFileExtensions.IsTypeScriptFileName(info.FileName))
+				.Select(info => info.FileName)
+				.ToList();
+		}
+	}
+}

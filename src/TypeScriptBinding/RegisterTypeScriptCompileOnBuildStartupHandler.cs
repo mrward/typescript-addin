@@ -39,7 +39,6 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 		}
 		
-		
 		protected override void Run()
 		{
 			IdeApp.ProjectOperations.StartBuild += BuildStarted;

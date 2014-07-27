@@ -46,7 +46,6 @@ namespace ICSharpCode.TypeScriptBinding
 		Project project;
 		bool dirty;
 		DotNetProjectConfiguration configuration;
-		bool updating;
 		
 		public TypeScriptProjectOptionsPanelWidget (Project project)
 		{
@@ -142,24 +141,16 @@ namespace ICSharpCode.TypeScriptBinding
 		public bool CompileOnSave {
 			get { return compileOnSave; }
 			set {
-				if (updating)
-					return;
-				
 				UpdateDirtyFlag(compileOnSave, value);
 				compileOnSave = value;
-				compileOnBuild = !compileOnSave;
 			}
 		}
 		
 		public bool CompileOnBuild {
 			get { return compileOnBuild; }
 			set {
-				if (updating)
-					return;
-				
 				UpdateDirtyFlag(compileOnBuild, value);
 				compileOnBuild = value;
-				compileOnSave = !compileOnBuild;
 			}
 		}
 		
@@ -237,19 +228,11 @@ namespace ICSharpCode.TypeScriptBinding
 		void CompileOnSaveCheckButtonClicked(object sender, EventArgs e)
 		{
 			CompileOnSave = !CompileOnSave;
-			
-			updating = true;
-			compileOnBuildCheckButton.Active = compileOnBuild;
-			updating = false;
 		}
 		
 		void CompileOnBuildCheckButtonClicked(object sender, EventArgs e)
 		{
 			CompileOnBuild = !CompileOnBuild;
-			
-			updating = true;
-			compileOnSaveCheckButton.Active = compileOnSave;
-			updating = false;
 		}
 		
 		void ModuleComboBoxChanged(object sender, EventArgs e)

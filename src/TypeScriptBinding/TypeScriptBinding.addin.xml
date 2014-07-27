@@ -30,7 +30,7 @@
 	<Extension path="/MonoDevelop/Ide/StartupHandlers">
 		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
 		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
-		<!--<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileStartupHandler"/>-->
+		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileStartupHandler"/>
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/FileTemplates">
