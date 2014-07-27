@@ -1,10 +1,10 @@
 ﻿// 
-// CompletionEntryDetailsProvider.cs
+// ModuleGenTarget.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,26 +27,13 @@
 //
 
 using System;
-using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompletionEntryDetailsProvider
+	public enum ModuleGenTarget
 	{
-		TypeScriptContext context;
-		FilePath fileName;
-		int offset;
-		
-		public CompletionEntryDetailsProvider(TypeScriptContext context, FilePath fileName, int offset)
-		{
-			this.context = context;
-			this.fileName = fileName;
-			this.offset = offset;
-		}
-		
-		public CompletionEntryDetails GetCompletionEntryDetails(string entryName)
-		{
-			return context.GetCompletionEntryDetails(fileName, offset, entryName);
-		}
+		Unspecified = 0,
+		Synchronous = 1,
+		Asynchronous = 2,
 	}
 }

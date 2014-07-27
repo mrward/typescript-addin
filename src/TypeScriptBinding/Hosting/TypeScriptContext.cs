@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -148,6 +149,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public void RemoveFile(FilePath fileName)
 		{
 			host.RemoveFile(fileName);
+		}
+		
+		public EmitOutput Compile(FilePath fileName, ITypeScriptOptions options)
+		{
+			host.UpdateCompilerSettings(options);
+			host.UpdateFileName(fileName);
+			context.Run(scriptLoader.GetLanguageServicesCompileScript());
+			
+			return host.CompilerResult.result;
 		}
 	}
 }

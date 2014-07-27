@@ -78,5 +78,10 @@ namespace TypeScriptBinding.Tests.Parsing
 		{
 			throw new NotImplementedException();
 		}
+		
+		public string GetLanguageServicesCompileScript()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

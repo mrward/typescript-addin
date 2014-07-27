@@ -1,10 +1,10 @@
 ﻿// 
-// CompletionEntryDetailsProvider.cs
+// OutputFile.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -25,28 +25,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 using System;
-using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompletionEntryDetailsProvider
+	public class OutputFile
 	{
-		TypeScriptContext context;
-		FilePath fileName;
-		int offset;
-		
-		public CompletionEntryDetailsProvider(TypeScriptContext context, FilePath fileName, int offset)
+		public OutputFile()
 		{
-			this.context = context;
-			this.fileName = fileName;
-			this.offset = offset;
+			sourceMapEntries = new SourceMapEntry[0];
 		}
 		
-		public CompletionEntryDetails GetCompletionEntryDetails(string entryName)
-		{
-			return context.GetCompletionEntryDetails(fileName, offset, entryName);
-		}
+		public string name { get; set; }
+		public bool writeByteOrderMark { get; set; }
+		public string text { get; set; }
+		public OutputFileType fileType { get; set; }
+		public SourceMapEntry[] sourceMapEntries;
 	}
 }

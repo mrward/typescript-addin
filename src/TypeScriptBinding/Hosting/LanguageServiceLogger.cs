@@ -27,6 +27,7 @@
 //
 
 using System;
+using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -59,7 +60,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public void log(string s)
 		{
-			Console.WriteLine(s);
+			LoggingService.LogDebug(s);
 		}
 	}
 }

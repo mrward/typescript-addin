@@ -62,15 +62,21 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			ReportCompileStarting(project);
 			
-			var compiler = new TypeScriptCompiler(project);
-			compiler.AddFiles(fileNames);
+			bool errors = false;
+			TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileNames.First());
+			var compiler = new LanguageServiceCompiler(context);
 			
-			Report(compiler.GetCommandLine());
-			
-			TypeScriptCompilerResult result = compiler.Compile();
-			UpdateProject(project, result.GeneratedFiles);
-			
-			ReportCompileFinished(result.HasErrors);
+			foreach (FilePath fileName in fileNames) {
+				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
+				
+				UpdateProject(project, result.GetGeneratedFiles());
+				
+				if (result.HasErrors) {
+					errors = true;
+					Report(result.GetError());
+				}
+			}
+			ReportCompileFinished(errors);
 		}
 		
 		void ReportCompileStarting(TypeScriptProject project)

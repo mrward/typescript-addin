@@ -238,5 +238,23 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			SetStringProperty(config, ModuleKindPropertyName, value);
 		}
+		
+		public LanguageVersion GetLanguageVersion()
+		{
+			if (EcmaScriptVersion == "ES3") {
+				return LanguageVersion.EcmaScript3;
+			}
+			return LanguageVersion.EcmaScript5;
+		}
+		
+		public ModuleGenTarget GetModulearget()
+		{
+			if (String.Equals(ModuleKind, "amd", StringComparison.OrdinalIgnoreCase)) {
+				return ModuleGenTarget.Asynchronous;
+			} else if (String.Equals(ModuleKind, "commonjs", StringComparison.OrdinalIgnoreCase)) {
+				return ModuleGenTarget.Synchronous;
+			}
+			return ModuleGenTarget.Unspecified;
+		}
 	}
 }

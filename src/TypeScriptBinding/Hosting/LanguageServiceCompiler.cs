@@ -1,10 +1,10 @@
 ﻿// 
-// CompletionEntryDetailsProvider.cs
+// LanguageServiceCompiler.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,26 +27,41 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+
 using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompletionEntryDetailsProvider
+	public class LanguageServiceCompiler
 	{
 		TypeScriptContext context;
-		FilePath fileName;
-		int offset;
 		
-		public CompletionEntryDetailsProvider(TypeScriptContext context, FilePath fileName, int offset)
+		public LanguageServiceCompiler(TypeScriptContext context)
 		{
 			this.context = context;
-			this.fileName = fileName;
-			this.offset = offset;
 		}
 		
-		public CompletionEntryDetails GetCompletionEntryDetails(string entryName)
+		public LanguageServiceCompilerResult Compile(FilePath fileName, ITypeScriptOptions options)
 		{
-			return context.GetCompletionEntryDetails(fileName, offset, entryName);
+			try {
+				EmitOutput result = context.Compile(fileName, options);
+				var compilerResult = new LanguageServiceCompilerResult(result, fileName);
+				if (compilerResult.HasOutputFiles()) {
+					WriteOutputFiles(result.outputFiles);
+				}
+				return compilerResult;
+			} catch (Exception ex) {
+				return new LanguageServiceCompilerResult(ex);
+			}
+		}
+		
+		void WriteOutputFiles(OutputFile[] outputFiles)
+		{
+			foreach (OutputFile outputFile in outputFiles) {
+				File.WriteAllText(outputFile.name, outputFile.text);
+			}
 		}
 	}
 }
