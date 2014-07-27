@@ -1,0 +1,7 @@
+<AddinProject appVersion="5.0">
+  <Project platforms="Win32">
+    <AddinFile>src/TypeScriptBinding/bin/Debug/TypeScriptBinding.dll</AddinFile>
+    <BuildFile>src/TypeScriptBinding.sln</BuildFile>
+    <BuildConfiguration>Debug</BuildConfiguration>
+  </Project>
+</AddinProject>
