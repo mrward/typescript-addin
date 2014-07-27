@@ -247,7 +247,7 @@ namespace ICSharpCode.TypeScriptBinding
 			return LanguageVersion.EcmaScript5;
 		}
 		
-		public ModuleGenTarget GetModulearget()
+		public ModuleGenTarget GetModuleTarget()
 		{
 			if (String.Equals(ModuleKind, "amd", StringComparison.OrdinalIgnoreCase)) {
 				return ModuleGenTarget.Asynchronous;
