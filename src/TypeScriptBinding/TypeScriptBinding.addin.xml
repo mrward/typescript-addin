@@ -1,12 +1,12 @@
 ﻿<Addin
-	name="TypeScript Binding"
+	name="TypeScript"
 	id="TypeScript"
 	namespace="MonoDevelop"
 	author="Matt Ward"
 	copyright="MIT"
 	url="https://github.com/mrward/typescript-addin"
-	description="Language binding for TypeScript"
-	category="Language bindings"
+	description="Adds TypeScript support."
+	category="Web Development"
 	version="0.1">
 	
 	<Runtime>
@@ -18,6 +18,19 @@
 		<Import file="Noesis.Javascript.dll"/>
 		
 		<Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
+		
+		<Import file="Scripts/compile.js"/>
+		<Import file="Scripts/completion.js"/>
+		<Import file="Scripts/completionDetails.js"/>
+		<Import file="Scripts/definition.js"/>
+		<Import file="Scripts/lib.d.ts"/>
+		<Import file="Scripts/main.js"/>
+		<Import file="Scripts/navigation.js"/>
+		<Import file="Scripts/references.js"/>
+		<Import file="Scripts/signature.js"/>
+		<Import file="Scripts/tsc.js"/>
+		<Import file="Scripts/TypeScript-License.txt"/>
+		<Import file="Scripts/typescriptServices.js"/>
 	</Runtime>
 	
 	<Dependencies>
