@@ -182,10 +182,6 @@
     <Compile Include="TypeScriptProjectMonitor.cs" />
     <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
     <Compile Include="TypeScriptProjectOptionsPanel.cs" />
-    <Compile Include="TypeScriptProjectOptionsPanel.xaml.cs">
-      <DependentUpon>TypeScriptProjectOptionsPanel.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
@@ -245,9 +241,6 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TypeScriptProjectOptionsPanel.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
