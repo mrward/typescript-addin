@@ -27,8 +27,10 @@
 //
 
 using System;
+using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -61,6 +63,12 @@ namespace ICSharpCode.TypeScriptBinding
 			} else {
 				Report("TypeScript compilation finished successfully.");
 			}
+		}
+		
+		protected void UpdateFile(TypeScriptContext context, FileName fileName)
+		{
+			ITextBuffer fileContent = ParserService.GetParseableFileContent(fileName);
+			context.UpdateFile(fileName, fileContent.Text);
 		}
 	}
 }
