@@ -17,7 +17,7 @@ namespace TypeScriptBinding.Tests.Hosting
 			throw new NotImplementedException();
 		}
 		
-		public ModuleGenTarget GetModulearget()
+		public ModuleGenTarget GetModuleTarget()
 		{
 			throw new NotImplementedException();
 		}

@@ -38,7 +38,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			removeComments = options.RemoveComments;
 			mapSourceFiles = options.GenerateSourceMap;
 			codeGenTarget = options.GetLanguageVersion();
-			moduleGenTarget = options.GetModulearget();
+			moduleGenTarget = options.GetModuleTarget();
 		}
 		
 		public CompilerSettings()

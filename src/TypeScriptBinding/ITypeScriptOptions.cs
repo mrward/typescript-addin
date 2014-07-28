@@ -39,6 +39,6 @@ namespace ICSharpCode.TypeScriptBinding
 		string EcmaScriptVersion { get; }
 		
 		LanguageVersion GetLanguageVersion();
-		ModuleGenTarget GetModulearget();
+		ModuleGenTarget GetModuleTarget();
 	}
 }
