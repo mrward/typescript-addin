@@ -100,16 +100,17 @@ namespace ICSharpCode.TypeScriptBinding
 		Task CreateParseTypeScriptFileTask(CodeEditor editor)
 		{
 			ITextBuffer fileContent = editor.DocumentAdapter.CreateSnapshot();
+			TypeScriptProject project = TypeScriptService.GetProjectForFile(editor.FileName);
 			return Task
 				.Factory
-				.StartNew(() => ParseTypeScriptFile(editor.FileName, fileContent))
+				.StartNew(() => ParseTypeScriptFile(editor.FileName, fileContent, project))
 				.ContinueWith(task => UpdateParseInformation(task.Result), TaskScheduler.FromCurrentSynchronizationContext());
 		}
 		
-		ParseInformation ParseTypeScriptFile(string fileName, ITextBuffer fileContent)
+		ParseInformation ParseTypeScriptFile(string fileName, ITextBuffer fileContent, TypeScriptProject project)
 		{
 			var parser = new TypeScriptParser(new LanguageServiceNullLogger());
-			var projectContent = new DefaultProjectContent();
+			var projectContent = new TypeScriptProjectContent(project);
 			ICompilationUnit unit = parser.Parse(projectContent, fileName, fileContent);
 			return new ParseInformation(unit);
 		}

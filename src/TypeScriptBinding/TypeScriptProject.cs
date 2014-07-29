@@ -48,6 +48,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public static readonly string GenerateSourceMapPropertyName = "TypeScriptSourceMap";
 		public static readonly string ModuleKindPropertyName = "TypeScriptModuleKind";
 		public static readonly string TargetPropertyName = "TypeScriptTarget";
+		public static readonly string NoImplicitAnyPropertyName = "TypeScriptNoImplicitAny";
 		
 		static readonly string DefaultEcmaScriptVersion = "ES5";
 		static readonly string DefaultModuleKind = "none";
@@ -56,6 +57,11 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			this.project = project;
 			this.msbuildProject = (MSBuildBasedProject)project;
+		}
+		
+		public ITypeScriptOptions GetOptions()
+		{
+			return new TypeScriptOptions(this);
 		}
 		
 		public string Name {
@@ -250,7 +256,7 @@ namespace ICSharpCode.TypeScriptBinding
 			return LanguageVersion.EcmaScript5;
 		}
 		
-		public ModuleGenTarget GetModulearget()
+		public ModuleGenTarget GetModuleTarget()
 		{
 			if (String.Equals(ModuleKind, "amd", StringComparison.OrdinalIgnoreCase)) {
 				return ModuleGenTarget.Asynchronous;
@@ -258,6 +264,20 @@ namespace ICSharpCode.TypeScriptBinding
 				return ModuleGenTarget.Synchronous;
 			}
 			return ModuleGenTarget.Unspecified;
+		}
+		
+		public bool NoImplicitAny {
+			get { return GetBooleanProperty(NoImplicitAnyPropertyName, false); }
+		}
+		
+		public bool GetNoImplicitAny(BuildConfiguration buildConfig)
+		{
+			return GetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, true);
+		}
+		
+		public void SetNoImplicitAny(BuildConfiguration buildConfig, bool value)
+		{
+			SetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, value);
 		}
 	}
 }

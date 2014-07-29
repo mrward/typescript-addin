@@ -1,5 +1,5 @@
 ﻿// 
-// IScriptLoader.cs
+// TypeScriptOptions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,26 +27,43 @@
 //
 
 using System;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
-namespace ICSharpCode.TypeScriptBinding.Hosting
+namespace ICSharpCode.TypeScriptBinding
 {
-	public interface IScriptLoader
+	public class TypeScriptOptions : ITypeScriptOptions
 	{
-		string RootFolder { get; }
-		string TypeScriptCompilerFileName { get; }
-		string LibScriptFileName { get; }
+		public TypeScriptOptions()
+		{
+		}
 		
-		string GetTypeScriptServicesScript();
-		string GetMainScript();
-		string GetMemberCompletionScript();
-		string GetTypeScriptCompilerScript();
-		string GetFunctionSignatureScript();
-		string GetLibScript();
-		string GetFindReferencesScript();
-		string GetDefinitionScript();
-		string GetNavigationScript();
-		string GetCompletionDetailsScript();
-		string GetLanguageServicesCompileScript();
-		string GetSemanticDiagnosticsScript();
+		public TypeScriptOptions(ITypeScriptOptions options)
+		{
+			RemoveComments = options.RemoveComments;
+			GenerateSourceMap = options.GenerateSourceMap;
+			NoImplicitAny = options.NoImplicitAny;
+			ModuleKind = options.ModuleKind;
+			EcmaScriptVersion = options.EcmaScriptVersion;
+			ModuleTarget = options.GetModuleTarget();
+			LanguageVersion = options.GetLanguageVersion();
+		}
+		
+		public bool RemoveComments { get; set; }
+		public bool GenerateSourceMap { get; set; }
+		public bool NoImplicitAny { get; set; }
+		public string ModuleKind { get; set; }
+		public string EcmaScriptVersion { get; set; }
+		public ModuleGenTarget ModuleTarget { get; set; }
+		public LanguageVersion LanguageVersion { get; set; }
+		
+		public LanguageVersion GetLanguageVersion()
+		{
+			return LanguageVersion;
+		}
+		
+		public ModuleGenTarget GetModuleTarget()
+		{
+			return ModuleTarget;
+		}
 	}
 }

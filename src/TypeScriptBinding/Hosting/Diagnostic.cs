@@ -1,10 +1,10 @@
 ﻿// 
-// IScriptLoader.cs
+// Diagnostic.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,23 +30,27 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public interface IScriptLoader
+	public class Diagnostic
 	{
-		string RootFolder { get; }
-		string TypeScriptCompilerFileName { get; }
-		string LibScriptFileName { get; }
+		public int start { get; set; }
+		public int length { get; set; }
+		public string diagnosticCode { get; set; }
+		public object[] arguments { get; set; }
 		
-		string GetTypeScriptServicesScript();
-		string GetMainScript();
-		string GetMemberCompletionScript();
-		string GetTypeScriptCompilerScript();
-		string GetFunctionSignatureScript();
-		string GetLibScript();
-		string GetFindReferencesScript();
-		string GetDefinitionScript();
-		string GetNavigationScript();
-		string GetCompletionDetailsScript();
-		string GetLanguageServicesCompileScript();
-		string GetSemanticDiagnosticsScript();
+		public string GetDiagnosticMessage()
+		{
+			if (diagnosticCode == null)
+				return String.Empty;
+			
+			if (arguments == null)
+				return diagnosticCode;
+			
+			return String.Format(diagnosticCode, arguments);
+		}
+		
+		public override string ToString()
+		{
+			return GetDiagnosticMessage();
+		}
 	}
 }

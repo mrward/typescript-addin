@@ -1,4 +1,4 @@
-﻿<optionpanels:ProjectOptionPanel
+<optionpanels:ProjectOptionPanel
 	x:Class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:optionpanels="clr-namespace:ICSharpCode.SharpDevelop.Gui.OptionPanels;assembly=ICSharpCode.SharpDevelop"
@@ -47,39 +47,44 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-				
-					<CheckBox
-						Margin="4, 4, 0, 0"
-						Content="Include comments"
-						IsChecked="{Binding IncludeComments}"/>
-					<CheckBox
-						Grid.Row="1"
-						Margin="4, 4, 0, 0"
-						Content="Generate source map"
-						IsChecked="{Binding GenerateSourceMap}"/>
 					
 					<Label
 						Margin="4, 4, 0, 0"
-						Grid.Row="2"
 						Content="ECMAScript version:"/>
 					<ComboBox
 						Margin="4, 4, 0, 0"
-						Grid.Row="2"
 						Grid.Column="1"
 						ItemsSource="{Binding EcmaScriptTargetVersions}"
 						SelectedItem="{Binding SelectedEcmaScriptTargetVersion}"/>
 				
 					<Label
 						Margin="4, 4, 0, 0"
-						Grid.Row="3"
+						Grid.Row="1"
 						Content="Module system:"/>
 					<ComboBox
 						Margin="4, 4, 0, 0"
-						Grid.Row="3"
+						Grid.Row="1"
 						Grid.Column="1"
 						ItemsSource="{Binding ModuleKinds}"
 						SelectedItem="{Binding SelectedModuleKind}"/>
+				
+					<CheckBox
+						Grid.Row="2"
+						Margin="4, 4, 0, 0"
+						Content="Allow implicit 'any' types"
+						IsChecked="{Binding AllowImplicitAnyTypes}"/>
+					<CheckBox
+						Margin="4, 4, 0, 0"
+						Grid.Row="3"
+						Content="Include comments"
+						IsChecked="{Binding IncludeComments}"/>
+					<CheckBox
+						Grid.Row="4"
+						Margin="4, 4, 0, 0"
+						Content="Generate source maps"
+						IsChecked="{Binding GenerateSourceMap}"/>
 				</Grid>
 			</GroupBox>
 		</Grid>

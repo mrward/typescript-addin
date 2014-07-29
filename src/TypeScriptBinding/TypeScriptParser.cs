@@ -27,9 +27,11 @@
 //
 
 using System;
+using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Dom;
+using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -83,6 +85,14 @@ namespace ICSharpCode.TypeScriptBinding
 						FileName = fileName
 					};
 					unit.AddNavigation(navigation, fileContent);
+					
+					var typeScriptProjectContent = projectContent as TypeScriptProjectContent;
+					if (typeScriptProjectContent != null) {
+						IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(fileContent);
+						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, typeScriptProjectContent.Options);
+						TypeScriptService.TaskService.Update(diagnostics, file, document);
+					}
+					
 					return unit;
 				}
 			} catch (Exception ex) {
@@ -90,6 +100,11 @@ namespace ICSharpCode.TypeScriptBinding
 				LoggingService.Debug(ex.ToString());
 			}
 			return new DefaultCompilationUnit(projectContent);
+		}
+		
+		void ShowErrors(Diagnostic[] diagnostics, FileName fileName)
+		{
+			
 		}
 		
 		public IResolver CreateResolver()

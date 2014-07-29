@@ -42,6 +42,7 @@ namespace ICSharpCode.TypeScriptBinding
 		bool compileOnBuild;
 		bool includeComments;
 		bool generateSourceMap;
+		bool allowImplicitAnyTypes;
 		DisplayValue selectedEcmaScriptTargetVersion;
 		List<DisplayValue> ecmaScriptTargetVersions = new List<DisplayValue>();
 		DisplayValue selectedModuleKind;
@@ -130,6 +131,15 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
+		public bool AllowImplicitAnyTypes {
+			get { return allowImplicitAnyTypes; }
+			set {
+				UpdateDirtyFlag(allowImplicitAnyTypes, value);
+				allowImplicitAnyTypes = value;
+				RaisePropertyChanged(() => AllowImplicitAnyTypes);
+			}
+		}
+		
 		protected override void Load(MSBuildBasedProject project, string configuration, string platform)
 		{
 			base.Load(project, configuration, platform);
@@ -141,6 +151,7 @@ namespace ICSharpCode.TypeScriptBinding
 			CompileOnBuild = typeScriptProject.GetCompileOnBuild(buildConfig);
 			IncludeComments = !typeScriptProject.GetRemoveComments(buildConfig);
 			GenerateSourceMap = typeScriptProject.GetGenerateSourceMap(buildConfig);
+			AllowImplicitAnyTypes = !typeScriptProject.GetNoImplicitAny(buildConfig);
 			SelectedEcmaScriptTargetVersion = GetEcmaScriptTargetVersion(typeScriptProject, buildConfig);
 			SelectedModuleKind = GetModuleKind(typeScriptProject, buildConfig);
 			
@@ -180,6 +191,7 @@ namespace ICSharpCode.TypeScriptBinding
 			typeScriptProject.SetCompileOnBuild(buildConfig, CompileOnBuild);
 			typeScriptProject.SetRemoveComments(buildConfig, !IncludeComments);
 			typeScriptProject.SetGenerateSourceMap(buildConfig, GenerateSourceMap);
+			typeScriptProject.SetNoImplicitAny(buildConfig, !AllowImplicitAnyTypes);
 			typeScriptProject.SetEcmaScriptVersion(buildConfig, SelectedEcmaScriptTargetVersion.Id);
 			typeScriptProject.SetModuleKind(buildConfig, SelectedModuleKind.Id);
 			

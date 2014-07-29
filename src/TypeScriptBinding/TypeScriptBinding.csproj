@@ -113,6 +113,7 @@
     <Compile Include="Hosting\CompletionEntryDetailsResult.cs" />
     <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\DefinitionResult.cs" />
+    <Compile Include="Hosting\Diagnostic.cs" />
     <Compile Include="Hosting\EmitOutput.cs" />
     <Compile Include="Hosting\EmitOutputResult.cs" />
     <Compile Include="Hosting\FileInformation.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Hosting\ReferencesResult.cs" />
     <Compile Include="Hosting\ScriptsContainer.cs" />
     <Compile Include="Hosting\ScriptSnapshotShim.cs" />
+    <Compile Include="Hosting\SemanticDiagnosticsResult.cs" />
     <Compile Include="Hosting\SignatureInfo.cs" />
     <Compile Include="Hosting\SignatureResult.cs" />
     <Compile Include="Hosting\SourceMapEntry.cs" />
@@ -189,9 +191,11 @@
     <Compile Include="TypeScriptFunctionInsightItem.cs" />
     <Compile Include="TypeScriptFunctionInsightProvider.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />
+    <Compile Include="TypeScriptOptions.cs" />
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
+    <Compile Include="TypeScriptProjectContent.cs" />
     <Compile Include="TypeScriptProjectMonitor.cs" />
     <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
     <Compile Include="TypeScriptProjectOptionsPanel.xaml.cs">
@@ -199,6 +203,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TypeScriptService.cs" />
+    <Compile Include="TypeScriptTask.cs" />
+    <Compile Include="TypeScriptTaskService.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
   </ItemGroup>
@@ -235,6 +241,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\semanticDiagnostics.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\signature.js">

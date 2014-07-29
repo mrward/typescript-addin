@@ -37,8 +37,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			removeComments = options.RemoveComments;
 			mapSourceFiles = options.GenerateSourceMap;
+			noImplicitAny = options.NoImplicitAny;
 			codeGenTarget = options.GetLanguageVersion();
-			moduleGenTarget = options.GetModulearget();
+			moduleGenTarget = options.GetModuleTarget();
+			gatherDiagnostics = true;
 		}
 		
 		public CompilerSettings()
@@ -50,6 +52,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			sourceRoot = "";
 			codeGenTarget = LanguageVersion.EcmaScript3;
 			moduleGenTarget = ModuleGenTarget.Unspecified;
+			noImplicitAny = true;
 		}
 		
 		public bool propagateEnumConstants { get; set; }

@@ -1,10 +1,10 @@
 ﻿// 
-// IScriptLoader.cs
+// TypeScriptTaskService.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,26 +27,43 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace ICSharpCode.TypeScriptBinding.Hosting
+using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.SharpDevelop.Gui;
+using ICSharpCode.TypeScriptBinding.Hosting;
+
+namespace ICSharpCode.TypeScriptBinding
 {
-	public interface IScriptLoader
+	public class TypeScriptTaskService
 	{
-		string RootFolder { get; }
-		string TypeScriptCompilerFileName { get; }
-		string LibScriptFileName { get; }
+		public void Update(Diagnostic[] diagnostics, FileName fileName, IDocument document)
+		{
+			WorkbenchSingleton.SafeThreadCall(() => {
+				ClearTasksForFileName(fileName);
+				
+				List<TypeScriptTask> tasks = diagnostics
+					.Select(diagnostic => TypeScriptTask.Create(fileName, diagnostic, document))
+					.ToList();
+				
+				TaskService.AddRange(tasks);
+			});
+		}
 		
-		string GetTypeScriptServicesScript();
-		string GetMainScript();
-		string GetMemberCompletionScript();
-		string GetTypeScriptCompilerScript();
-		string GetFunctionSignatureScript();
-		string GetLibScript();
-		string GetFindReferencesScript();
-		string GetDefinitionScript();
-		string GetNavigationScript();
-		string GetCompletionDetailsScript();
-		string GetLanguageServicesCompileScript();
-		string GetSemanticDiagnosticsScript();
+		void ClearTasksForFileName(FileName fileName)
+		{
+			List<TypeScriptTask> tasks = TaskService
+				.Tasks
+				.OfType<TypeScriptTask>()
+				.Where(t => t.FileName == fileName)
+				.ToList();
+			
+			foreach (Task task in tasks) {
+				TaskService.Remove(task);
+			}
+		}
 	}
 }

@@ -1,10 +1,10 @@
 ﻿// 
-// IScriptLoader.cs
+// TypeScriptTask.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,26 +27,34 @@
 //
 
 using System;
+using ICSharpCode.Core;
+using ICSharpCode.NRefactory;
+using ICSharpCode.SharpDevelop;
+using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.TypeScriptBinding.Hosting;
 
-namespace ICSharpCode.TypeScriptBinding.Hosting
+namespace ICSharpCode.TypeScriptBinding
 {
-	public interface IScriptLoader
+	public class TypeScriptTask : Task
 	{
-		string RootFolder { get; }
-		string TypeScriptCompilerFileName { get; }
-		string LibScriptFileName { get; }
+		public TypeScriptTask(
+			FileName fileName,
+			Diagnostic diagnostic,
+			int column,
+			int line)
+			: base(
+				fileName,
+				diagnostic.ToString(),
+				column,
+				line,
+				TaskType.Error)
+		{
+		}
 		
-		string GetTypeScriptServicesScript();
-		string GetMainScript();
-		string GetMemberCompletionScript();
-		string GetTypeScriptCompilerScript();
-		string GetFunctionSignatureScript();
-		string GetLibScript();
-		string GetFindReferencesScript();
-		string GetDefinitionScript();
-		string GetNavigationScript();
-		string GetCompletionDetailsScript();
-		string GetLanguageServicesCompileScript();
-		string GetSemanticDiagnosticsScript();
+		public static TypeScriptTask Create(FileName fileName, Diagnostic diagnostic, IDocument document)
+		{
+			Location location = document.OffsetToPosition(diagnostic.start);
+			return new TypeScriptTask(fileName, diagnostic, location.Column, location.Line);
+		}
 	}
 }

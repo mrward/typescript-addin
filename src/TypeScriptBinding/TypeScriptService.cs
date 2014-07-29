@@ -43,11 +43,16 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		static readonly TypeScriptParserService parserService = new TypeScriptParserService();
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
+		static readonly TypeScriptTaskService taskService = new TypeScriptTaskService();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
 		
 		public static TypeScriptContextProvider ContextProvider {
 			get { return contextProvider; }
+		}
+		
+		public static TypeScriptTaskService TaskService {
+			get { return taskService; }
 		}
 		
 		public static void Initialize()

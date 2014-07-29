@@ -1,10 +1,10 @@
 ﻿// 
-// IScriptLoader.cs
+// TypeScriptProjectContent.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,26 +27,17 @@
 //
 
 using System;
+using ICSharpCode.SharpDevelop.Dom;
 
-namespace ICSharpCode.TypeScriptBinding.Hosting
+namespace ICSharpCode.TypeScriptBinding
 {
-	public interface IScriptLoader
+	public class TypeScriptProjectContent : DefaultProjectContent
 	{
-		string RootFolder { get; }
-		string TypeScriptCompilerFileName { get; }
-		string LibScriptFileName { get; }
+		public TypeScriptProjectContent(TypeScriptProject project)
+		{
+			Options = project.GetOptions();
+		}
 		
-		string GetTypeScriptServicesScript();
-		string GetMainScript();
-		string GetMemberCompletionScript();
-		string GetTypeScriptCompilerScript();
-		string GetFunctionSignatureScript();
-		string GetLibScript();
-		string GetFindReferencesScript();
-		string GetDefinitionScript();
-		string GetNavigationScript();
-		string GetCompletionDetailsScript();
-		string GetLanguageServicesCompileScript();
-		string GetSemanticDiagnosticsScript();
+		public ITypeScriptOptions Options { get; private set; }
 	}
 }
