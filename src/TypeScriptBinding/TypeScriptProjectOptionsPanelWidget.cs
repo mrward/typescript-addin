@@ -39,6 +39,7 @@ namespace ICSharpCode.TypeScriptBinding
 		bool compileOnBuild;
 		bool includeComments;
 		bool generateSourceMap;
+		bool allowImplicitAnyTypes;
 		DisplayValue selectedEcmaScriptTargetVersion;
 		List<DisplayValue> ecmaScriptTargetVersions = new List<DisplayValue>();
 		DisplayValue selectedModuleKind;
@@ -98,6 +99,7 @@ namespace ICSharpCode.TypeScriptBinding
 			CompileOnBuild = typeScriptProject.GetCompileOnBuild(configuration);
 			IncludeComments = !typeScriptProject.GetRemoveComments(configuration);
 			GenerateSourceMap = typeScriptProject.GetGenerateSourceMap(configuration);
+			AllowImplicitAnyTypes = !typeScriptProject.GetNoImplicitAny(configuration);
 			SelectedEcmaScriptTargetVersion = GetEcmaScriptTargetVersion(typeScriptProject);
 			SelectedModuleKind = GetModuleKind(typeScriptProject);
 			
@@ -170,6 +172,14 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
+		public bool AllowImplicitAnyTypes {
+			get { return allowImplicitAnyTypes; }
+			set {
+				UpdateDirtyFlag(allowImplicitAnyTypes, value);
+				allowImplicitAnyTypes = value;
+			}
+		}
+		
 		public List<DisplayValue> EcmaScriptTargetVersions {
 			get { return ecmaScriptTargetVersions; }
 		}
@@ -221,6 +231,7 @@ namespace ICSharpCode.TypeScriptBinding
 			compileOnBuildCheckButton.Clicked += CompileOnBuildCheckButtonClicked;
 			includeCommentsCheckButton.Clicked += (o, e) => IncludeComments = !IncludeComments;
 			generateSourceMapCheckButton.Clicked += (o, e) => GenerateSourceMap = !GenerateSourceMap;
+			allowImplicitAnyCheckButton.Clicked += (o, e) => AllowImplicitAnyTypes = !AllowImplicitAnyTypes;
 			moduleComboBox.Changed += ModuleComboBoxChanged;
 			ecmaVersionComboBox.Changed += EcmaScriptVersionComboBoxChanged;
 		}
@@ -255,6 +266,7 @@ namespace ICSharpCode.TypeScriptBinding
 			typeScriptProject.SetCompileOnBuild(configuration, CompileOnBuild);
 			typeScriptProject.SetRemoveComments(configuration, !IncludeComments);
 			typeScriptProject.SetGenerateSourceMap(configuration, GenerateSourceMap);
+			typeScriptProject.SetNoImplicitAny(configuration, !AllowImplicitAnyTypes);
 			typeScriptProject.SetEcmaScriptVersion(configuration, SelectedEcmaScriptTargetVersion.Id);
 			typeScriptProject.SetModuleKind(configuration, SelectedModuleKind.Id);
 		}
