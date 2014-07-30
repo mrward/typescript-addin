@@ -272,7 +272,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public bool GetNoImplicitAny(BuildConfiguration buildConfig)
 		{
-			return GetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, true);
+			return GetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, false);
 		}
 		
 		public void SetNoImplicitAny(BuildConfiguration buildConfig, bool value)
