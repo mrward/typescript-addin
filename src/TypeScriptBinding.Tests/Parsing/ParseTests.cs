@@ -13,7 +13,7 @@ namespace TypeScriptBinding.Tests.Parsing
 		{
 			var contextFactory = new FakeTypeScriptContextFactory();
 			var parser = new TypeScriptParser(contextFactory);
-			ParsedDocument = parser.Parse(fileName, text);
+			ParsedDocument = parser.Parse(fileName, text, null);
 		}
 	}
 }

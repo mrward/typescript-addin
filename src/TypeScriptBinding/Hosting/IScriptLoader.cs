@@ -47,5 +47,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string GetNavigationScript();
 		string GetCompletionDetailsScript();
 		string GetLanguageServicesCompileScript();
+		string GetSemanticDiagnosticsScript();
 	}
 }

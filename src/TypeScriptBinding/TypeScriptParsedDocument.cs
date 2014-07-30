@@ -27,6 +27,9 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.TypeScriptBinding.Hosting;
@@ -36,6 +39,8 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptParsedDocument : ParsedDocument
 	{
+		List<Error> errors = new List<Error>();
+		
 		public TypeScriptParsedDocument(string fileName)
 			: base(fileName)
 		{
@@ -71,6 +76,26 @@ namespace ICSharpCode.TypeScriptBinding
 			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			var folding = new FoldingRegion(region, FoldType.Member);
 			Add(folding);
+		}
+		
+		public void AddDiagnostics(Diagnostic[] diagnostics, IDocument document)
+		{
+			errors = diagnostics
+				.Select(diagnostic => CreateError(diagnostic, document))
+				.ToList();
+		}
+		
+		Error CreateError(Diagnostic diagnostic, IDocument document)
+		{
+			TextLocation location = document.GetLocation(diagnostic.start);
+			return new Error(
+				ErrorType.Error,
+				diagnostic.ToString(),
+				location);
+		}
+		
+		public override IList<Error> Errors {
+			get { return errors; }
 		}
 	}
 }

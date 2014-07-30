@@ -28,9 +28,12 @@
 
 using System;
 using System.IO;
+using System.Linq;
+
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Core;
+using MonoDevelop.Ide;
 using MonoDevelop.Ide.TypeSystem;
 using MonoDevelop.Projects;
 
@@ -55,7 +58,7 @@ namespace ICSharpCode.TypeScriptBinding
 			this.contextFactory = contextFactory;
 		}
 		
-		public TypeScriptParsedDocument Parse(string fileName, string content)
+		public TypeScriptParsedDocument Parse(string fileName, string content, ITypeScriptOptions options)
 		{
 			try {
 				using (TypeScriptContext context = contextFactory.CreateContext()) {
@@ -67,7 +70,14 @@ namespace ICSharpCode.TypeScriptBinding
 					var document = new ReadOnlyDocument(content);
 					var parsedDocument = new TypeScriptParsedDocument(fileName);
 					parsedDocument.AddNavigation(navigation, document);
+					
+					if (options != null) {
+						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, options);
+						parsedDocument.AddDiagnostics(diagnostics, document);
+					}
+
 					return parsedDocument;
+					
 				}
 			} catch (Exception ex) {
 				Console.WriteLine(ex.ToString());
@@ -88,7 +98,14 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public override ParsedDocument Parse(bool storeAst, string fileName, TextReader content, Project project)
 		{
-			return Parse(fileName, content.ReadToEnd());
+			ITypeScriptOptions options = null;
+			DispatchService.GuiSyncDispatch(() => {
+				var typeScriptProject = project.GetTypeScriptProjects().FirstOrDefault();
+				if (typeScriptProject != null) {
+					options = typeScriptProject.GetOptions();
+				}
+			});
+			return Parse(fileName, content.ReadToEnd(), options);
 		}
 	}
 }

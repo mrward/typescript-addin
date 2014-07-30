@@ -49,6 +49,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public static readonly string GenerateSourceMapPropertyName = "TypeScriptSourceMap";
 		public static readonly string ModuleKindPropertyName = "TypeScriptModuleKind";
 		public static readonly string TargetPropertyName = "TypeScriptTarget";
+		public static readonly string NoImplicitAnyPropertyName = "TypeScriptNoImplicitAny";
 		
 		static readonly string DefaultEcmaScriptVersion = "ES5";
 		static readonly string DefaultModuleKind = "none";
@@ -56,6 +57,11 @@ namespace ICSharpCode.TypeScriptBinding
 		public TypeScriptProject(Project project)
 		{
 			this.project = project;
+		}
+		
+		public ITypeScriptOptions GetOptions()
+		{
+			return new TypeScriptOptions(this);
 		}
 		
 		public string Name {
@@ -255,6 +261,20 @@ namespace ICSharpCode.TypeScriptBinding
 				return ModuleGenTarget.Synchronous;
 			}
 			return ModuleGenTarget.Unspecified;
+		}
+		
+		public bool NoImplicitAny {
+			get { return GetBooleanProperty(NoImplicitAnyPropertyName, false); }
+		}
+		
+		public bool GetNoImplicitAny(ProjectConfiguration config)
+		{
+			return GetBooleanProperty(config, NoImplicitAnyPropertyName, true);
+		}
+		
+		public void SetNoImplicitAny(ProjectConfiguration config, bool value)
+		{
+			SetBooleanProperty(config, NoImplicitAnyPropertyName, value);
 		}
 	}
 }

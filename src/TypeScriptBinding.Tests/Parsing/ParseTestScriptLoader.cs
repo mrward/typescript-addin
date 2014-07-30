@@ -83,5 +83,10 @@ namespace TypeScriptBinding.Tests.Parsing
 		{
 			throw new NotImplementedException();
 		}
+		
+		public string GetSemanticDiagnosticsScript()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

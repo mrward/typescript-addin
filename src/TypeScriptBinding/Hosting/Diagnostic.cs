@@ -1,10 +1,10 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// Diagnostic.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,41 +27,30 @@
 //
 
 using System;
-using System.Collections.Generic;
-using ICSharpCode.TypeScriptBinding.Hosting;
-using MonoDevelop.Core;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
+	public class Diagnostic
 	{
-		public void Compile(FilePath fileName, TypeScriptProject project, TypeScriptContext context)
+		public int start { get; set; }
+		public int length { get; set; }
+		public string diagnosticCode { get; set; }
+		public object[] arguments { get; set; }
+		
+		public string GetDiagnosticMessage()
 		{
-			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
-				ReportCompileStarting(fileName);
-				
-				var compiler = new LanguageServiceCompiler(context);
-				UpdateFile(context, fileName);
-				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
-				
-				UpdateProject(project, result.GetGeneratedFiles());
-				
-				if (result.HasErrors) {
-					Report(result.GetError());
-				}
-				
-				ReportCompileFinished(result.HasErrors);
-			}
+			if (diagnosticCode == null)
+				return String.Empty;
+			
+			if (arguments == null)
+				return diagnosticCode;
+			
+			return String.Format(diagnosticCode, arguments);
 		}
 		
-		void ReportCompileStarting(FilePath fileName)
+		public override string ToString()
 		{
-			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
-		}
-		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
-		{
-			project.AddMissingFiles(generatedFiles);
+			return GetDiagnosticMessage();
 		}
 	}
 }

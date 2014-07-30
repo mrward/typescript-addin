@@ -9,6 +9,7 @@ namespace TypeScriptBinding.Tests.Hosting
 	{
 		public bool RemoveComments { get; set; }
 		public bool GenerateSourceMap { get; set; }
+		public bool NoImplicitAny { get; set; }
 		public string ModuleKind { get; set; }
 		public string EcmaScriptVersion { get; set; }
 		

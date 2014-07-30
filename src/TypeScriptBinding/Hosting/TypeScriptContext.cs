@@ -159,5 +159,14 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			return host.CompilerResult.result;
 		}
+		
+		public Diagnostic[] GetSemanticDiagnostics(FilePath fileName, ITypeScriptOptions options)
+		{
+			host.UpdateCompilerSettings(options);
+			host.UpdateFileName(fileName);
+			context.Run(scriptLoader.GetSemanticDiagnosticsScript());
+			
+			return host.SemanticDiagnosticsResult.result;
+		}
 	}
 }

@@ -27,6 +27,9 @@
 //
 
 using System;
+using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.TypeScriptBinding.Hosting;
+using Mono.TextEditor.Utils;
 using MonoDevelop.Core;
 using MonoDevelop.Ide;
 using MonoDevelop.Ide.Gui;
@@ -65,6 +68,18 @@ namespace ICSharpCode.TypeScriptBinding
 			} else {
 				Report("TypeScript compilation finished successfully.");
 			}
+		}
+		
+		protected void UpdateFile(TypeScriptContext context, FilePath fileName)
+		{
+			string fileContent = null;
+			Document document = IdeApp.Workbench.GetDocument(fileName);
+			if (document != null) {
+				fileContent = document.Editor.Text;
+			} else {
+				fileContent = TextFileUtility.ReadAllText(fileName);
+			}
+			context.UpdateFile(fileName, fileContent);
 		}
 	}
 }

@@ -299,5 +299,13 @@ namespace TypeScriptHosting
 		}
 		
 		internal CompilerResult CompilerResult { get; private set; }
+		
+		public void updateSemanticDiagnosticsResult(string result)
+		{
+			log(result);
+			SemanticDiagnosticsResult = JsonConvert.DeserializeObject<SemanticDiagnosticsResult>(result);
+		}
+		
+		internal SemanticDiagnosticsResult SemanticDiagnosticsResult { get; private set; }
 	}
 }

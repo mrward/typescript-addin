@@ -1,5 +1,5 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// TypeScriptOptions.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -27,41 +27,43 @@
 //
 
 using System;
-using System.Collections.Generic;
 using ICSharpCode.TypeScriptBinding.Hosting;
-using MonoDevelop.Core;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
+	public class TypeScriptOptions : ITypeScriptOptions
 	{
-		public void Compile(FilePath fileName, TypeScriptProject project, TypeScriptContext context)
+		public TypeScriptOptions()
 		{
-			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
-				ReportCompileStarting(fileName);
-				
-				var compiler = new LanguageServiceCompiler(context);
-				UpdateFile(context, fileName);
-				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
-				
-				UpdateProject(project, result.GetGeneratedFiles());
-				
-				if (result.HasErrors) {
-					Report(result.GetError());
-				}
-				
-				ReportCompileFinished(result.HasErrors);
-			}
 		}
 		
-		void ReportCompileStarting(FilePath fileName)
+		public TypeScriptOptions(ITypeScriptOptions options)
 		{
-			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
+			RemoveComments = options.RemoveComments;
+			GenerateSourceMap = options.GenerateSourceMap;
+			NoImplicitAny = options.NoImplicitAny;
+			ModuleKind = options.ModuleKind;
+			EcmaScriptVersion = options.EcmaScriptVersion;
+			ModuleTarget = options.GetModuleTarget();
+			LanguageVersion = options.GetLanguageVersion();
 		}
 		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
+		public bool RemoveComments { get; set; }
+		public bool GenerateSourceMap { get; set; }
+		public bool NoImplicitAny { get; set; }
+		public string ModuleKind { get; set; }
+		public string EcmaScriptVersion { get; set; }
+		public ModuleGenTarget ModuleTarget { get; set; }
+		public LanguageVersion LanguageVersion { get; set; }
+		
+		public LanguageVersion GetLanguageVersion()
 		{
-			project.AddMissingFiles(generatedFiles);
+			return LanguageVersion;
+		}
+		
+		public ModuleGenTarget GetModuleTarget()
+		{
+			return ModuleTarget;
 		}
 	}
 }

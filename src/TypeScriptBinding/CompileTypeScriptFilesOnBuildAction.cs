@@ -67,6 +67,7 @@ namespace ICSharpCode.TypeScriptBinding
 			var compiler = new LanguageServiceCompiler(context);
 			
 			foreach (FilePath fileName in fileNames) {
+				UpdateFile(context, fileName);
 				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
 				
 				UpdateProject(project, result.GetGeneratedFiles());

@@ -1,10 +1,10 @@
 ﻿// 
-// CompileTypeScriptOnSaveFileAction.cs
+// SemanticDiagnosticsResult.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,41 +27,11 @@
 //
 
 using System;
-using System.Collections.Generic;
-using ICSharpCode.TypeScriptBinding.Hosting;
-using MonoDevelop.Core;
 
-namespace ICSharpCode.TypeScriptBinding
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompileTypeScriptOnSaveFileAction : CompileTypeScriptAction
+	public class SemanticDiagnosticsResult
 	{
-		public void Compile(FilePath fileName, TypeScriptProject project, TypeScriptContext context)
-		{
-			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
-				ReportCompileStarting(fileName);
-				
-				var compiler = new LanguageServiceCompiler(context);
-				UpdateFile(context, fileName);
-				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
-				
-				UpdateProject(project, result.GetGeneratedFiles());
-				
-				if (result.HasErrors) {
-					Report(result.GetError());
-				}
-				
-				ReportCompileFinished(result.HasErrors);
-			}
-		}
-		
-		void ReportCompileStarting(FilePath fileName)
-		{
-			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
-		}
-		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
-		{
-			project.AddMissingFiles(generatedFiles);
-		}
+		public Diagnostic[] result { get; set; }
 	}
 }

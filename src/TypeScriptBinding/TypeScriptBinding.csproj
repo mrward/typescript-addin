@@ -100,6 +100,7 @@
     <Compile Include="Hosting\CompletionEntryDetailsResult.cs" />
     <Compile Include="Hosting\DefinitionInfo.cs" />
     <Compile Include="Hosting\DefinitionResult.cs" />
+    <Compile Include="Hosting\Diagnostic.cs" />
     <Compile Include="Hosting\EmitOutput.cs" />
     <Compile Include="Hosting\EmitOutputResult.cs" />
     <Compile Include="Hosting\FileInformation.cs" />
@@ -127,6 +128,7 @@
     <Compile Include="Hosting\ReferencesResult.cs" />
     <Compile Include="Hosting\ScriptsContainer.cs" />
     <Compile Include="Hosting\ScriptSnapshotShim.cs" />
+    <Compile Include="Hosting\SemanticDiagnosticsResult.cs" />
     <Compile Include="Hosting\SignatureInfo.cs" />
     <Compile Include="Hosting\SignatureResult.cs" />
     <Compile Include="Hosting\SourceMapEntry.cs" />
@@ -171,10 +173,10 @@
     <Compile Include="TypeScriptCommandHandler.cs" />
     <Compile Include="TypeScriptCompletionData.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
-    <Compile Include="TypeScriptCompilationUnit.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />
+    <Compile Include="TypeScriptOptions.cs" />
     <Compile Include="TypeScriptParameterDataProvider.cs" />
     <Compile Include="TypeScriptParsedDocument.cs" />
     <Compile Include="TypeScriptParser.cs" />
@@ -220,6 +222,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\main.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Scripts\semanticDiagnostics.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\signature.js">
