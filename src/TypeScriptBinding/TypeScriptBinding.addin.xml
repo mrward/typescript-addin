@@ -7,7 +7,7 @@
 	url="https://github.com/mrward/typescript-addin"
 	description="Adds TypeScript support."
 	category="Web Development"
-	version="0.1">
+	version="0.2">
 	
 	<Runtime>
 		<Import assembly="TypeScriptBinding.dll" />
