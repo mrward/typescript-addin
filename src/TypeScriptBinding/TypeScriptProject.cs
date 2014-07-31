@@ -68,32 +68,6 @@ namespace ICSharpCode.TypeScriptBinding
 			get { return project.Name; }
 		}
 		
-		public void AddMissingFiles(IEnumerable<GeneratedTypeScriptFile> filesGenerated)
-		{
-			foreach (GeneratedTypeScriptFile file in filesGenerated) {
-				AddMissingFile(file);
-			}
-			project.Save();
-		}
-		
-		void AddMissingFile(GeneratedTypeScriptFile file)
-		{
-			if (IsFileInProject(file.FileName) || !File.Exists(file.FileName)) {
-				return;
-			}
-			
-			var projectItem = new FileProjectItem(project, ItemType.None);
-			projectItem.FileName = file.FileName;
-			projectItem.DependentUpon = file.GetDependentUpon();
-			
-			ProjectService.AddProjectItem(project, projectItem);
-		}
-		
-		public bool IsFileInProject(FileName fileName)
-		{
-			return project.IsFileInProject(fileName);
-		}
-		
 		public bool HasTypeScriptFiles()
 		{
 			return project

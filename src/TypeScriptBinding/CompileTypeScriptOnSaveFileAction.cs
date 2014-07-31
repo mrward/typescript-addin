@@ -44,8 +44,6 @@ namespace ICSharpCode.TypeScriptBinding
 			UpdateFile(context, fileName);
 			LanguageServiceCompilerResult result = compiler.Compile(fileName, project);
 			
-			UpdateProject(project, result.GetGeneratedFiles());
-			
 			if (result.HasErrors) {
 				Report(result.GetError());
 			}
@@ -56,13 +54,6 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			ClearOutputWindow();
 			Report("Compiling TypeScript file: {0}", fileName.GetFileNameWithoutPath());
-		}
-		
-		void UpdateProject(TypeScriptProject project, IEnumerable<GeneratedTypeScriptFile> generatedFiles)
-		{
-			using (var updater = new ProjectBrowserUpdater()) {
-				project.AddMissingFiles(generatedFiles);
-			}
 		}
 	}
 }
