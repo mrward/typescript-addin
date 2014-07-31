@@ -153,7 +153,6 @@
     <Compile Include="IBuildTargetExtensions.cs" />
     <Compile Include="IProject.cs" />
     <Compile Include="ITypeScriptOptions.cs" />
-    <Compile Include="ProjectBrowserUpdater.cs" />
     <Compile Include="ProjectExtensions.cs" />
     <Compile Include="RegisterTypeScriptCompileOnBuildStartupHandler.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileStartupHandler.cs" />
