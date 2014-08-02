@@ -172,6 +172,7 @@
     <Compile Include="TypeScriptCommandHandler.cs" />
     <Compile Include="TypeScriptCompletionData.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
+    <Compile Include="TypeScriptFile.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
     <Compile Include="TypeScriptLanguageBinding.cs" />

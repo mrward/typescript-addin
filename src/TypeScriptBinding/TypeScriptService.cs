@@ -29,9 +29,12 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+
 using ICSharpCode.TypeScriptBinding.Hosting;
+using Mono.TextEditor.Utils;
 using MonoDevelop.Core;
 using MonoDevelop.Ide;
+using MonoDevelop.Ide.Gui;
 using MonoDevelop.Projects;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -74,6 +77,22 @@ namespace ICSharpCode.TypeScriptBinding
 				.Where(project => project.IsFileInProject(fileName))
 				.Select(project => new TypeScriptProject(project))
 				.FirstOrDefault();
+		}
+		
+		public static string GetFileContents(FilePath fileName)
+		{
+			string fileContents = null;
+
+			DispatchService.GuiSyncDispatch(() => {
+				Document document = IdeApp.Workbench.GetDocument(fileName);
+				if (document != null) {
+					fileContents = document.Editor.Text;
+				} else {
+					fileContents = TextFileUtility.ReadAllText(fileName);
+				}
+			});
+
+			return fileContents;
 		}
 		
 		public static ConfigurationSelector ActiveConfiguration {

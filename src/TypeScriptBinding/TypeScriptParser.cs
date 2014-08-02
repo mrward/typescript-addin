@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -60,6 +61,15 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public TypeScriptParsedDocument Parse(string fileName, string content, ITypeScriptOptions options)
 		{
+			return Parse(fileName, content, options, new TypeScriptFile[0]);
+		}
+		
+		public TypeScriptParsedDocument Parse(
+			string fileName,
+			string content,
+			ITypeScriptOptions options,
+			IEnumerable<TypeScriptFile> files)
+		{
 			try {
 				using (TypeScriptContext context = contextFactory.CreateContext()) {
 					var file = new FilePath(fileName);
@@ -73,6 +83,7 @@ namespace ICSharpCode.TypeScriptBinding
 					
 					if (options != null) {
 						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, options);
+						context.AddFiles(files);
 						parsedDocument.AddDiagnostics(diagnostics, document);
 					}
 
@@ -99,13 +110,17 @@ namespace ICSharpCode.TypeScriptBinding
 		public override ParsedDocument Parse(bool storeAst, string fileName, TextReader content, Project project)
 		{
 			ITypeScriptOptions options = null;
+			List<TypeScriptFile> files = null;
 			DispatchService.GuiSyncDispatch(() => {
-				var typeScriptProject = project.GetTypeScriptProjects().FirstOrDefault();
+				TypeScriptProject typeScriptProject = TypeScriptService.GetProjectForFile(fileName);
 				if (typeScriptProject != null) {
 					options = typeScriptProject.GetOptions();
+					files = typeScriptProject.GetTypeScriptFiles().ToList();
+				} else {
+					files = new List<TypeScriptFile>();
 				}
 			});
-			return Parse(fileName, content.ReadToEnd(), options);
+			return Parse(fileName, content.ReadToEnd(), options, files);
 		}
 	}
 }

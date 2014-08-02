@@ -1,10 +1,10 @@
 ﻿// 
-// CompileTypeScriptAction.cs
+// TypeScriptFile.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,52 +27,19 @@
 //
 
 using System;
-using ICSharpCode.NRefactory.Editor;
-using ICSharpCode.TypeScriptBinding.Hosting;
-using Mono.TextEditor.Utils;
 using MonoDevelop.Core;
-using MonoDevelop.Ide;
-using MonoDevelop.Ide.Gui;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public abstract class CompileTypeScriptAction
+	public class TypeScriptFile
 	{
-		protected IProgressMonitor progressMonitor;
-		
-		protected IProgressMonitor GetRunProcessMonitor()
+		public TypeScriptFile(FilePath fileName, string text)
 		{
-			progressMonitor = IdeApp.Workbench.ProgressMonitors.GetOutputProgressMonitor(
-				"TypeScript",
-				Stock.RunProgramIcon,
-				false,
-				true);
-			
-			return progressMonitor;
+			FileName = fileName;
+			Text = text;
 		}
 		
-		protected void Report(string format, params object[] args)
-		{
-			progressMonitor.Log.WriteLine(format, args);
-		}
-		
-		protected void ReportError(string error)
-		{
-			progressMonitor.ReportError(error, null);
-		}
-		
-		protected void ReportCompileFinished(bool error)
-		{
-			if (error) {
-				ReportError("TypeScript compilation failed.");
-			} else {
-				Report("TypeScript compilation finished successfully.");
-			}
-		}
-		
-		protected void UpdateFile(TypeScriptContext context, FilePath fileName)
-		{
-			context.UpdateFile(fileName, TypeScriptService.GetFileContents(fileName));
-		}
+		public string Text { get; private set; }
+		public FilePath FileName { get; private set; }
 	}
 }
