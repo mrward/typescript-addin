@@ -49,6 +49,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public static readonly string ModuleKindPropertyName = "TypeScriptModuleKind";
 		public static readonly string TargetPropertyName = "TypeScriptTarget";
 		public static readonly string NoImplicitAnyPropertyName = "TypeScriptNoImplicitAny";
+		public static readonly string GeneratesDeclarationsPropertyName = "TypeScriptGeneratesDeclarations";
 		
 		static readonly string DefaultEcmaScriptVersion = "ES5";
 		static readonly string DefaultModuleKind = "none";
@@ -252,6 +253,20 @@ namespace ICSharpCode.TypeScriptBinding
 		public void SetNoImplicitAny(BuildConfiguration buildConfig, bool value)
 		{
 			SetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, value);
+		}
+		
+		public bool GenerateDeclaration {
+			get { return GetBooleanProperty(GeneratesDeclarationsPropertyName, false); }
+		}
+		
+		public bool GetGenerateDeclaration(BuildConfiguration buildConfig)
+		{
+			return GetBooleanProperty(buildConfig, GeneratesDeclarationsPropertyName, false);
+		}
+		
+		public void SetGenerateDeclaration(BuildConfiguration buildConfig, bool value)
+		{
+			SetBooleanProperty(buildConfig, GeneratesDeclarationsPropertyName, value);
 		}
 		
 		public IEnumerable<TypeScriptFile> GetTypeScriptFiles()

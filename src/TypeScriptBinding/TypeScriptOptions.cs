@@ -42,6 +42,7 @@ namespace ICSharpCode.TypeScriptBinding
 			RemoveComments = options.RemoveComments;
 			GenerateSourceMap = options.GenerateSourceMap;
 			NoImplicitAny = options.NoImplicitAny;
+			GenerateDeclaration = options.GenerateDeclaration;
 			ModuleKind = options.ModuleKind;
 			EcmaScriptVersion = options.EcmaScriptVersion;
 			ModuleTarget = options.GetModuleTarget();
@@ -51,6 +52,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public bool RemoveComments { get; set; }
 		public bool GenerateSourceMap { get; set; }
 		public bool NoImplicitAny { get; set; }
+		public bool GenerateDeclaration { get; set; }
 		public string ModuleKind { get; set; }
 		public string EcmaScriptVersion { get; set; }
 		public ModuleGenTarget ModuleTarget { get; set; }

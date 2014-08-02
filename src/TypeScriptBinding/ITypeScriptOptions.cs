@@ -36,6 +36,7 @@ namespace ICSharpCode.TypeScriptBinding
 		bool RemoveComments { get; }
 		bool GenerateSourceMap { get; }
 		bool NoImplicitAny { get; }
+		bool GenerateDeclaration { get; }
 		string ModuleKind { get; }
 		string EcmaScriptVersion { get; }
 		
