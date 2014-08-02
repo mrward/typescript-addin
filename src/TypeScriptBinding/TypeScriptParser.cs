@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections.Generic;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
@@ -74,6 +75,15 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
 		{
+			return Parse(projectContent, fileName, fileContent, new TypeScriptFile[0]);
+		}
+		
+		public ICompilationUnit Parse(
+			IProjectContent projectContent,
+			string fileName,
+			ITextBuffer fileContent,
+			IEnumerable<TypeScriptFile> files)
+		{
 			try {
 				using (TypeScriptContext context = contextFactory.CreateContext()) {
 					var file = new FileName(fileName);
@@ -88,6 +98,7 @@ namespace ICSharpCode.TypeScriptBinding
 					
 					var typeScriptProjectContent = projectContent as TypeScriptProjectContent;
 					if (typeScriptProjectContent != null) {
+						context.AddFiles(files);
 						IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(fileContent);
 						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, typeScriptProjectContent.Options);
 						TypeScriptService.TaskService.Update(diagnostics, file, document);
@@ -100,11 +111,6 @@ namespace ICSharpCode.TypeScriptBinding
 				LoggingService.Debug(ex.ToString());
 			}
 			return new DefaultCompilationUnit(projectContent);
-		}
-		
-		void ShowErrors(Diagnostic[] diagnostics, FileName fileName)
-		{
-			
 		}
 		
 		public IResolver CreateResolver()

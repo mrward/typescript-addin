@@ -27,14 +27,17 @@
 //
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+
 using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.Core;
-using ICSharpCode.TypeScriptBinding.Hosting;
-using ITextBuffer = ICSharpCode.SharpDevelop.ITextBuffer;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
+using ICSharpCode.TypeScriptBinding.Hosting;
+using ITextBuffer = ICSharpCode.SharpDevelop.ITextBuffer;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -111,7 +114,8 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			var parser = new TypeScriptParser(new LanguageServiceNullLogger());
 			var projectContent = new TypeScriptProjectContent(project);
-			ICompilationUnit unit = parser.Parse(projectContent, fileName, fileContent);
+			List<TypeScriptFile> files = project.GetTypeScriptFiles().ToList();
+			ICompilationUnit unit = parser.Parse(projectContent, fileName, fileContent, files);
 			return new ParseInformation(unit);
 		}
 		

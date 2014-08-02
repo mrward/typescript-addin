@@ -184,6 +184,7 @@
     <Compile Include="TypeScriptCompletionItem.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
     <Compile Include="TypeScriptCompilationUnit.cs" />
+    <Compile Include="TypeScriptFile.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
     <Compile Include="TypeScriptInsightWindowHandler.cs" />

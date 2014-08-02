@@ -169,5 +169,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			
 			return host.SemanticDiagnosticsResult.result;
 		}
+		
+		public void AddFiles(IEnumerable<TypeScriptFile> files)
+		{
+			foreach (TypeScriptFile file in files) {
+				AddFile(file.FileName, file.Text);
+			}
+		}
 	}
 }

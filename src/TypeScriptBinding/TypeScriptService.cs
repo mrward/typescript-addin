@@ -32,6 +32,7 @@ using System.Linq;
 
 using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
@@ -85,6 +86,12 @@ namespace ICSharpCode.TypeScriptBinding
 				.Where(project => project.IsFileInProject(fileName))
 				.Select(project => new TypeScriptProject(project))
 				.FirstOrDefault();
+		}
+		
+		public static string GetFileContents(FileName fileName)
+		{
+			ITextBuffer fileContent = ParserService.GetParseableFileContent(fileName);
+			return fileContent.Text;
 		}
 	}
 }

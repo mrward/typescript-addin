@@ -253,5 +253,11 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			SetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, value);
 		}
+		
+		public IEnumerable<TypeScriptFile> GetTypeScriptFiles()
+		{
+			return GetTypeScriptFileNames()
+				.Select(fileName => new TypeScriptFile(fileName, TypeScriptService.GetFileContents(fileName)));
+		}
 	}
 }

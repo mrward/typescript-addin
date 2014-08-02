@@ -1,10 +1,10 @@
 ﻿// 
-// CompileTypeScriptAction.cs
+// TypeScriptFile.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,46 +28,18 @@
 
 using System;
 using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Gui;
-using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public abstract class CompileTypeScriptAction
+	public class TypeScriptFile
 	{
-		protected void Report(string format, params object[] args)
+		public TypeScriptFile(FileName fileName, string text)
 		{
-			string message = String.Format(format, args);
-			TaskService.BuildMessageViewCategory.AppendLine(message);
+			FileName = fileName;
+			Text = text;
 		}
 		
-		protected void ClearOutputWindow()
-		{
-			TaskService.BuildMessageViewCategory.ClearText();
-		}
-		
-		protected void ShowOutputPad()
-		{
-			WorkbenchSingleton
-				.Workbench
-				.GetPad(typeof(CompilerMessageView))
-				.BringPadToFront();
-		}
-		
-		protected void ReportCompileFinished(bool error)
-		{
-			if (error) {
-				ShowOutputPad();
-				Report("TypeScript compilation failed.");
-			} else {
-				Report("TypeScript compilation finished successfully.");
-			}
-		}
-		
-		protected void UpdateFile(TypeScriptContext context, FileName fileName)
-		{
-			context.UpdateFile(fileName, TypeScriptService.GetFileContents(fileName));
-		}
+		public string Text { get; private set; }
+		public FileName FileName { get; private set; }
 	}
 }
