@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -49,6 +49,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public static readonly string ModuleKindPropertyName = "TypeScriptModuleKind";
 		public static readonly string TargetPropertyName = "TypeScriptTarget";
 		public static readonly string NoImplicitAnyPropertyName = "TypeScriptNoImplicitAny";
+		public static readonly string OutputFileNamePropertyName = "TypeScriptOutFile";
 		
 		static readonly string DefaultEcmaScriptVersion = "ES5";
 		static readonly string DefaultModuleKind = "none";
@@ -254,10 +255,45 @@ namespace ICSharpCode.TypeScriptBinding
 			SetBooleanProperty(buildConfig, NoImplicitAnyPropertyName, value);
 		}
 		
+		public string OutputFileName {
+			get { return GetStringProperty(OutputFileNamePropertyName, String.Empty); }
+		}
+		
+		public string GetOutputFileName(BuildConfiguration buildConfig)
+		{
+			return GetStringProperty(buildConfig, OutputFileNamePropertyName, String.Empty);
+		}
+		
+		public void SetOutputFileName(BuildConfiguration buildConfig, string value)
+		{
+			SetStringProperty(buildConfig, OutputFileNamePropertyName, value);
+		}
+		
 		public IEnumerable<TypeScriptFile> GetTypeScriptFiles()
 		{
 			return GetTypeScriptFileNames()
 				.Select(fileName => new TypeScriptFile(fileName, TypeScriptService.GetFileContents(fileName)));
+		}
+		
+		public void CreateOutputFileDirectory()
+		{
+			if (!String.IsNullOrEmpty(OutputFileName)) {
+				string fullPath = GetOutputFileFullPath();
+				string parentDirectory = Path.GetDirectoryName(fullPath);
+				Directory.CreateDirectory(parentDirectory);
+			}
+		}
+		
+		public string GetOutputFileFullPath()
+		{
+			if (String.IsNullOrEmpty(OutputFileName)) {
+				return String.Empty;
+			}
+			
+			if (Path.IsPathRooted(OutputFileName)) {
+				return OutputFileName;
+			}
+			return Path.Combine(project.Directory, OutputFileName);
 		}
 	}
 }

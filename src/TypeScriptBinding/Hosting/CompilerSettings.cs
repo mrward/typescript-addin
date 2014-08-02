@@ -40,6 +40,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			noImplicitAny = options.NoImplicitAny;
 			codeGenTarget = options.GetLanguageVersion();
 			moduleGenTarget = options.GetModuleTarget();
+			outFileOption = options.GetOutputFileFullPath();
 			gatherDiagnostics = true;
 		}
 		

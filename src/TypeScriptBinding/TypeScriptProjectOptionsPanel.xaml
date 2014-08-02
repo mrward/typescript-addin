@@ -48,6 +48,7 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
 					
 					<Label
@@ -85,6 +86,19 @@
 						Margin="4, 4, 0, 0"
 						Content="Generate source maps"
 						IsChecked="{Binding GenerateSourceMap}"/>
+				
+					<CheckBox
+						Grid.Row="5"
+						Margin="4, 4, 0, 0"
+						Content="Output file:"
+						IsChecked="{Binding UseOutputFileName}"/>
+					<TextBox
+						Grid.Row="5"
+						Grid.Column="1"
+						Grid.ColumnSpan="2"
+						Margin="4, 4, 0, 0"
+						IsEnabled="{Binding UseOutputFileName}"
+						Text="{Binding Path=OutputFileName, UpdateSourceTrigger=PropertyChanged}"/>
 				</Grid>
 			</GroupBox>
 		</Grid>

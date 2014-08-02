@@ -13,11 +13,11 @@ namespace TypeScriptBinding.Tests.Hosting
 	public class TypeScriptCompilerArgumentsTests
 	{
 		TypeScriptCompilerArguments commandLine;
-		TestTypeScriptOptions options;
+		TypeScriptOptions options;
 		
 		void CreateCommandLine()
 		{
-			options = new TestTypeScriptOptions();
+			options = new TypeScriptOptions();
 			options.RemoveComments = false;
 			options.GenerateSourceMap = false;
 			options.EcmaScriptVersion = "";

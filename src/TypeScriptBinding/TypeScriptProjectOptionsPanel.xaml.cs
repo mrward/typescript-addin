@@ -43,10 +43,12 @@ namespace ICSharpCode.TypeScriptBinding
 		bool includeComments;
 		bool generateSourceMap;
 		bool allowImplicitAnyTypes;
+		bool useOutputFileName;
 		DisplayValue selectedEcmaScriptTargetVersion;
 		List<DisplayValue> ecmaScriptTargetVersions = new List<DisplayValue>();
 		DisplayValue selectedModuleKind;
 		List<DisplayValue> moduleKinds = new List<DisplayValue>();
+		string outputFileName = String.Empty;
 
 		public TypeScriptProjectOptionsPanel()
 		{
@@ -140,6 +142,24 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
+		public string OutputFileName {
+			get { return outputFileName; }
+			set {
+				UpdateDirtyFlag(outputFileName, value);
+				outputFileName = value;
+				RaisePropertyChanged(() => OutputFileName);
+			}
+		}
+		
+		public bool UseOutputFileName {
+			get { return useOutputFileName; }
+			set {
+				UpdateDirtyFlag(useOutputFileName, value);
+				useOutputFileName = value;
+				RaisePropertyChanged(() => UseOutputFileName);
+			}
+		}
+		
 		protected override void Load(MSBuildBasedProject project, string configuration, string platform)
 		{
 			base.Load(project, configuration, platform);
@@ -154,6 +174,11 @@ namespace ICSharpCode.TypeScriptBinding
 			AllowImplicitAnyTypes = !typeScriptProject.GetNoImplicitAny(buildConfig);
 			SelectedEcmaScriptTargetVersion = GetEcmaScriptTargetVersion(typeScriptProject, buildConfig);
 			SelectedModuleKind = GetModuleKind(typeScriptProject, buildConfig);
+			OutputFileName = typeScriptProject.GetOutputFileName(buildConfig);
+			
+			if (!String.IsNullOrEmpty(outputFileName)) {
+				UseOutputFileName = true;
+			}
 			
 			IsDirty = false;
 		}
@@ -195,7 +220,17 @@ namespace ICSharpCode.TypeScriptBinding
 			typeScriptProject.SetEcmaScriptVersion(buildConfig, SelectedEcmaScriptTargetVersion.Id);
 			typeScriptProject.SetModuleKind(buildConfig, SelectedModuleKind.Id);
 			
+			typeScriptProject.SetOutputFileName(buildConfig, GetOutputFileName());
+			
 			return base.Save(project, configuration, platform);
+		}
+		
+		string GetOutputFileName()
+		{
+			if (UseOutputFileName) {
+				return OutputFileName;
+			}
+			return String.Empty;
 		}
 	}
 }

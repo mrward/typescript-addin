@@ -65,6 +65,8 @@ namespace ICSharpCode.TypeScriptBinding
 			TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileNames.First());
 			var compiler = new LanguageServiceCompiler(context);
 			
+			project.CreateOutputFileDirectory();
+			
 			foreach (FileName fileName in fileNames) {
 				UpdateFile(context, fileName);
 				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);

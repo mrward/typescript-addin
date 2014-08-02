@@ -46,6 +46,7 @@ namespace ICSharpCode.TypeScriptBinding
 			EcmaScriptVersion = options.EcmaScriptVersion;
 			ModuleTarget = options.GetModuleTarget();
 			LanguageVersion = options.GetLanguageVersion();
+			OutputFileName = options.GetOutputFileFullPath();
 		}
 		
 		public bool RemoveComments { get; set; }
@@ -53,6 +54,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public bool NoImplicitAny { get; set; }
 		public string ModuleKind { get; set; }
 		public string EcmaScriptVersion { get; set; }
+		public string OutputFileName { get; set; }
 		public ModuleGenTarget ModuleTarget { get; set; }
 		public LanguageVersion LanguageVersion { get; set; }
 		
@@ -64,6 +66,11 @@ namespace ICSharpCode.TypeScriptBinding
 		public ModuleGenTarget GetModuleTarget()
 		{
 			return ModuleTarget;
+		}
+		
+		public string GetOutputFileFullPath()
+		{
+			return OutputFileName;
 		}
 	}
 }
