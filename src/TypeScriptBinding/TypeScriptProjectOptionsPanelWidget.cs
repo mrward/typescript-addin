@@ -210,6 +210,7 @@ namespace ICSharpCode.TypeScriptBinding
 			compileOnSaveCheckButton.Active = compileOnSave;
 			includeCommentsCheckButton.Active = includeComments;
 			generateSourceMapCheckButton.Active = generateSourceMap;
+			allowImplicitAnyCheckButton.Active = allowImplicitAnyTypes;
 			
 			UpdateSelectedEcmaScriptVersionComboBox();
 			UpdateSelectedModuleComboBox();
