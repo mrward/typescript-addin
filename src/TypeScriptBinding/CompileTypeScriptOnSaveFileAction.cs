@@ -40,6 +40,8 @@ namespace ICSharpCode.TypeScriptBinding
 			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
 				ReportCompileStarting(fileName);
 				
+				project.CreateOutputDirectory();
+				
 				var compiler = new LanguageServiceCompiler(context);
 				UpdateFile(context, fileName);
 				LanguageServiceCompilerResult result = compiler.Compile(fileName, project);

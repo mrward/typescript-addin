@@ -41,5 +41,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		LanguageVersion GetLanguageVersion();
 		ModuleGenTarget GetModuleTarget();
+		
+		string GetOutputFileFullPath();
+		string GetOutputDirectoryFullPath();
 	}
 }
