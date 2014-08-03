@@ -48,6 +48,20 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		private global::Gtk.CheckButton generateSourceMapCheckButton;
 		
+		private global::Gtk.Table outputTable;
+		
+		private global::Gtk.HBox outputDirectoryHBox;
+		
+		private global::Gtk.Entry outputDirectoryTextBox;
+		
+		private global::Gtk.Button outputDirectoryBrowseButton;
+		
+		private global::Gtk.Entry outputFileTextBox;
+		
+		private global::Gtk.CheckButton useOutputDirectoryCheckBox;
+		
+		private global::Gtk.CheckButton useOutputFileCheckBox;
+		
 		private global::Gtk.Label compilerFrameLabel;
 
 		protected virtual void Build ()
@@ -239,6 +253,82 @@ namespace ICSharpCode.TypeScriptBinding
 			w17.Position = 3;
 			w17.Expand = false;
 			w17.Fill = false;
+			// Container child compilerOptionsVBox.Gtk.Box+BoxChild
+			this.outputTable = new global::Gtk.Table (((uint)(2)), ((uint)(2)), false);
+			this.outputTable.Name = "outputTable";
+			this.outputTable.RowSpacing = ((uint)(6));
+			this.outputTable.ColumnSpacing = ((uint)(6));
+			// Container child outputTable.Gtk.Table+TableChild
+			this.outputDirectoryHBox = new global::Gtk.HBox ();
+			this.outputDirectoryHBox.Name = "outputDirectoryHBox";
+			this.outputDirectoryHBox.Spacing = 6;
+			// Container child outputDirectoryHBox.Gtk.Box+BoxChild
+			this.outputDirectoryTextBox = new global::Gtk.Entry ();
+			this.outputDirectoryTextBox.CanFocus = true;
+			this.outputDirectoryTextBox.Name = "outputDirectoryTextBox";
+			this.outputDirectoryTextBox.IsEditable = true;
+			this.outputDirectoryTextBox.InvisibleChar = '●';
+			this.outputDirectoryHBox.Add (this.outputDirectoryTextBox);
+			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.outputDirectoryHBox [this.outputDirectoryTextBox]));
+			w18.Position = 0;
+			// Container child outputDirectoryHBox.Gtk.Box+BoxChild
+			this.outputDirectoryBrowseButton = new global::Gtk.Button ();
+			this.outputDirectoryBrowseButton.CanFocus = true;
+			this.outputDirectoryBrowseButton.Name = "outputDirectoryBrowseButton";
+			this.outputDirectoryBrowseButton.UseUnderline = true;
+			this.outputDirectoryBrowseButton.Label = global::Mono.Unix.Catalog.GetString ("...");
+			this.outputDirectoryHBox.Add (this.outputDirectoryBrowseButton);
+			global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.outputDirectoryHBox [this.outputDirectoryBrowseButton]));
+			w19.Position = 1;
+			w19.Expand = false;
+			w19.Fill = false;
+			this.outputTable.Add (this.outputDirectoryHBox);
+			global::Gtk.Table.TableChild w20 = ((global::Gtk.Table.TableChild)(this.outputTable [this.outputDirectoryHBox]));
+			w20.TopAttach = ((uint)(1));
+			w20.BottomAttach = ((uint)(2));
+			w20.LeftAttach = ((uint)(1));
+			w20.RightAttach = ((uint)(2));
+			w20.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child outputTable.Gtk.Table+TableChild
+			this.outputFileTextBox = new global::Gtk.Entry ();
+			this.outputFileTextBox.CanFocus = true;
+			this.outputFileTextBox.Name = "outputFileTextBox";
+			this.outputFileTextBox.IsEditable = true;
+			this.outputFileTextBox.InvisibleChar = '●';
+			this.outputTable.Add (this.outputFileTextBox);
+			global::Gtk.Table.TableChild w21 = ((global::Gtk.Table.TableChild)(this.outputTable [this.outputFileTextBox]));
+			w21.LeftAttach = ((uint)(1));
+			w21.RightAttach = ((uint)(2));
+			w21.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child outputTable.Gtk.Table+TableChild
+			this.useOutputDirectoryCheckBox = new global::Gtk.CheckButton ();
+			this.useOutputDirectoryCheckBox.CanFocus = true;
+			this.useOutputDirectoryCheckBox.Name = "useOutputDirectoryCheckBox";
+			this.useOutputDirectoryCheckBox.Label = global::Mono.Unix.Catalog.GetString ("Output directory:");
+			this.useOutputDirectoryCheckBox.DrawIndicator = true;
+			this.useOutputDirectoryCheckBox.UseUnderline = true;
+			this.outputTable.Add (this.useOutputDirectoryCheckBox);
+			global::Gtk.Table.TableChild w22 = ((global::Gtk.Table.TableChild)(this.outputTable [this.useOutputDirectoryCheckBox]));
+			w22.TopAttach = ((uint)(1));
+			w22.BottomAttach = ((uint)(2));
+			w22.XOptions = ((global::Gtk.AttachOptions)(4));
+			w22.YOptions = ((global::Gtk.AttachOptions)(4));
+			// Container child outputTable.Gtk.Table+TableChild
+			this.useOutputFileCheckBox = new global::Gtk.CheckButton ();
+			this.useOutputFileCheckBox.CanFocus = true;
+			this.useOutputFileCheckBox.Name = "useOutputFileCheckBox";
+			this.useOutputFileCheckBox.Label = global::Mono.Unix.Catalog.GetString ("Output file:");
+			this.useOutputFileCheckBox.DrawIndicator = true;
+			this.useOutputFileCheckBox.UseUnderline = true;
+			this.outputTable.Add (this.useOutputFileCheckBox);
+			global::Gtk.Table.TableChild w23 = ((global::Gtk.Table.TableChild)(this.outputTable [this.useOutputFileCheckBox]));
+			w23.XOptions = ((global::Gtk.AttachOptions)(4));
+			w23.YOptions = ((global::Gtk.AttachOptions)(4));
+			this.compilerOptionsVBox.Add (this.outputTable);
+			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.compilerOptionsVBox [this.outputTable]));
+			w24.Position = 4;
+			w24.Expand = false;
+			w24.Fill = false;
 			this.compilerOptionsAlignment.Add (this.compilerOptionsVBox);
 			this.compilerOptionsFrame.Add (this.compilerOptionsAlignment);
 			this.compilerFrameLabel = new global::Gtk.Label ();
@@ -247,10 +337,10 @@ namespace ICSharpCode.TypeScriptBinding
 			this.compilerFrameLabel.UseMarkup = true;
 			this.compilerOptionsFrame.LabelWidget = this.compilerFrameLabel;
 			this.mainVBox.Add (this.compilerOptionsFrame);
-			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.mainVBox [this.compilerOptionsFrame]));
-			w20.Position = 1;
-			w20.Expand = false;
-			w20.Fill = false;
+			global::Gtk.Box.BoxChild w27 = ((global::Gtk.Box.BoxChild)(this.mainVBox [this.compilerOptionsFrame]));
+			w27.Position = 1;
+			w27.Expand = false;
+			w27.Fill = false;
 			this.Add (this.mainVBox);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

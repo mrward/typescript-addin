@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using MonoDevelop.Projects;
+using MonoDevelop.Components;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -40,10 +41,14 @@ namespace ICSharpCode.TypeScriptBinding
 		bool includeComments;
 		bool generateSourceMap;
 		bool allowImplicitAnyTypes;
+		bool useOutputFileName;
+		bool useOutputDirectory;
 		DisplayValue selectedEcmaScriptTargetVersion;
 		List<DisplayValue> ecmaScriptTargetVersions = new List<DisplayValue>();
 		DisplayValue selectedModuleKind;
 		List<DisplayValue> moduleKinds = new List<DisplayValue>();
+		string outputFileName = String.Empty;
+		string outputDirectory = String.Empty;
 		Project project;
 		bool dirty;
 		DotNetProjectConfiguration configuration;
@@ -102,6 +107,15 @@ namespace ICSharpCode.TypeScriptBinding
 			AllowImplicitAnyTypes = !typeScriptProject.GetNoImplicitAny(configuration);
 			SelectedEcmaScriptTargetVersion = GetEcmaScriptTargetVersion(typeScriptProject);
 			SelectedModuleKind = GetModuleKind(typeScriptProject);
+			OutputFileName = typeScriptProject.GetOutputFileName(configuration);
+			OutputDirectory = typeScriptProject.GetOutputDirectory(configuration);
+
+			if (!String.IsNullOrEmpty(outputFileName)) {
+				UseOutputFileName = true;
+			}
+			if (!String.IsNullOrEmpty(outputDirectory)) {
+				UseOutputDirectory = true;
+			}
 			
 			dirty = false;
 			
@@ -203,6 +217,41 @@ namespace ICSharpCode.TypeScriptBinding
 				selectedModuleKind = value;
 			}
 		}
+
+		public string OutputFileName {
+			get { return outputFileName; }
+			set {
+				UpdateDirtyFlag(outputFileName, value);
+				outputFileName = value;
+			}
+		}
+
+		public bool UseOutputFileName {
+			get { return useOutputFileName; }
+			set {
+				UpdateDirtyFlag(useOutputFileName, value);
+				useOutputFileName = value;
+				outputFileTextBox.Sensitive = useOutputFileName;
+			}
+		}
+
+		public string OutputDirectory {
+			get { return outputDirectory; }
+			set {
+				UpdateDirtyFlag(outputDirectory, value);
+				outputDirectory = value;
+			}
+		}
+
+		public bool UseOutputDirectory {
+			get { return useOutputDirectory; }
+			set {
+				UpdateDirtyFlag(useOutputDirectory, value);
+				useOutputDirectory = value;
+				outputDirectoryTextBox.Sensitive = useOutputDirectory;
+				outputDirectoryBrowseButton.Sensitive = useOutputDirectory;
+			}
+		}
 		
 		void UpdateUserInterface()
 		{
@@ -211,6 +260,12 @@ namespace ICSharpCode.TypeScriptBinding
 			includeCommentsCheckButton.Active = includeComments;
 			generateSourceMapCheckButton.Active = generateSourceMap;
 			allowImplicitAnyCheckButton.Active = allowImplicitAnyTypes;
+			outputFileTextBox.Text = outputFileName;
+			outputFileTextBox.Sensitive = useOutputFileName;
+			useOutputFileCheckBox.Active = useOutputFileName;
+			outputDirectoryTextBox.Text = outputDirectory;
+			outputDirectoryTextBox.Sensitive = useOutputDirectory;
+			useOutputDirectoryCheckBox.Active = useOutputDirectory;
 			
 			UpdateSelectedEcmaScriptVersionComboBox();
 			UpdateSelectedModuleComboBox();
@@ -228,25 +283,20 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddEventHandlers()
 		{
-			compileOnSaveCheckButton.Clicked += CompileOnSaveCheckButtonClicked;
-			compileOnBuildCheckButton.Clicked += CompileOnBuildCheckButtonClicked;
+			compileOnSaveCheckButton.Clicked += (o, e) => CompileOnSave = !CompileOnSave;
+			compileOnBuildCheckButton.Clicked += (o, e) => CompileOnBuild = !CompileOnBuild;
 			includeCommentsCheckButton.Clicked += (o, e) => IncludeComments = !IncludeComments;
 			generateSourceMapCheckButton.Clicked += (o, e) => GenerateSourceMap = !GenerateSourceMap;
 			allowImplicitAnyCheckButton.Clicked += (o, e) => AllowImplicitAnyTypes = !AllowImplicitAnyTypes;
+			useOutputFileCheckBox.Clicked += (o, e) => UseOutputFileName = !UseOutputFileName;
+			useOutputDirectoryCheckBox.Clicked += (o, e) => UseOutputDirectory = !UseOutputDirectory;
 			moduleComboBox.Changed += ModuleComboBoxChanged;
 			ecmaVersionComboBox.Changed += EcmaScriptVersionComboBoxChanged;
+			outputFileTextBox.Changed += OutputFileTextBoxChanged;
+			outputDirectoryTextBox.Changed += OutputDirectoryTextBoxChanged;
+			outputDirectoryBrowseButton.Clicked += OutputDirectoryBrowseButtonClicked;
 		}
-		
-		void CompileOnSaveCheckButtonClicked(object sender, EventArgs e)
-		{
-			CompileOnSave = !CompileOnSave;
-		}
-		
-		void CompileOnBuildCheckButtonClicked(object sender, EventArgs e)
-		{
-			CompileOnBuild = !CompileOnBuild;
-		}
-		
+
 		void ModuleComboBoxChanged(object sender, EventArgs e)
 		{
 			SelectedModuleKind = moduleKinds[moduleComboBox.Active];
@@ -256,7 +306,26 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			SelectedEcmaScriptTargetVersion = ecmaScriptTargetVersions[ecmaVersionComboBox.Active];
 		}
-		
+
+		void OutputFileTextBoxChanged (object sender, EventArgs e)
+		{
+			OutputFileName = outputFileTextBox.Text;
+		}
+
+		void OutputDirectoryTextBoxChanged (object sender, EventArgs e)
+		{
+			OutputDirectory = outputDirectoryTextBox.Text;
+		}
+
+		void OutputDirectoryBrowseButtonClicked (object sender, EventArgs e)
+		{
+			var dialog = new SelectFolderDialog ();
+			if (dialog.Run ()) {
+				OutputDirectory = dialog.SelectedFile.ToString ();
+				outputDirectoryTextBox.Text = OutputDirectory;
+			}
+		}
+
 		public void Store()
 		{
 			if (!dirty)
@@ -270,6 +339,24 @@ namespace ICSharpCode.TypeScriptBinding
 			typeScriptProject.SetNoImplicitAny(configuration, !AllowImplicitAnyTypes);
 			typeScriptProject.SetEcmaScriptVersion(configuration, SelectedEcmaScriptTargetVersion.Id);
 			typeScriptProject.SetModuleKind(configuration, SelectedModuleKind.Id);
+			typeScriptProject.SetOutputFileName(configuration, GetOutputFileName());
+			typeScriptProject.SetOutputDirectory(configuration, GetOutputDirectory());
+		}
+
+		string GetOutputFileName()
+		{
+			if (UseOutputFileName) {
+				return OutputFileName;
+			}
+			return String.Empty;
+		}
+
+		string GetOutputDirectory()
+		{
+			if (UseOutputDirectory) {
+				return OutputDirectory;
+			}
+			return String.Empty;
 		}
 	}
 }
