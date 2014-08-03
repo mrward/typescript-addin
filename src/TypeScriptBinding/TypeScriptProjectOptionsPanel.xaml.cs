@@ -29,7 +29,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls;
+using System.Windows;
+using System.Windows.Forms;
 
 using ICSharpCode.SharpDevelop.Gui.OptionPanels;
 using ICSharpCode.SharpDevelop.Project;
@@ -44,12 +45,14 @@ namespace ICSharpCode.TypeScriptBinding
 		bool generateSourceMap;
 		bool allowImplicitAnyTypes;
 		bool useOutputFileName;
+		bool useOutputDirectory;
 		DisplayValue selectedEcmaScriptTargetVersion;
 		List<DisplayValue> ecmaScriptTargetVersions = new List<DisplayValue>();
 		DisplayValue selectedModuleKind;
 		List<DisplayValue> moduleKinds = new List<DisplayValue>();
 		string outputFileName = String.Empty;
-
+		string outputDirectory = String.Empty;
+		
 		public TypeScriptProjectOptionsPanel()
 		{
 			InitializeComponent();
@@ -160,6 +163,24 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
+		public string OutputDirectory {
+			get { return outputDirectory; }
+			set {
+				UpdateDirtyFlag(outputDirectory, value);
+				outputDirectory = value;
+				RaisePropertyChanged(() => OutputDirectory);
+			}
+		}
+		
+		public bool UseOutputDirectory {
+			get { return useOutputDirectory; }
+			set {
+				UpdateDirtyFlag(useOutputDirectory, value);
+				useOutputDirectory = value;
+				RaisePropertyChanged(() => UseOutputDirectory);
+			}
+		}
+		
 		protected override void Load(MSBuildBasedProject project, string configuration, string platform)
 		{
 			base.Load(project, configuration, platform);
@@ -175,9 +196,13 @@ namespace ICSharpCode.TypeScriptBinding
 			SelectedEcmaScriptTargetVersion = GetEcmaScriptTargetVersion(typeScriptProject, buildConfig);
 			SelectedModuleKind = GetModuleKind(typeScriptProject, buildConfig);
 			OutputFileName = typeScriptProject.GetOutputFileName(buildConfig);
+			OutputDirectory = typeScriptProject.GetOutputDirectory(buildConfig);
 			
 			if (!String.IsNullOrEmpty(outputFileName)) {
 				UseOutputFileName = true;
+			}
+			if (!String.IsNullOrEmpty(outputDirectory)) {
+				UseOutputDirectory = true;
 			}
 			
 			IsDirty = false;
@@ -221,6 +246,7 @@ namespace ICSharpCode.TypeScriptBinding
 			typeScriptProject.SetModuleKind(buildConfig, SelectedModuleKind.Id);
 			
 			typeScriptProject.SetOutputFileName(buildConfig, GetOutputFileName());
+			typeScriptProject.SetOutputDirectory(buildConfig, GetOutputDirectory());
 			
 			return base.Save(project, configuration, platform);
 		}
@@ -231,6 +257,29 @@ namespace ICSharpCode.TypeScriptBinding
 				return OutputFileName;
 			}
 			return String.Empty;
+		}
+		
+		string GetOutputDirectory()
+		{
+			if (UseOutputDirectory) {
+				return OutputDirectory;
+			}
+			return String.Empty;
+		}
+		
+		void BrowseForOutputDirectoryClick(object sender, RoutedEventArgs e)
+		{
+			BrowseForOutputDirectory();
+		}
+		
+		void BrowseForOutputDirectory()
+		{
+			using (var dialog = new FolderBrowserDialog()) {
+				dialog.ShowNewFolderButton = true;
+				if (DialogResult.OK == dialog.ShowDialog()) {
+					OutputDirectory = dialog.SelectedPath;
+				}
+			}
 		}
 	}
 }

@@ -40,7 +40,7 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			ReportCompileStarting(fileName);
 			
-			project.CreateOutputFileDirectory();
+			project.CreateOutputDirectory();
 			
 			var compiler = new LanguageServiceCompiler(context);
 			UpdateFile(context, fileName);

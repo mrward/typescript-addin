@@ -50,6 +50,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public static readonly string TargetPropertyName = "TypeScriptTarget";
 		public static readonly string NoImplicitAnyPropertyName = "TypeScriptNoImplicitAny";
 		public static readonly string OutputFileNamePropertyName = "TypeScriptOutFile";
+		public static readonly string OutputDirectoryPropertyName = "TypeScriptOutDir";
 		
 		static readonly string DefaultEcmaScriptVersion = "ES5";
 		static readonly string DefaultModuleKind = "none";
@@ -269,13 +270,27 @@ namespace ICSharpCode.TypeScriptBinding
 			SetStringProperty(buildConfig, OutputFileNamePropertyName, value);
 		}
 		
+		public string OutputDirectory {
+			get { return GetStringProperty(OutputDirectoryPropertyName, String.Empty); }
+		}
+		
+		public string GetOutputDirectory(BuildConfiguration buildConfig)
+		{
+			return GetStringProperty(buildConfig, OutputDirectoryPropertyName, String.Empty);
+		}
+		
+		public void SetOutputDirectory(BuildConfiguration buildConfig, string value)
+		{
+			SetStringProperty(buildConfig, OutputDirectoryPropertyName, value);
+		}
+		
 		public IEnumerable<TypeScriptFile> GetTypeScriptFiles()
 		{
 			return GetTypeScriptFileNames()
 				.Select(fileName => new TypeScriptFile(fileName, TypeScriptService.GetFileContents(fileName)));
 		}
 		
-		public void CreateOutputFileDirectory()
+		void CreateOutputFileDirectory()
 		{
 			if (!String.IsNullOrEmpty(OutputFileName)) {
 				string fullPath = GetOutputFileFullPath();
@@ -294,6 +309,28 @@ namespace ICSharpCode.TypeScriptBinding
 				return OutputFileName;
 			}
 			return Path.Combine(project.Directory, OutputFileName);
+		}
+		
+		public void CreateOutputDirectory()
+		{
+			if (!String.IsNullOrEmpty(OutputFileName)) {
+				CreateOutputFileDirectory();
+			} else if (!String.IsNullOrEmpty(OutputDirectory)) {
+				string fullPath = GetOutputDirectoryFullPath();
+				Directory.CreateDirectory(fullPath);
+			}
+		}
+		
+		public string GetOutputDirectoryFullPath()
+		{
+			if (String.IsNullOrEmpty(OutputDirectory)) {
+				return String.Empty;
+			}
+			
+			if (Path.IsPathRooted(OutputDirectory)) {
+				return OutputDirectory;
+			}
+			return Path.Combine(project.Directory, OutputDirectory);
 		}
 	}
 }

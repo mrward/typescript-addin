@@ -43,5 +43,6 @@ namespace ICSharpCode.TypeScriptBinding
 		ModuleGenTarget GetModuleTarget();
 		
 		string GetOutputFileFullPath();
+		string GetOutputDirectoryFullPath();
 	}
 }
