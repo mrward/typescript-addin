@@ -24,7 +24,7 @@
 			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.xshd"/>
 	</Path>
 	
-	<Path name="/Workspace/Autostart">
+	<Path name="/SharpDevelop/Autostart">
 		<Class
 			id="ICSharpCode.TypeScriptBinding.RegisterIcons"
 			class="ICSharpCode.TypeScriptBinding.RegisterIconsCommand"/>
@@ -50,7 +50,7 @@
 		<Directory id="TypeScript" path="./Templates" />
 	</Path>
 	
-	<Path name="/AddIns/DefaultTextEditor/CodeCompletion">
+	<Path name="/SharpDevelop/ViewContent/TextEditor/CodeCompletion">
 		<CodeCompletionBinding
 			id="TypeScript"
 			extensions=".ts"

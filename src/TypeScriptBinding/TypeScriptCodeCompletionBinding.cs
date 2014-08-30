@@ -29,8 +29,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.Core;
 using ICSharpCode.NRefactory;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
@@ -38,13 +40,14 @@ using ICSharpCode.SharpDevelop.Editor.Search;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.SharpDevelop.Refactoring;
+using ICSharpCode.SharpDevelop.Workbench;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptCodeCompletionBinding : ICodeCompletionBinding
 	{
-		TypeScriptInsightWindowHandler insightHandler = new TypeScriptInsightWindowHandler();
+//		TypeScriptInsightWindowHandler insightHandler = new TypeScriptInsightWindowHandler();
 		
 		public CodeCompletionKeyPressResult HandleKeyPress(ITextEditor editor, char ch)
 		{
@@ -58,6 +61,11 @@ namespace ICSharpCode.TypeScriptBinding
 				return CodeCompletionKeyPressResult.EatKey;
 			}
 			return CodeCompletionKeyPressResult.None;
+		}
+		
+		public bool HandleKeyPressed(ITextEditor editor, char ch)
+		{
+			return false;
 		}
 		
 		void InsertCharacter(ITextEditor editor, char ch)
@@ -95,7 +103,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void UpdateAllOpenFiles(TypeScriptContext context)
 		{
-			foreach (IViewContent view in WorkbenchSingleton.Workbench.ViewContentCollection) {
+			foreach (IViewContent view in SD.Workbench.ViewContentCollection) {
 				if (TypeScriptParser.IsTypeScriptFileName(view.PrimaryFileName)) {
 					if (IsFileInsideProject(view.PrimaryFileName)) {
 						UpdateContext(context, view.PrimaryFileName);
@@ -106,13 +114,13 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void UpdateContext(TypeScriptContext context, FileName fileName)
 		{
-			ITextBuffer fileContent = GetFileContent(fileName);
+			ITextSource fileContent = GetFileContent(fileName);
 			context.UpdateFile(fileName, fileContent.Text);
 		}
 		
-		static ITextBuffer GetFileContent(string fileName)
+		static ITextSource GetFileContent(string fileName)
 		{
-			return ParserService.GetParseableFileContent(fileName);
+			return SD.FileService.GetFileContent(fileName);
 		}
 		
 		public bool CtrlSpace(ITextEditor editor)
@@ -128,13 +136,13 @@ namespace ICSharpCode.TypeScriptBinding
 			var provider = new TypeScriptFunctionInsightProvider(context);
 			IInsightItem[] items = provider.ProvideInsight(editor);
 			IInsightWindow insightWindow = editor.ShowInsightWindow(items);
-			if (insightWindow != null) {
-				insightHandler.InitializeOpenedInsightWindow(editor, insightWindow);
-				insightHandler.HighlightParameter(insightWindow, 0);
-			}
+//			if (insightWindow != null) {
+//				insightHandler.InitializeOpenedInsightWindow(editor, insightWindow);
+//				insightHandler.HighlightParameter(insightWindow, 0);
+//			}
 		}
 		
-		public static List<Reference> GetReferences(ITextEditor editor)
+		public static List<SearchResultMatch> GetReferences(ITextEditor editor)
 		{
 			TypeScriptContext context = GetContext(editor);
 			UpdateContext(context, editor);
@@ -142,21 +150,16 @@ namespace ICSharpCode.TypeScriptBinding
 			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
 			return entries
-				.Select(entry => CreateReference(entry))
+				.Select(entry => CreateSearchResultMatch(entry, editor.Document))
 				.ToList();
 		}
 		
-		static Reference CreateReference(ReferenceEntry entry)
+		static SearchResultMatch CreateSearchResultMatch(ReferenceEntry entry, IDocument document)
 		{
-			ITextBuffer fileContent = GetFileContent(entry.fileName);
-			string expression = fileContent.GetText(entry.minChar, entry.length);
-			return new Reference(entry.fileName, entry.minChar, entry.length, expression, null);
-		}
-		
-		static void ShowSearchResults(List<SearchResultMatch> searchResults)
-		{
-			SearchResultsPad.Instance.ShowSearchResults("References", searchResults);
-			SearchResultsPad.Instance.BringToFront();
+			TextLocation start = document.GetLocation(entry.minChar);
+			TextLocation end = document.GetLocation(entry.limChar);
+			IHighlighter highlighter = SD.EditorControlService.CreateHighlighter(document);
+			return SearchResultMatch.Create(document, start, end, highlighter);
 		}
 		
 		public static void GoToDefinition(ITextEditor editor)
@@ -175,9 +178,13 @@ namespace ICSharpCode.TypeScriptBinding
 			if (!definition.HasFileName())
 				return;
 			
-			var provider = FileService.OpenFile(definition.fileName) as ITextEditorProvider;
-			if (provider != null) {
-				Location location = provider.TextEditor.Document.OffsetToPosition(definition.minChar);
+			IViewContent view = FileService.OpenFile(definition.fileName);
+			if (view == null)
+				return;
+			
+			ITextEditor textEditor = view.GetService<ITextEditor>();
+			if (textEditor != null) {
+				TextLocation location = textEditor.Document.GetLocation(definition.minChar);
 				FileService.JumpToFilePosition(definition.fileName, location.Line, location.Column);
 			}
 		}

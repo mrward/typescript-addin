@@ -34,6 +34,7 @@ using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
+using ICSharpCode.SharpDevelop.Workbench;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -65,8 +66,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		string GetText(IViewContent view)
 		{
-			var provider = view as ITextEditorProvider;
-			return provider.TextEditor.Document.Text;
+			ITextEditor textEditor = view.GetService<ITextEditor>();
+			return textEditor.Document.Text;
 		}
 		
 		bool StandaloneTypeScriptFileOpened(ViewContentEventArgs e)
@@ -101,7 +102,7 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			if (File.Exists(fileName)) {
 				TypeScriptContext context = TypeScriptService.ContextProvider.GetContext(fileName);
-				string fileContent = FileReader.ReadFileContent(fileName, ParserService.DefaultFileEncoding);
+				string fileContent = FileReader.ReadFileContent(fileName, SD.FileService.DefaultFileEncoding);
 				context.UpdateFile(fileName, fileContent);
 			}
 		}

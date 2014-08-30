@@ -35,12 +35,9 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptLanguageBinding : DefaultLanguageBinding
 	{
-		public override IFormattingStrategy FormattingStrategy {
-			get { return new TypeScriptFormattingStrategy(); }
-		}
-		
-		public override LanguageProperties Properties {
-			get { return LanguageProperties.None; }
+		public TypeScriptLanguageBinding()
+		{
+			container.AddService(typeof(IFormattingStrategy), new TypeScriptFormattingStrategy());
 		}
 	}
 }

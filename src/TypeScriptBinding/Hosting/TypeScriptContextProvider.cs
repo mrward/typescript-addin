@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using ICSharpCode.Core;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Project;
 
@@ -111,7 +112,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		void AddFileToProjectContext(TypeScriptContext context, FileName fileName)
 		{
 			cachedContextsInsideProjects.Add(fileName, context);
-			ITextBuffer fileContent = ParserService.GetParseableFileContent(fileName);
+			ITextSource fileContent = SD.FileService.GetFileContent(fileName);
 			context.AddFile(fileName, fileContent.Text);
 		}
 		

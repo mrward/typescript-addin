@@ -29,13 +29,14 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
-
 using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.Core;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;
+using ICSharpCode.SharpDevelop.Workbench;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
@@ -63,7 +64,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void WorkbenchCreated(object sender, EventArgs e)
 		{
-			IWorkbench workbench = WorkbenchSingleton.Workbench;
+			IWorkbench workbench = SD.Workbench;
 			workbench.MainWindow.Closing += MainWindowClosing;
 			workbenchMonitor = new TypeScriptWorkbenchMonitor(workbench, contextProvider);
 			projectMonitor = new TypeScriptProjectMonitor(contextProvider);
@@ -90,7 +91,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public static string GetFileContents(FileName fileName)
 		{
-			ITextBuffer fileContent = ParserService.GetParseableFileContent(fileName);
+			ITextSource fileContent = SD.FileService.GetFileContent(fileName);
 			return fileContent.Text;
 		}
 	}

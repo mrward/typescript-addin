@@ -29,13 +29,14 @@
 using System;
 using ICSharpCode.Core;
 using ICSharpCode.NRefactory;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptTask : Task
+	public class TypeScriptTask : SDTask
 	{
 		public TypeScriptTask(
 			FileName fileName,
@@ -53,7 +54,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public static TypeScriptTask Create(FileName fileName, Diagnostic diagnostic, IDocument document)
 		{
-			Location location = document.OffsetToPosition(diagnostic.start);
+			TextLocation location = document.GetLocation(diagnostic.start);
 			return new TypeScriptTask(fileName, diagnostic, location.Column, location.Line);
 		}
 	}

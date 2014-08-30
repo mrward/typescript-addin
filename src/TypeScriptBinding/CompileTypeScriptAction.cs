@@ -49,8 +49,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		protected void ShowOutputPad()
 		{
-			WorkbenchSingleton
-				.Workbench
+			SD.Workbench
 				.GetPad(typeof(CompilerMessageView))
 				.BringPadToFront();
 		}

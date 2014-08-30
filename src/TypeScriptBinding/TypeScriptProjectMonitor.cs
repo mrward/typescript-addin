@@ -69,7 +69,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void ProjectItemRemoved(object sender, ProjectItemEventArgs e)
 		{
-			RemoveTypeScriptFileFromContext(new FileName(e.ProjectItem.FileName));
+			RemoveTypeScriptFileFromContext(e.ProjectItem.FileName);
 		}
 		
 		void RemoveTypeScriptFileFromContext(FileName fileName)
@@ -82,7 +82,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void ProjectItemAdded(object sender, ProjectItemEventArgs e)
 		{
-			AddTypeScriptFileToContext(e.Project, new FileName(e.ProjectItem.FileName));
+			AddTypeScriptFileToContext(e.Project, e.ProjectItem.FileName);
 		}
 		
 		void AddTypeScriptFileToContext(IProject project, FileName fileName)

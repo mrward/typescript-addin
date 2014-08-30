@@ -28,6 +28,8 @@
 
 using System;
 using ICSharpCode.NRefactory;
+using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Editor;
 
@@ -52,17 +54,17 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public DomRegion ToRegion(IDocument document)
 		{
-			Location start = document.OffsetToPosition(minChar);
-			Location end = document.OffsetToPosition(limChar);
-			return DomRegion.FromLocation(start, end);
+			TextLocation start = document.GetLocation(minChar);
+			TextLocation end = document.GetLocation(limChar);
+			return new DomRegion(start, end);
 		}
 		
 		public DomRegion ToRegionStartingFromOpeningCurlyBrace(IDocument document)
 		{
 			int startOffset = GetOpeningCurlyBraceOffsetForRegion(document);
-			Location start = document.OffsetToPosition(startOffset);
-			Location end = document.OffsetToPosition(limChar);
-			return DomRegion.FromLocation(start, end);
+			TextLocation start = document.GetLocation(startOffset);
+			TextLocation end = document.GetLocation(limChar);
+			return new DomRegion(start, end);
 		}
 		
 		int GetOpeningCurlyBraceOffsetForRegion(IDocument document)

@@ -34,7 +34,7 @@ using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
-	public class TypeScriptCompletionItemProvider : AbstractCompletionItemProvider
+	public class TypeScriptCompletionItemProvider
 	{
 		TypeScriptContext context;
 		bool memberCompletion;
@@ -55,7 +55,7 @@ namespace ICSharpCode.TypeScriptBinding
 			return false;
 		}
 		
-		public override ICompletionItemList GenerateCompletionList(ITextEditor editor)
+		public ICompletionItemList GenerateCompletionList(ITextEditor editor)
 		{
 			CompletionInfo result = context.GetCompletionItems(
 				editor.FileName,

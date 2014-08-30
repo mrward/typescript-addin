@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.ComponentModel;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -59,5 +60,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public object Content {
 			get { return itemInfo.docComment; }
 		}
+		
+		public event PropertyChangedEventHandler PropertyChanged;
 	}
 }

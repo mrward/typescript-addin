@@ -82,7 +82,7 @@ namespace ICSharpCode.TypeScriptBinding
 			return project
 				.Items
 				.Where(item => TypeScriptParser.IsTypeScriptFileName(item.FileName))
-				.Select(item => new FileName(item.FileName));
+				.Select(item => item.FileName);
 		}
 		
 		string GetStringProperty(BuildConfiguration buildConfig, string name, string defaultValue)

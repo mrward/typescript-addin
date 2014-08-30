@@ -46,7 +46,7 @@ namespace ICSharpCode.TypeScriptBinding
 		void BuildStarted(object sender, BuildEventArgs e)
 		{
 			var action = new CompileTypeScriptFilesOnBuildAction();
-			action.CompileFiles(e.Buildable);
+			action.CompileFiles(e.Projects);
 		}
 	}
 }

@@ -38,10 +38,10 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class CompileTypeScriptFilesOnBuildAction : CompileTypeScriptAction
 	{
-		public void CompileFiles(IBuildable buildable)
+		public void CompileFiles(IEnumerable<IProject> projects)
 		{
 			ClearOutputWindow();
-			foreach (TypeScriptProject project in buildable.GetTypeScriptProjects()) {
+			foreach (TypeScriptProject project in projects.Select(project => new TypeScriptProject(project))) {
 				if (project.CompileOnBuild) {
 					CompileFiles(project);
 				}

@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ICSharpCode.Core;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Gui;
@@ -42,7 +43,7 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public void Update(Diagnostic[] diagnostics, FileName fileName, IDocument document)
 		{
-			WorkbenchSingleton.SafeThreadCall(() => {
+			SD.MainThread.InvokeIfRequired(() => {
 				ClearTasksForFileName(fileName);
 				
 				List<TypeScriptTask> tasks = diagnostics
@@ -61,7 +62,7 @@ namespace ICSharpCode.TypeScriptBinding
 				.Where(t => t.FileName == fileName)
 				.ToList();
 			
-			foreach (Task task in tasks) {
+			foreach (SDTask task in tasks) {
 				TaskService.Remove(task);
 			}
 		}

@@ -38,7 +38,7 @@ namespace ICSharpCode.TypeScriptBinding
 		public override void Run()
 		{
 			Assembly assembly = typeof(RegisterIconsCommand).Assembly;
-			ResourceService.RegisterImages("ICSharpCode.TypeScriptBinding.Resources.ImageResources", assembly);
+			SD.ResourceService.RegisterImages("ICSharpCode.TypeScriptBinding.Resources.ImageResources", assembly);
 		}
 	}
 }

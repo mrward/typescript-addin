@@ -31,7 +31,9 @@ using System.Collections.Generic;
 using System.Linq;
 
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.SharpDevelop.Editor.Search;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Refactoring;
 
@@ -41,11 +43,17 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public override void Run()
 		{
-			var editorProvider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
-			if (editorProvider != null) {
-				List<Reference> references = TypeScriptCodeCompletionBinding.GetReferences(editorProvider.TextEditor);
-				FindReferencesAndRenameHelper.ShowAsSearchResults("References", references);
+			ITextEditor textEditor = SD.Workbench.ActiveViewContent.GetService<ITextEditor>();
+			if (textEditor != null) {
+				List<SearchResultMatch> references = TypeScriptCodeCompletionBinding.GetReferences(textEditor);
+				ShowSearchResults(references);
 			}
+		}
+		
+		static void ShowSearchResults(List<SearchResultMatch> searchResults)
+		{
+			SearchResultsPad.Instance.ShowSearchResults("References", searchResults);
+			SearchResultsPad.Instance.BringToFront();
 		}
 	}
 }

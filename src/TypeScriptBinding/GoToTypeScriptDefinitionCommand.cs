@@ -28,6 +28,7 @@
 
 using System;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Gui;
 
@@ -37,9 +38,9 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public override void Run()
 		{
-			var editorProvider = WorkbenchSingleton.Workbench.ActiveViewContent as ITextEditorProvider;
-			if (editorProvider != null) {
-				TypeScriptCodeCompletionBinding.GoToDefinition(editorProvider.TextEditor);
+			ITextEditor textEditor = SD.Workbench.ActiveViewContent.GetService<ITextEditor>();
+			if (textEditor != null) {
+				TypeScriptCodeCompletionBinding.GoToDefinition(textEditor);
 			}
 		}
 	}

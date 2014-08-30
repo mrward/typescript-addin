@@ -28,11 +28,15 @@
 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.AvalonEdit.Document;
+using System.Threading;
+
 using ICSharpCode.Core;
-using ICSharpCode.SharpDevelop;
-using ICSharpCode.SharpDevelop.Dom;
-using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.NRefactory;
+using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.NRefactory.Semantics;
+using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.SharpDevelop.Editor.Search;
+using ICSharpCode.SharpDevelop.Parser;
 using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -52,80 +56,101 @@ namespace ICSharpCode.TypeScriptBinding
 			this.contextFactory = contextFactory;
 		}
 		
-		public string[] LexerTags { get; set; }
-		
-		public LanguageProperties Language {
-			get { return LanguageProperties.None; }
-		}
-		
-		public IExpressionFinder CreateExpressionFinder(string fileName)
-		{
-			return null;
+		public IReadOnlyList<string> TaskListTokens {
+			get {
+				throw new NotImplementedException();
+			}
+			set {
+				throw new NotImplementedException();
+			}
 		}
 		
 		public bool CanParse(string fileName)
 		{
 			return true;
 		}
-		
-		public bool CanParse(IProject project)
-		{
-			return true;
-		}
-		
-		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
-		{
-			return Parse(projectContent, fileName, fileContent, new TypeScriptFile[0]);
-		}
-		
-		public ICompilationUnit Parse(
-			IProjectContent projectContent,
-			string fileName,
-			ITextBuffer fileContent,
-			IEnumerable<TypeScriptFile> files)
-		{
-			try {
-				using (TypeScriptContext context = contextFactory.CreateContext()) {
-					var file = new FileName(fileName);
-					context.AddFile(file, fileContent.Text);
-					context.RunInitialisationScript();
-					
-					NavigateToItem[] navigation = context.GetLexicalStructure(file);
-					var unit = new TypeScriptCompilationUnit(projectContent) {
-						FileName = fileName
-					};
-					unit.AddNavigation(navigation, fileContent);
-					
-					var typeScriptProjectContent = projectContent as TypeScriptProjectContent;
-					if (typeScriptProjectContent != null) {
-						context.AddFiles(files);
-						IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(fileContent);
-						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, typeScriptProjectContent.Options);
-						TypeScriptService.TaskService.Update(diagnostics, file, document);
-					}
-					
-					return unit;
-				}
-			} catch (Exception ex) {
-				Console.WriteLine(ex.ToString());
-				LoggingService.Debug(ex.ToString());
-			}
-			return new DefaultCompilationUnit(projectContent);
-		}
-		
-		public IResolver CreateResolver()
-		{
-			return null;
-		}
+//		
+//		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
+//		{
+//			return Parse(projectContent, fileName, fileContent, new TypeScriptFile[0]);
+//		}
+//		
+//		public ICompilationUnit Parse(
+//			IProjectContent projectContent,
+//			string fileName,
+//			ITextBuffer fileContent,
+//			IEnumerable<TypeScriptFile> files)
+//		{
+//			try {
+//				using (TypeScriptContext context = contextFactory.CreateContext()) {
+//					var file = new FileName(fileName);
+//					context.AddFile(file, fileContent.Text);
+//					context.RunInitialisationScript();
+//					
+//					NavigateToItem[] navigation = context.GetLexicalStructure(file);
+//					var unit = new TypeScriptCompilationUnit(projectContent) {
+//						FileName = fileName
+//					};
+//					unit.AddNavigation(navigation, fileContent);
+//					
+//					var typeScriptProjectContent = projectContent as TypeScriptProjectContent;
+//					if (typeScriptProjectContent != null) {
+//						context.AddFiles(files);
+//						IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(fileContent);
+//						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, typeScriptProjectContent.Options);
+//						TypeScriptService.TaskService.Update(diagnostics, file, document);
+//					}
+//					
+//					return unit;
+//				}
+//			} catch (Exception ex) {
+//				Console.WriteLine(ex.ToString());
+//				LoggingService.Debug(ex.ToString());
+//			}
+//			return new DefaultCompilationUnit(projectContent);
+//		}
 		
 		public static bool IsTypeScriptFileName(FileName fileName)
 		{
+			if (fileName == null)
+				return false;
+			
 			return String.Equals(".ts", fileName.GetExtension(), StringComparison.OrdinalIgnoreCase);
 		}
 		
-		public static bool IsTypeScriptFileName(string fileName)
+		public ITextSource GetFileContent(FileName fileName)
 		{
-			return IsTypeScriptFileName(new FileName(fileName));
+			throw new NotImplementedException();
+		}
+		
+		public ParseInformation Parse(FileName fileName, ITextSource fileContent, bool fullParseInformationRequested, IProject parentProject, CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public ResolveResult Resolve(ParseInformation parseInfo, TextLocation location, ICompilation compilation, CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public ICodeContext ResolveContext(ParseInformation parseInfo, ICSharpCode.NRefactory.TextLocation location, ICSharpCode.NRefactory.TypeSystem.ICompilation compilation, System.Threading.CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public ResolveResult ResolveSnippet(ParseInformation parseInfo, TextLocation location, string codeSnippet, ICompilation compilation, CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public void FindLocalReferences(ParseInformation parseInfo, ITextSource fileContent, IVariable variable, ICompilation compilation, Action<SearchResultMatch> callback, CancellationToken cancellationToken)
+		{
+			throw new NotImplementedException();
+		}
+		
+		public ICompilation CreateCompilationForSingleFile(FileName fileName, IUnresolvedFile unresolvedFile)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }
