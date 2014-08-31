@@ -35,7 +35,6 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public override void Run()
 		{
-			System.Diagnostics.Debugger.Break();
 			TypeScriptService.Initialize();
 		}
 	}
