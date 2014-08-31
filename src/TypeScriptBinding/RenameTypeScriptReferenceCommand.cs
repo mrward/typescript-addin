@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using ICSharpCode.Core;
+using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.Search;
@@ -51,7 +52,7 @@ namespace ICSharpCode.TypeScriptBinding
 				if (references.Count == 0) {
 					ShowUnknownReferenceError();
 				} else {
-					RenameAllReferences(references, textEditor);
+					RenameAllReferences(references);
 				}
 			}
 		}
@@ -61,10 +62,11 @@ namespace ICSharpCode.TypeScriptBinding
 			MessageService.ShowMessage("${res:SharpDevelop.Refactoring.CannotRenameElement}");
 		}
 		
-		void RenameAllReferences(List<SearchResultMatch> references, ITextEditor textEditor)
+		void RenameAllReferences(List<SearchResultMatch> references)
 		{
 			SearchResultMatch firstResult = references.First();
-			string name = textEditor.Document.GetText(firstResult.StartOffset, firstResult.Length);
+			var document = new ReadOnlyDocument(SD.FileService.GetFileContent(firstResult.FileName));
+			string name = document.GetText(firstResult.StartOffset, firstResult.Length);
 			string newName = GetNewName(name);
 			if (ShouldRenameReference(newName, name)) {
 				ApplyRenames(references, newName);
