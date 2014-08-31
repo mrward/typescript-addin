@@ -60,19 +60,21 @@
 	
 	<Path name="/Addins/TypeScript/TextEditor/ContextMenu">
 		<MenuItem
-			id="FindTypeScriptReferences"
-			label="Find TypeScript References"
-			icon="Icons.16x16.SelectionArrow"
-			class="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommand"/>
-		<MenuItem
 			id="GoToTypeScriptDefinition"
-			label="Go To TypeScript Definition"
+			label = "${res:ICSharpCode.NAntAddIn.GotoDefinitionMenuLabel}"
 			icon="Icons.16x16.SelectionArrow"
+			shortcut = "Control|Return"
 			class="ICSharpCode.TypeScriptBinding.GoToTypeScriptDefinitionCommand"/>
 		<MenuItem
 			id="RenameTypeScriptReference"
-			label="Rename"
+			label = "${res:SharpDevelop.Refactoring.RenameCommand}"
 			class="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommand"/>
+		<MenuItem
+			id="FindTypeScriptReferences"
+			label = "${res:SharpDevelop.Refactoring.FindReferences}"
+			icon="Icons.16x16.SelectionArrow"
+			shortcut = "F12"
+			class="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommand"/>
 	</Path>
 	
 	<Path name="/SharpDevelop/ViewContent/TextEditor/ContextMenu">
