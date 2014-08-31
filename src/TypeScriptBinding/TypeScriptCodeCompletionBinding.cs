@@ -150,12 +150,14 @@ namespace ICSharpCode.TypeScriptBinding
 			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
 			return entries
-				.Select(entry => CreateSearchResultMatch(entry, editor.Document))
+				.Select(entry => CreateSearchResultMatch(entry))
 				.ToList();
 		}
 		
-		static SearchResultMatch CreateSearchResultMatch(ReferenceEntry entry, IDocument document)
+		static SearchResultMatch CreateSearchResultMatch(ReferenceEntry entry)
 		{
+			ITextSource textSource = SD.FileService.GetFileContent(entry.fileName);
+			var document = new ReadOnlyDocument(textSource, entry.fileName);
 			TextLocation start = document.GetLocation(entry.minChar);
 			TextLocation end = document.GetLocation(entry.limChar);
 			IHighlighter highlighter = SD.EditorControlService.CreateHighlighter(document);
