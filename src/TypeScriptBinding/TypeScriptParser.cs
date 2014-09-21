@@ -29,12 +29,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-
+using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.NRefactory.Semantics;
 using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.NRefactory.TypeSystem.Implementation;
 using ICSharpCode.SharpDevelop.Editor.Search;
 using ICSharpCode.SharpDevelop.Parser;
 using ICSharpCode.SharpDevelop.Project;
@@ -69,46 +70,47 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			return true;
 		}
-//		
-//		public ICompilationUnit Parse(IProjectContent projectContent, string fileName, ITextBuffer fileContent)
-//		{
-//			return Parse(projectContent, fileName, fileContent, new TypeScriptFile[0]);
-//		}
-//		
-//		public ICompilationUnit Parse(
-//			IProjectContent projectContent,
-//			string fileName,
-//			ITextBuffer fileContent,
-//			IEnumerable<TypeScriptFile> files)
-//		{
-//			try {
-//				using (TypeScriptContext context = contextFactory.CreateContext()) {
-//					var file = new FileName(fileName);
-//					context.AddFile(file, fileContent.Text);
-//					context.RunInitialisationScript();
-//					
-//					NavigateToItem[] navigation = context.GetLexicalStructure(file);
-//					var unit = new TypeScriptCompilationUnit(projectContent) {
-//						FileName = fileName
-//					};
-//					unit.AddNavigation(navigation, fileContent);
-//					
-//					var typeScriptProjectContent = projectContent as TypeScriptProjectContent;
-//					if (typeScriptProjectContent != null) {
-//						context.AddFiles(files);
-//						IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(fileContent);
-//						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, typeScriptProjectContent.Options);
-//						TypeScriptService.TaskService.Update(diagnostics, file, document);
-//					}
-//					
-//					return unit;
-//				}
-//			} catch (Exception ex) {
-//				Console.WriteLine(ex.ToString());
-//				LoggingService.Debug(ex.ToString());
-//			}
-//			return new DefaultCompilationUnit(projectContent);
-//		}
+		
+		public ParseInformation Parse(
+			FileName fileName,
+			ITextSource fileContent,
+			bool fullParseInformationRequested,
+			IProject parentProject,
+			CancellationToken cancellationToken)
+		{
+			return Parse(fileName, fileContent, new TypeScriptProject(parentProject), new TypeScriptFile[0]);
+		}
+		
+		public ParseInformation Parse(
+			FileName fileName,
+			ITextSource fileContent,
+			TypeScriptProject project,
+			IEnumerable<TypeScriptFile> files)
+		{
+			try {
+				using (TypeScriptContext context = contextFactory.CreateContext()) {
+					context.AddFile(fileName, fileContent.Text);
+					context.RunInitialisationScript();
+					
+					NavigateToItem[] navigation = context.GetLexicalStructure(fileName);
+					var unresolvedFile = new TypeScriptUnresolvedFile(fileName);
+					unresolvedFile.AddNavigation(navigation, fileContent);
+					
+					if (project != null) {
+						context.AddFiles(files);
+						var document = new TextDocument(fileContent);
+						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(fileName, project.GetOptions());
+						TypeScriptService.TaskService.Update(diagnostics, fileName, document);
+					}
+					
+					return new ParseInformation(unresolvedFile, fileContent.Version, true);
+				}
+			} catch (Exception ex) {
+				Console.WriteLine(ex.ToString());
+				LoggingService.Debug(ex.ToString());
+			}
+			return null;
+		}
 		
 		public static bool IsTypeScriptFileName(FileName fileName)
 		{
@@ -119,11 +121,6 @@ namespace ICSharpCode.TypeScriptBinding
 		}
 		
 		public ITextSource GetFileContent(FileName fileName)
-		{
-			throw new NotImplementedException();
-		}
-		
-		public ParseInformation Parse(FileName fileName, ITextSource fileContent, bool fullParseInformationRequested, IProject parentProject, CancellationToken cancellationToken)
 		{
 			throw new NotImplementedException();
 		}

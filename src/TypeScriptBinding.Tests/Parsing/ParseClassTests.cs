@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Linq;
+using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.SharpDevelop.Dom;
 using NUnit.Framework;
 
@@ -18,8 +19,8 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetFirstClass();
-			Assert.AreEqual(1, CompilationUnit.Classes.Count);
+			IUnresolvedTypeDefinition c = GetFirstClass();
+			Assert.AreEqual(1, ParseInfo.UnresolvedFile.TopLevelTypeDefinitions.Count);
 			Assert.AreEqual("Student", c.Name);
 		}
 		
@@ -37,7 +38,7 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetFirstClass();
+			IUnresolvedTypeDefinition c = GetFirstClass();
 			Assert.AreEqual(expectedBodyRegion, c.BodyRegion);
 		}
 		
@@ -55,7 +56,7 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetFirstClass();
+			IUnresolvedTypeDefinition c = GetFirstClass();
 			Assert.AreEqual(expectedRegion, c.Region);
 		}
 		
@@ -71,8 +72,8 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetFirstClass();
-			IMethod method = c.Methods.First();
+			IUnresolvedTypeDefinition c = GetFirstClass();
+			IUnresolvedMethod method = c.Methods.First();
 			Assert.AreEqual("sayHello", method.Name);
 			Assert.AreEqual(2, method.Region.EndLine);
 			Assert.AreEqual(15, method.Region.EndColumn);
@@ -95,9 +96,9 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetSecondClass();
-			IMethod method = c.Methods.FirstOrDefault();
-			Assert.AreEqual(2, CompilationUnit.Classes.Count);
+			IUnresolvedTypeDefinition c = GetSecondClass();
+			IUnresolvedMethod method = c.Methods.FirstOrDefault();
+			Assert.AreEqual(2, ParseInfo.UnresolvedFile.TopLevelTypeDefinitions.Count);
 			Assert.AreEqual("sayHello", method.Name);
 			Assert.AreEqual(5, method.Region.EndLine);
 			Assert.AreEqual(15, method.Region.EndColumn);
@@ -117,8 +118,8 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetFirstClass();
-			IMethod method = c.Methods.First();
+			IUnresolvedTypeDefinition c = GetFirstClass();
+			IUnresolvedMethod method = c.Methods.First();
 			Assert.AreEqual("constructor", method.Name);
 			Assert.AreEqual(2, method.Region.EndLine);
 			Assert.AreEqual(18, method.Region.EndColumn);
@@ -135,9 +136,9 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass c = GetFirstClass();
+			IUnresolvedTypeDefinition c = GetFirstClass();
 			Assert.AreEqual("Student", c.Name);
-			Assert.AreEqual(ClassType.Interface, c.ClassType);
+			Assert.AreEqual(TypeKind.Interface, c.Kind);
 		}
 		
 		[Test]
@@ -151,12 +152,12 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass module = GetFirstClass();
+			IUnresolvedTypeDefinition module = GetFirstClass();
 			Assert.AreEqual("MyModule", module.Name);
-			Assert.AreEqual(ClassType.Module, module.ClassType);
-			IClass c = module.InnerClasses.FirstOrDefault();
-			Assert.AreEqual("MyModule.Student", c.FullyQualifiedName);
-			Assert.AreEqual(1, CompilationUnit.Classes.Count);
+			Assert.AreEqual(TypeKind.Module, module.Kind);
+			IUnresolvedTypeDefinition c = module.NestedTypes.FirstOrDefault();
+			Assert.AreEqual("MyModule.Student", c.FullName);
+			Assert.AreEqual(1, ParseInfo.UnresolvedFile.TopLevelTypeDefinitions.Count);
 		}
 		
 		[Test]
@@ -172,9 +173,9 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			Parse(code);
 			
-			IClass module = GetFirstClass();
-			IClass c = module.InnerClasses.FirstOrDefault();
-			IMethod method = c.Methods[0];
+			IUnresolvedTypeDefinition module = GetFirstClass();
+			IUnresolvedTypeDefinition c = module.NestedTypes.FirstOrDefault();
+			IUnresolvedMethod method = c.Methods.First();
 			Assert.AreEqual("speak", method.Name);
 		}
 	}

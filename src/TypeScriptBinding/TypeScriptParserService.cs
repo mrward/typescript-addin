@@ -29,16 +29,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
-
 using ICSharpCode.AvalonEdit.AddIn;
 using ICSharpCode.Core;
+using ICSharpCode.NRefactory.Editor;
+using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Parser;
+using ICSharpCode.SharpDevelop.Workbench;
 using ICSharpCode.TypeScriptBinding.Hosting;
-//using ITextBuffer = ICSharpCode.SharpDevelop.ITextBuffer;
 
 namespace ICSharpCode.TypeScriptBinding
 {
@@ -49,86 +51,88 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public void Start()
 		{
-//			timer = new DispatcherTimer(DispatcherPriority.Background);
-//			timer.Interval = TimeSpan.FromSeconds(1.5);
-//			timer.Tick += TimerTick;
-//			timer.Start();
+			timer = new DispatcherTimer(DispatcherPriority.Background);
+			timer.Interval = TimeSpan.FromSeconds(1.5);
+			timer.Tick += TimerTick;
+			timer.Start();
 		}
 		
 		public void Stop()
 		{
-//			timer.Stop();
+			timer.Stop();
 		}
-//		
-//		void TimerTick(object sender, EventArgs e)
-//		{
-//			Run();
-//		}
-//		
-//		void Run()
-//		{
-//			try {
-//				if (!ParserCurrentlyRunning()) {
-//					ParseActiveTypeScriptFile();
-//				}
-//			} catch (Exception ex) {
-//				LoggingService.DebugFormatted("TypeScriptParser error: {0}", ex.ToString());
-//			}
-//		}
-//		
-//		bool ParserCurrentlyRunning()
-//		{
-//			return (parseTask != null) && !parseTask.IsCompleted;
-//		}
-//		
-//		void ParseActiveTypeScriptFile()
-//		{
-//			CodeEditor editor = GetActiveTypeScriptCodeEditor();
-//			if (editor != null) {
-//				parseTask = CreateParseTypeScriptFileTask(editor);
-//			}
-//		}
-//		
-//		CodeEditor GetActiveTypeScriptCodeEditor()
-//		{
-//			var provider = WorkbenchSingleton.Workbench.ActiveViewContent as ICodeEditorProvider;
-//			if (provider != null) {
-//				CodeEditor editor = provider.CodeEditor;
-//				if (TypeScriptParser.IsTypeScriptFileName(editor.FileName)) {
-//					return editor;
-//				}
-//			}
-//			return null;
-//		}
-//		
-//		Task CreateParseTypeScriptFileTask(CodeEditor editor)
-//		{
-//			ITextBuffer fileContent = editor.DocumentAdapter.CreateSnapshot();
-//			TypeScriptProject project = TypeScriptService.GetProjectForFile(editor.FileName);
-//			return Task
-//				.Factory
-//				.StartNew(() => ParseTypeScriptFile(editor.FileName, fileContent, project))
-//				.ContinueWith(task => UpdateParseInformation(task.Result), TaskScheduler.FromCurrentSynchronizationContext());
-//		}
-//		
-//		ParseInformation ParseTypeScriptFile(string fileName, ITextBuffer fileContent, TypeScriptProject project)
-//		{
-//			var parser = new TypeScriptParser(new LanguageServiceNullLogger());
-//			var projectContent = new TypeScriptProjectContent(project);
-//			List<TypeScriptFile> files = project.GetTypeScriptFiles().ToList();
-//			ICompilationUnit unit = parser.Parse(projectContent, fileName, fileContent, files);
-//			return new ParseInformation(unit);
-//		}
-//		
-//		void UpdateParseInformation(ParseInformation parseInfo)
-//		{
-//			CodeEditor editor = GetActiveTypeScriptCodeEditor();
-//			if (editor != null) {
-//				var fileName = new FileName(parseInfo.CompilationUnit.FileName);
-//				if (editor.FileName == fileName) {
-//					editor.ParseInformationUpdated(parseInfo);
-//				}
-//			}
-//		}
+		
+		void TimerTick(object sender, EventArgs e)
+		{
+			Run();
+		}
+		
+		void Run()
+		{
+			try {
+				if (!ParserCurrentlyRunning()) {
+					ParseActiveTypeScriptFile();
+				}
+			} catch (Exception ex) {
+				LoggingService.DebugFormatted("TypeScriptParser error: {0}", ex.ToString());
+			}
+		}
+		
+		bool ParserCurrentlyRunning()
+		{
+			return (parseTask != null) && !parseTask.IsCompleted;
+		}
+		
+		void ParseActiveTypeScriptFile()
+		{
+			CodeEditor editor = GetActiveTypeScriptCodeEditor();
+			if (editor != null) {
+				parseTask = CreateParseTypeScriptFileTask(editor);
+			}
+		}
+		
+		CodeEditor GetActiveTypeScriptCodeEditor()
+		{
+			IViewContent view = SD.Workbench.ActiveViewContent;
+			if (view != null) {
+				CodeEditor editor = view.GetService<CodeEditor>();
+				if (editor != null) {
+					if (TypeScriptParser.IsTypeScriptFileName(editor.FileName)) {
+						return editor;
+					}
+				}
+			}
+			return null;
+		}
+		
+		Task CreateParseTypeScriptFileTask(CodeEditor editor)
+		{
+			ITextSource fileContent = editor.Document.CreateSnapshot();
+			TypeScriptProject project = TypeScriptService.GetProjectForFile(editor.FileName);
+			return Task
+				.Factory
+				.StartNew(() => ParseTypeScriptFile(editor.FileName, fileContent, project))
+				.ContinueWith(task => UpdateParseInformation(task.Result), TaskScheduler.FromCurrentSynchronizationContext());
+		}
+		
+		ParseInformation ParseTypeScriptFile(FileName fileName, ITextSource fileContent, TypeScriptProject project)
+		{
+			var parser = new TypeScriptParser(new LanguageServiceNullLogger());
+			List<TypeScriptFile> files = project.GetTypeScriptFiles().ToList();
+			return parser.Parse(fileName, fileContent, project, files);
+		}
+		
+		void UpdateParseInformation(ParseInformation parseInfo)
+		{
+			if (parseInfo == null)
+				return;
+			
+			CodeEditor editor = GetActiveTypeScriptCodeEditor();
+			if (editor != null) {
+				if (editor.FileName == parseInfo.FileName) {
+					editor.PrimaryTextEditor.UpdateParseInformationForFolding(parseInfo);
+				}
+			}
+		}
 	}
 }

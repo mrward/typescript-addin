@@ -1,9 +1,16 @@
 ﻿
 using System;
 using System.Linq;
+using System.Threading;
+
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.Core;
+using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.SharpDevelop.Parser;
+using ICSharpCode.SharpDevelop.Project;
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using Rhino.Mocks;
@@ -12,17 +19,13 @@ namespace TypeScriptBinding.Tests.Parsing
 {
 	public abstract class ParseTests
 	{
-		public ICompilationUnit CompilationUnit { get; private set; }
-		public IProjectContent ProjectContent { get; private set; }
-		
-		public TypeScriptCompilationUnit TypeScriptCompilationUnit {
-			get { return CompilationUnit as TypeScriptCompilationUnit; }
-		}
+		public ParseInformation ParseInfo { get; private set; }
+		public IProject Project { get; private set; }
 		
 		public void Parse(string text, string fileName = @"d:\projects\MyProject\test.ts")
 		{
-			ProjectContent = MockRepository.GenerateStub<IProjectContent>();
-			var textBuffer = new StringTextBuffer(text);
+			Project = MockRepository.GenerateStub<IProject>();
+			var fileContent = new TextDocument(text);
 			
 			var scriptLoader = new ParseTestScriptLoader();
 			var logger = new LanguageServiceLogger();
@@ -32,22 +35,22 @@ namespace TypeScriptBinding.Tests.Parsing
 				.Return(new TypeScriptContext(scriptLoader, logger));
 			
 			var parser = new TypeScriptParser(contextFactory);
-			CompilationUnit = parser.Parse(ProjectContent, fileName, textBuffer);
+			ParseInfo = parser.Parse(new FileName(fileName), fileContent, null, new TypeScriptFile[0]);
 		}
 		
-		public IClass GetFirstClass()
+		public IUnresolvedTypeDefinition GetFirstClass()
 		{
 			return GetClassAtIndex(0);
 		}
 		
-		public IClass GetSecondClass()
+		public IUnresolvedTypeDefinition GetSecondClass()
 		{
 			return GetClassAtIndex(1);
 		}
 		
-		public IClass GetClassAtIndex(int index)
+		public IUnresolvedTypeDefinition GetClassAtIndex(int index)
 		{
-			return CompilationUnit.Classes.Skip(index).First();
+			return ParseInfo.UnresolvedFile.TopLevelTypeDefinitions.Skip(index).First();
 		}
 	}
 }

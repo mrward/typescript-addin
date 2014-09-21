@@ -62,5 +62,12 @@ namespace ICSharpCode.TypeScriptBinding
 		}
 		
 		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+		{
+			if (PropertyChanged != null) {
+				PropertyChanged(this, e);
+			}
+		}
 	}
 }
