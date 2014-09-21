@@ -102,16 +102,16 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
-		DefaultUnresolvedTypeDefinition AddClass(NavigateToItem item, IDocument document)
+		TypeScriptUnresolvedTypeDefinition AddClass(NavigateToItem item, IDocument document)
 		{
-			var defaultClass = new DefaultUnresolvedTypeDefinition(item.GetFullName()) {
+			var defaultClass = new TypeScriptUnresolvedTypeDefinition(item.GetFullName()) {
 				UnresolvedFile = this
 			};
 			defaultClass.BodyRegion = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			defaultClass.Region = defaultClass.BodyRegion;
 			
 			if (item.HasContainer()) {
-				DefaultUnresolvedTypeDefinition parentClass = FindParentClass(item);
+				TypeScriptUnresolvedTypeDefinition parentClass = FindParentClass(item);
 				parentClass.NestedTypes.Add(defaultClass);
 			} else {
 				typeDefinitions.Add(defaultClass);
@@ -121,19 +121,19 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddInterface(NavigateToItem item, IDocument document)
 		{
-			DefaultUnresolvedTypeDefinition c = AddClass(item, document);
+			TypeScriptUnresolvedTypeDefinition c = AddClass(item, document);
 			c.Kind = TypeKind.Interface;
 		}
 		
 		void AddModule(NavigateToItem item, IDocument document)
 		{
-			DefaultUnresolvedTypeDefinition c = AddClass(item, document);
+			TypeScriptUnresolvedTypeDefinition c = AddClass(item, document);
 			c.Kind = TypeKind.Module;
 		}
 		
 		void AddMethod(NavigateToItem item, IDocument document)
 		{
-			DefaultUnresolvedTypeDefinition c = FindParentClass(item);
+			TypeScriptUnresolvedTypeDefinition c = FindParentClass(item);
 			var method = new DefaultUnresolvedMethod(c, item.name);
 			UpdateMethodRegions(method, item, document);
 			c.Members.Add(method);
@@ -150,27 +150,27 @@ namespace ICSharpCode.TypeScriptBinding
 			method.BodyRegion = region;
 		}
 		
-		DefaultUnresolvedTypeDefinition FindParentClass(NavigateToItem item)
+		TypeScriptUnresolvedTypeDefinition FindParentClass(NavigateToItem item)
 		{
 			string containerParentName = item.GetContainerParentName();
 			if (containerParentName != null) {
-				DefaultUnresolvedTypeDefinition parentClass = FindClass(containerParentName);
+				TypeScriptUnresolvedTypeDefinition parentClass = FindClass(containerParentName);
 				return FindClass(parentClass.NestedTypes, item.containerName);
 			} else {
 				return FindClass(item.containerName);
 			}
 		}
 		
-		DefaultUnresolvedTypeDefinition FindClass(string name)
+		TypeScriptUnresolvedTypeDefinition FindClass(string name)
 		{
 			return FindClass(typeDefinitions, name);
 		}
 		
-		DefaultUnresolvedTypeDefinition FindClass(IList<IUnresolvedTypeDefinition> classes, string name)
+		TypeScriptUnresolvedTypeDefinition FindClass(IList<IUnresolvedTypeDefinition> classes, string name)
 		{
 			return classes
 				.Where(c => c.FullName == name)
-				.Select(c => (DefaultUnresolvedTypeDefinition)c)
+				.Select(c => (TypeScriptUnresolvedTypeDefinition)c)
 				.FirstOrDefault();
 		}
 	}

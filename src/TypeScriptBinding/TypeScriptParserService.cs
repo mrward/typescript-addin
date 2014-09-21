@@ -124,13 +124,10 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void UpdateParseInformation(ParseInformation parseInfo)
 		{
-			if (parseInfo == null)
-				return;
-			
 			CodeEditor editor = GetActiveTypeScriptCodeEditor();
 			if (editor != null) {
 				if (editor.FileName == parseInfo.FileName) {
-					editor.PrimaryTextEditor.UpdateParseInformationForFolding(parseInfo);
+					editor.ParseInformationUpdated(parseInfo);
 				}
 			}
 		}

@@ -4,6 +4,7 @@ using System.Linq;
 using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.SharpDevelop.Dom;
 using NUnit.Framework;
+using Rhino.Mocks;
 
 namespace TypeScriptBinding.Tests.Parsing
 {
@@ -190,6 +191,22 @@ namespace TypeScriptBinding.Tests.Parsing
 			
 			IUnresolvedTypeDefinition c = GetFirstClass();
 			Assert.AreEqual(expectedFilename, c.UnresolvedFile.FileName);
+		}
+		
+		[Test]
+		public void Resolve_EmptyStudentClass_ReturnsTypeDefinitionForClass()
+		{
+			string code =
+				"class Student {\r\n" +
+				"}\r\n";
+			Parse(code);
+			IUnresolvedTypeDefinition c = GetFirstClass();
+			var context = MockRepository.GenerateStub<ITypeResolveContext>();
+			context.Stub(ctx => ctx.CurrentAssembly).Return(MockRepository.GenerateStub<IAssembly>());
+			
+			ITypeDefinition typeDefinition = c.Resolve(context).GetDefinition();
+			
+			Assert.AreEqual("Student", typeDefinition.Name);
 		}
 	}
 }

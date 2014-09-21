@@ -202,10 +202,12 @@
       <DependentUpon>TypeScriptProjectOptionsPanel.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TypeScriptResolveContext.cs" />
     <Compile Include="TypeScriptService.cs" />
     <Compile Include="TypeScriptTask.cs" />
     <Compile Include="TypeScriptTaskService.cs" />
     <Compile Include="TypeScriptUnresolvedFile.cs" />
+    <Compile Include="TypeScriptUnresolvedTypeDefinition.cs" />
     <Compile Include="TypeScriptWorkbenchMonitor.cs" />
     <Compile Include="UpdateProjectBrowserFileNodesVisitor.cs" />
   </ItemGroup>

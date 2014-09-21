@@ -109,7 +109,11 @@ namespace ICSharpCode.TypeScriptBinding
 				Console.WriteLine(ex.ToString());
 				LoggingService.Debug(ex.ToString());
 			}
-			return null;
+			
+			return new ParseInformation(
+				new TypeScriptUnresolvedFile(fileName),
+				fileContent.Version,
+				true);
 		}
 		
 		public static bool IsTypeScriptFileName(FileName fileName)
