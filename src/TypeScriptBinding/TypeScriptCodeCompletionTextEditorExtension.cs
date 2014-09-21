@@ -138,7 +138,7 @@ namespace ICSharpCode.TypeScriptBinding
 			UpdateContext(context, editor);
 			
 			DefinitionInfo[] definitions = context.GetDefinition(editor.FileName, editor.Caret.Offset);
-			if (definitions.Length > 0) {
+			if ((definitions != null) && (definitions.Length > 0)) {
 				GoToDefinition(definitions[0]);
 			}
 		}
