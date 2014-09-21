@@ -104,7 +104,9 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		DefaultUnresolvedTypeDefinition AddClass(NavigateToItem item, IDocument document)
 		{
-			var defaultClass = new DefaultUnresolvedTypeDefinition(item.GetFullName());
+			var defaultClass = new DefaultUnresolvedTypeDefinition(item.GetFullName()) {
+				UnresolvedFile = this
+			};
 			defaultClass.BodyRegion = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			defaultClass.Region = defaultClass.BodyRegion;
 			

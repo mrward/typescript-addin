@@ -178,5 +178,18 @@ namespace TypeScriptBinding.Tests.Parsing
 			IUnresolvedMethod method = c.Methods.First();
 			Assert.AreEqual("speak", method.Name);
 		}
+		
+		[Test]
+		public void Parse_EmptyStudentClass_FileNameSetForClass()
+		{
+			string code =
+				"class Student {\r\n" +
+				"}\r\n";
+			string expectedFilename = @"d:\projects\MyProject\MyClass.ts";
+			Parse(code, expectedFilename);
+			
+			IUnresolvedTypeDefinition c = GetFirstClass();
+			Assert.AreEqual(expectedFilename, c.UnresolvedFile.FileName);
+		}
 	}
 }
