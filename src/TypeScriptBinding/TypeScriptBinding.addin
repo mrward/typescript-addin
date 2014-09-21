@@ -48,7 +48,7 @@
 	</Path>
 	
 	<Path name="/SharpDevelop/BackendBindings/Templates">
-		<Directory id="TypeScript" path="./Templates" />
+		<TemplateFile id="TypeScript" path="./Templates"/>
 	</Path>
 	
 	<Path name="/SharpDevelop/ViewContent/TextEditor/CodeCompletion">
