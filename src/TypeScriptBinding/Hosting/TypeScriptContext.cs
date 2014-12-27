@@ -33,7 +33,6 @@ using System.Linq;
 
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Project;
-using Noesis.Javascript;
 using TypeScriptHosting;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting

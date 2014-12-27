@@ -72,9 +72,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\lib\Json.NET\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Noesis.Javascript">
-      <HintPath>..\..\lib\Noesis.Javascript\x86\Noesis.Javascript.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -90,6 +87,12 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Xml" />
+    <Reference Include="V8.Net">
+      <HintPath>..\..\lib\V8\V8.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="V8.Net.SharedTypes">
+      <HintPath>..\..\lib\V8\V8.Net.SharedTypes.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -126,6 +129,7 @@
     <Compile Include="Hosting\IScriptLoader.cs" />
     <Compile Include="Hosting\IScriptSnapshotShim.cs" />
     <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
+    <Compile Include="Hosting\JavaScriptContext.cs" />
     <Compile Include="Hosting\LanguageServiceNullLogger.cs" />
     <Compile Include="Hosting\LanguageServiceLogger.cs" />
     <Compile Include="Hosting\LanguageServiceCompiler.cs" />
@@ -211,14 +215,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\ImageResources.resx" />
     <EmbeddedResource Include="Resources\TypeScript.xshd" />
-    <None Include="..\..\lib\Noesis.Javascript\x86\msvcp100.dll">
-      <Link>msvcp100.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\lib\Noesis.Javascript\x86\msvcr100.dll">
-      <Link>msvcr100.dll</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Scripts\compile.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -275,4 +271,5 @@
     <Page Include="TypeScriptProjectOptionsPanel.xaml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="PostBuildEvent.proj" />
 </Project>
