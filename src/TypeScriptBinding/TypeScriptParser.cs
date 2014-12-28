@@ -90,7 +90,7 @@ namespace ICSharpCode.TypeScriptBinding
 					context.AddFile(file, fileContent.Text);
 					context.RunInitialisationScript();
 					
-					NavigateToItem[] navigation = context.GetLexicalStructure(file);
+					NavigationBarItem[] navigation = context.GetNavigationInfo(file);
 					var unit = new TypeScriptCompilationUnit(projectContent) {
 						FileName = fileName
 					};

@@ -72,7 +72,7 @@ namespace ICSharpCode.TypeScriptBinding
 			return String.Format(
 				"({0}) {1}{2}{3}",
 				entryDetails.kind,
-				entryDetails.fullSymbolName,
+				"TODO: entryDetails.fullSymbolName",
 				GetTypeName(entryDetails),
 				GetDocCommentPrecededByNewLine(entryDetails));
 		}
@@ -91,10 +91,11 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		string GetDocCommentPrecededByNewLine(CompletionEntryDetails entryDetails)
 		{
-			if (String.IsNullOrEmpty(entryDetails.docComment))
-				return String.Empty;
-			
-			return String.Format("\r\n{0}", entryDetails.docComment);
+			return "TODO: doc comment";
+//			if (String.IsNullOrEmpty(entryDetails.docComment))
+//				return String.Empty;
+//			
+//			return String.Format("\r\n{0}", entryDetails.docComment);
 		}
 		
 		IImage GetImage(CompletionEntry entry)

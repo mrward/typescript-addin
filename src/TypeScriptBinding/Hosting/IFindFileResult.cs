@@ -1,5 +1,5 @@
 ﻿// 
-// IResolvedFile.cs
+// IFindFileResult.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>

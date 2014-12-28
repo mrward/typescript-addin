@@ -139,12 +139,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.DefinitionResult.result;
 		}
 		
-		public NavigateToItem[] GetLexicalStructure(FileName fileName)
+		public NavigationBarItem[] GetNavigationInfo(FileName fileName)
 		{
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
-			return host.LexicalStructure.result;
+			return host.NavigationResult.result;
 		}
 		
 		public void RemoveFile(FileName fileName)

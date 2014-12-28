@@ -35,6 +35,13 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string getText(int start, int end);
 		int getLength();
 		string getLineStartPositions();
-		string getTextChangeRangeSinceVersion(int scriptVersion);
+		
+		/**
+		 * Returns a JSON-encoded value of the type:
+		 *   { span: { start: number; length: number }; newLength: number }
+		 *
+		 * Or undefined value if there was no change.
+		 */
+		string getChangeRange(IScriptSnapshotShim oldSnapshot);
 	}
 }

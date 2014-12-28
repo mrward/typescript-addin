@@ -74,9 +74,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return lineStartPositions.ToArray();
 		}
 		
-		public TextChangeRange GetTextChangeRangeSinceVersion(int scriptVersion)
+		public TextChangeRange GetTextChangeRange(IScriptSnapshotShim oldSnapshot)
 		{
-			return new TextChangeRange(0, lengths[scriptVersion - 1], Source.Length);
+			return new TextChangeRange(0, oldSnapshot.getLength(), Source.Length);
 		}
 	}
 }

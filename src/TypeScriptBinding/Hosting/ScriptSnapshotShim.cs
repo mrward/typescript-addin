@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -64,13 +64,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return json;
 		}
 		
-		public string getTextChangeRangeSinceVersion(int scriptVersion)
+		public string getChangeRange(IScriptSnapshotShim oldSnapshot)
 		{
-			Log("ScriptSnapshotShim.getTextChangeRangeSinceVersion: version={0}", scriptVersion);
-			if (script.Version == scriptVersion)
-				return null;
+			Log("ScriptSnapshotShim.getChangeRange");
 			
-			TextChangeRange textChangeRange = script.GetTextChangeRangeSinceVersion(scriptVersion);
+			TextChangeRange textChangeRange = script.GetTextChangeRange(oldSnapshot);
 			string json = JsonConvert.SerializeObject(textChangeRange);
 			
 			Log("ScriptSnapshotShim.getTextChangeRangeSinceVersion: json: {0}", json);
