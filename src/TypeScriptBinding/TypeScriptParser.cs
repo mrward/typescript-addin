@@ -82,8 +82,8 @@ namespace ICSharpCode.TypeScriptBinding
 					parsedDocument.AddNavigation(navigation, document);
 					
 					if (options != null) {
-						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, options);
 						context.AddFiles(files);
+						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, options);
 						parsedDocument.AddDiagnostics(diagnostics, document);
 					}
 
