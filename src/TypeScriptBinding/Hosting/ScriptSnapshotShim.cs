@@ -68,6 +68,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			Log("ScriptSnapshotShim.getChangeRange");
 			
+			var old = oldSnapshot as ScriptSnapshotShim;
+			if ((old != null) && (script.Version == old.script.Version)) {
+				return null;
+			}
+			
 			TextChangeRange textChangeRange = script.GetTextChangeRange(oldSnapshot);
 			string json = JsonConvert.SerializeObject(textChangeRange);
 			

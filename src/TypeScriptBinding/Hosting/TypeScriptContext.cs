@@ -78,7 +78,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			// 1-2 seconds for the completion list to appear the first time it is triggered.
 			string fileName = host.GetFileNames().FirstOrDefault();
 			if (fileName != null) {
-				GetCompletionItems(new FileName(fileName), 1, null, false);
+				GetCompletionItems(new FileName(fileName), 1, String.Empty, false);
 			}
 		}
 		

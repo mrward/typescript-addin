@@ -35,20 +35,17 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		string fileName;
 		List<int> lineStartPositions = new List<int>();
-		List<int> lengths = new List<int>();
 		
 		public Script(string fileName, string source)
 		{
 			this.fileName = fileName;
 			this.Source = source;
 			this.Version = 1;
-			lengths.Add(source.Length);
 		}
 		
 		public void Update(string source)
 		{
 			this.Source = source;
-			lengths.Add(source.Length);
 			Version++;
 		}
 		
