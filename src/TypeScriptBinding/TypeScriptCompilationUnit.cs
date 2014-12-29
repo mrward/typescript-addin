@@ -103,8 +103,17 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddModule(NavigationBarItem item, IDocument document)
 		{
+			if (IsGlobalModule(item)) {
+				return;
+			}
+			
 			DefaultClass c = AddClass(item, document);
 			c.ClassType = ClassType.Module;
+		}
+		
+		static bool IsGlobalModule(NavigationBarItem item)
+		{
+			return item.text == "<global>";
 		}
 		
 		void AddMethod(IClass parent, NavigationBarItem item, IDocument document)
