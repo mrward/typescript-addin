@@ -1,5 +1,5 @@
 ﻿// 
-// NavigateToItem.cs
+// SpanInfo.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>

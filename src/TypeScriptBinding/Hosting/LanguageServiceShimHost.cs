@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -123,21 +123,13 @@ namespace TypeScriptHosting
 		
 		internal DefinitionResult DefinitionResult { get; private set; }
 		
-		public void updateLexicalStructure(string structure)
+		public void updateNavigationBarItems(string items)
 		{
-			LogDebug(structure);
-			LexicalStructure = JsonConvert.DeserializeObject<NavigationResult>(structure);
+			LogDebug(items);
+			NavigationResult = JsonConvert.DeserializeObject<NavigationResult>(items);
 		}
 		
-		internal NavigationResult LexicalStructure { get; private set; }
-		
-		//public void updateOutliningRegions(string regions)
-		//{
-		//	LogDebug(regions);
-		//	OutlingRegions = new NavigationInfo(regions);
-		//}
-		
-		//internal NavigationInfo OutlingRegions { get; private set; }
+		internal NavigationResult NavigationResult { get; private set; }
 		
 		public bool information()
 		{
@@ -192,10 +184,10 @@ namespace TypeScriptHosting
 			compilerSettings = new CompilerSettings(options);
 		}
 		
-		public int getScriptVersion(string fileName)
+		public string getScriptVersion(string fileName)
 		{
 			LogDebug("Host.getScriptVersion: " + fileName);
-			return scripts[fileName.ToLowerInvariant()].Version;
+			return scripts[fileName.ToLowerInvariant()].Version.ToString();
 		}
 		
 		internal void UpdateFileName(FilePath fileName)
@@ -229,12 +221,6 @@ namespace TypeScriptHosting
 			return true;
 		}
 		
-		public ILanguageServicesDiagnostics getDiagnosticsObject()
-		{
-			log("Host.getDiagnosticsObject");
-			return new LanguageServicesDiagnostics(logger);
-		}
-		
 		public string getScriptFileNames()
 		{
 			log("Host.getScriptFileNames");
@@ -246,38 +232,10 @@ namespace TypeScriptHosting
 			return json;
 		}
 		
-		public ByteOrderMark getScriptByteOrderMark(string fileName)
+		public string getCurrentDirectory()
 		{
-			log("Host.getScriptByteOrderMark: " + fileName);
-			return ByteOrderMark.None;
-		}
-		
-		public string resolveRelativePath(string path, string directory)
-		{
-			log("Host.resolveRelativePath: " + fileName);
-			
-			if (System.IO.Path.IsPathRooted(path) || String.IsNullOrEmpty(directory)) {
-				return path;
-			}
-			return System.IO.Path.Combine(path, directory);
-		}
-		
-		public bool fileExists(string path)
-		{
-			log("Host.fileExists: " + path);
-			return File.Exists(path);
-		}
-		
-		public bool directoryExists(string path)
-		{
-			log("Host.directoryExists: " + path);
-			return Directory.Exists(path);
-		}
-		
-		public string getParentDirectory(string path)
-		{
-			log("Host.getParentDirectory: " + path);
-			return Path.GetDirectoryName(path);
+			log("Host.getCurrentDirectory");
+			return String.Empty;
 		}
 		
 		public string getLocalizedDiagnosticMessages()
@@ -286,10 +244,16 @@ namespace TypeScriptHosting
 			return null;
 		}
 		
-		public string ResolvePath(string path)
+		public string getDefaultLibFilename()
 		{
-			log("ResolvePath: '" + path + "'");
-			return path;
+			log("Host.getDefaultLibFilename");
+			return String.Empty;
+		}
+		
+		public ICancellationToken getCancellationToken()
+		{
+			log("Host.getCancellationToken");
+			return new LanguageServiceCancellationToken();
 		}
 		
 		public void updateCompilerResult(string result)

@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Text;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Core;
 using MonoDevelop.Ide.CodeCompletion;
@@ -71,31 +72,31 @@ namespace ICSharpCode.TypeScriptBinding
 		string GetDescription(CompletionEntryDetails entryDetails)
 		{
 			return String.Format(
-				"({0}) {1}{2}{3}",
-				entryDetails.kind,
-				entryDetails.fullSymbolName,
-				GetTypeName(entryDetails),
+				"{0} {1}",
+				GetFullSymbolName(entryDetails),
 				GetDocCommentPrecededByNewLine(entryDetails));
 		}
 		
-		string GetTypeName(CompletionEntryDetails entryDetails)
+		static string GetFullSymbolName(CompletionEntryDetails entryDetails)
 		{
-			if (String.IsNullOrEmpty(entryDetails.type))
+			if (entryDetails.displayParts == null) {
 				return String.Empty;
-			
-			if (entryDetails.type.StartsWith("(")) {
-				return entryDetails.type;
 			}
 			
-			return String.Format(": {0}", entryDetails.type);
+			var name = new StringBuilder();
+			foreach (SymbolDisplayPart part in entryDetails.displayParts) {
+				name.Append(part.text);
+			}
+			return name.ToString();
 		}
 		
 		string GetDocCommentPrecededByNewLine(CompletionEntryDetails entryDetails)
 		{
-			if (String.IsNullOrEmpty(entryDetails.docComment))
+			if ((entryDetails.documentation == null) || (entryDetails.documentation.Length == 0)) {
 				return String.Empty;
+			}
 			
-			return String.Format("\r\n{0}", entryDetails.docComment);
+			return String.Format("\r\n{0}", entryDetails.documentation[0].text);
 		}
 		
 		IconId GetIcon(CompletionEntry entry)

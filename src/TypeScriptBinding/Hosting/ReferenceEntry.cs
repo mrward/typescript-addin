@@ -33,12 +33,19 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	public class ReferenceEntry
 	{
 		public string fileName { get; set; }
-		public int minChar { get; set; }
-		public int limChar { get; set; }
+		public TextSpan textSpan { get; set; }
 		public bool isWriteAccess { get; set; }
 		
+		internal int minChar {
+			get { return textSpan.start; }
+		}
+		
 		internal int length {
-			get { return limChar - minChar; }
+			get { return textSpan.length; }
+		}
+
+		internal int limChar {
+			get { return minChar + length; }
 		}
 	}
 }

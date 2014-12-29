@@ -47,15 +47,47 @@ namespace ICSharpCode.TypeScriptBinding
 			Flags = ParsedDocumentFlags.NonSerializable;
 		}
 		
-		public void AddNavigation(NavigateToItem[] navigation, IDocument document)
+		public void AddNavigation(NavigationBarItem[] navigation, IDocument document)
 		{
-			foreach (NavigateToItem item in navigation) {
+			foreach (NavigationBarItem item in navigation) {
 				switch (item.kind) {
 					case "class":
 					case "interface":
-					case "module":
 						AddClass(item, document);
 						break;
+					case "module":
+						AddModule(item, document);
+						break;
+				}
+			}
+		}
+
+		void AddModule(NavigationBarItem item, IDocument document)
+		{
+			if (IsGlobalModule(item)) {
+				return;
+			}
+
+			AddClass(item, document);
+		}
+
+		static bool IsGlobalModule(NavigationBarItem item)
+		{
+			return item.text == "<global>";
+		}
+		
+		void AddClass(NavigationBarItem item, IDocument document)
+		{
+			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
+			var folding = new FoldingRegion(region, FoldType.Type);
+			Add(folding);
+			AddMethods(item.childItems, document);
+		}
+
+		void AddMethods(NavigationBarItem[] childItems, IDocument document)
+		{
+			foreach (NavigationBarItem item in childItems) {
+				switch (item.kind) {
 					case "method":
 					case "constructor":
 						AddMethod(item, document);
@@ -64,14 +96,7 @@ namespace ICSharpCode.TypeScriptBinding
 			}
 		}
 		
-		void AddClass(NavigateToItem item, IDocument document)
-		{
-			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
-			var folding = new FoldingRegion(region, FoldType.Type);
-			Add(folding);
-		}
-		
-		void AddMethod(NavigateToItem item, IDocument document)
+		void AddMethod(NavigationBarItem item, IDocument document)
 		{
 			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			var folding = new FoldingRegion(region, FoldType.Member);
@@ -89,9 +114,23 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			TextLocation location = document.GetLocation(diagnostic.start);
 			return new Error(
-				ErrorType.Error,
+				GetErrorType(diagnostic.category),
 				diagnostic.ToString(),
 				location);
+		}
+
+		ErrorType GetErrorType(DiagnosticCategory category)
+		{
+			switch (category) {
+				case DiagnosticCategory.Warning:
+					return ErrorType.Warning;
+				case DiagnosticCategory.Error:
+					return ErrorType.Error;
+				case DiagnosticCategory.Message:
+					return ErrorType.Unknown;
+				default:
+					return ErrorType.Error;
+			}
 		}
 		
 		public override IList<Error> Errors {

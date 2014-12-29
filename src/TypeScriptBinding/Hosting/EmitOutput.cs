@@ -34,11 +34,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		public EmitOutput()
 		{
-			emitOutputResult = EmitOutputResult.Succeeded;
+			emitOutputStatus = EmitReturnStatus.Succeeded;
 			outputFiles = new OutputFile[0];
 		}
 		
 		public OutputFile[] outputFiles;
-		public EmitOutputResult emitOutputResult;
+		public EmitReturnStatus emitOutputStatus;
 	}
 }

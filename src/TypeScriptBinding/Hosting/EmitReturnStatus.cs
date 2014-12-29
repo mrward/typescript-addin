@@ -1,10 +1,10 @@
 ﻿// 
-// ILanguageServicesDiagnostics.cs
+// EmitReturnStatus.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,8 +30,12 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public interface ILanguageServicesDiagnostics
-	{
-		void log(string content);
+	public enum EmitReturnStatus {
+		Succeeded = 0,                      // All outputs generated as requested (.js, .map, .d.ts), no errors reported
+		AllOutputGenerationSkipped = 1,     // No .js generated because of syntax errors, nothing generated
+		JSGeneratedWithSemanticErrors = 2,  // .js and .map generated with semantic errors
+		DeclarationGenerationSkipped = 3,   // .d.ts generation skipped because of semantic errors or declaration emitter specific errors; Output .js with semantic errors
+		EmitErrorsEncountered = 4,          // Emitter errors occurred during emitting process
+		CompilerOptionsErrors = 5,          // Errors occurred in parsing compiler options, nothing generated
 	}
 }

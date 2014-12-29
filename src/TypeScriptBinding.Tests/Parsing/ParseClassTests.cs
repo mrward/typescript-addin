@@ -176,5 +176,28 @@ namespace TypeScriptBinding.Tests.Parsing
 //			IMethod method = c.Methods[0];
 //			Assert.AreEqual("speak", method.Name);
 //		}
+		
+		[Test]
+		public void Parse_EmptyStudentClassAndGlobalVariable_OneClassFoundAndNoGlobalModuleCreated()
+		{
+			string code =
+				"class Student {\r\n" +
+				"}\r\n" +
+				"\r\n" +
+				"var foo = 'abc';\r\n" +
+				"\r\n";
+
+			var expectedBodyRegion = new DomRegion(
+				beginLine: 1,
+				beginColumn: 14,
+				endLine: 2,
+				endColumn: 2);
+
+			Parse(code);
+
+			FoldingRegion folding = ParsedDocument.Foldings.FirstOrDefault();
+			Assert.AreEqual(expectedBodyRegion, folding.Region);
+			Assert.AreEqual(FoldType.Type, folding.Type);
+		}
 	}
 }

@@ -34,18 +34,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		public int start { get; set; }
 		public int length { get; set; }
-		public string diagnosticCode { get; set; }
-		public object[] arguments { get; set; }
+		public string message { get; set; }
+		public DiagnosticCategory category { get; set; }
+		public int code { get; set; }
 		
 		public string GetDiagnosticMessage()
 		{
-			if (diagnosticCode == null)
-				return String.Empty;
-			
-			if (arguments == null)
-				return diagnosticCode;
-			
-			return String.Format(diagnosticCode, arguments);
+			if (!String.IsNullOrEmpty(message)) {
+				return message;
+			}
+			return String.Format("{0}", code);
 		}
 		
 		public override string ToString()

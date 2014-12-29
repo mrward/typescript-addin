@@ -76,7 +76,7 @@ namespace ICSharpCode.TypeScriptBinding
 					context.AddFile(file, content);
 					context.RunInitialisationScript();
 					
-					NavigateToItem[] navigation = context.GetLexicalStructure(file);
+					NavigationBarItem[] navigation = context.GetNavigationInfo(file);
 					var document = new ReadOnlyDocument(content);
 					var parsedDocument = new TypeScriptParsedDocument(fileName);
 					parsedDocument.AddNavigation(navigation, document);

@@ -1,5 +1,5 @@
 ﻿// 
-// EmitOutputResult.cs
+// LanguageServiceCancellationToken.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,11 +30,11 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum EmitOutputResult
+	public class LanguageServiceCancellationToken : ICancellationToken
 	{
-		Succeeded,
-		FailedBecauseOfSyntaxErrors,
-		FailedBecauseOfCompilerOptionsErrors,
-		FailedToGenerateDeclarationsBecauseOfSemanticErrors
+		public bool isCancellationRequested()
+		{
+			return false;
+		}
 	}
 }

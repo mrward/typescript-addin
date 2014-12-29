@@ -37,7 +37,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			entries = new CompletionEntry[0];
 		}
 		
-		public bool maybeInaccurate { get; set; }
 		public bool isMemberCompletion { get; set; }
 		public CompletionEntry[] entries;
 	}
