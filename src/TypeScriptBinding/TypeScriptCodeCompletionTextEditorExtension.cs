@@ -128,7 +128,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static SearchResult CreateSearchResult(ReferenceEntry entry)
 		{
-			var provider = new FileProvider(entry.fileName, null, entry.minChar, entry.limChar);
+			var provider = new FileProvider(entry.fileName.NormalizePath(), null, entry.minChar, entry.limChar);
 			return new SearchResult(provider, entry.minChar, entry.length);
 		}
 		

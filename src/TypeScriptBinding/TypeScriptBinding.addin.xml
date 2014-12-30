@@ -41,7 +41,7 @@
 		<Import file="Scripts/navigation.js"/>
 		<Import file="Scripts/references.js"/>
 		<Import file="Scripts/signature.js"/>
-		<Import file="Scripts/tsc.js"/>
+		<Import file="Scripts/semanticDiagnostics.js"/>
 		<Import file="Scripts/TypeScript-License.txt"/>
 		<Import file="Scripts/typescriptServices.js"/>
 	</Runtime>
