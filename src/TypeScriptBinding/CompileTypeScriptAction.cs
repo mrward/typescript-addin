@@ -36,10 +36,15 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public abstract class CompileTypeScriptAction
 	{
+		protected void Report(string message)
+		{
+			TaskService.BuildMessageViewCategory.AppendLine(message);
+		}
+		
 		protected void Report(string format, params object[] args)
 		{
 			string message = String.Format(format, args);
-			TaskService.BuildMessageViewCategory.AppendLine(message);
+			Report(message);
 		}
 		
 		protected void ClearOutputWindow()

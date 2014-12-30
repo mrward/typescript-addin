@@ -1,10 +1,10 @@
 ﻿// 
-// TextSpanInfo.cs
+// DiagnosticCategory.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,9 +30,10 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class TextSpanInfo
+	public enum DiagnosticCategory
 	{
-		public int _start { get; set; }
-		public int _end { get; set; }
+		Warning,
+		Error,
+		Message,
 	}
 }

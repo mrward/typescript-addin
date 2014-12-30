@@ -43,15 +43,15 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 		}
 		
-		public void AddNavigation(NavigateToItem[] navigation, ITextBuffer textBuffer)
+		public void AddNavigation(NavigationBarItem[] navigation, ITextBuffer textBuffer)
 		{
 			IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(textBuffer);
 			AddNavigationInfo(navigation, document);
 		}
 		
-		public void AddNavigationInfo(NavigateToItem[] navigation, IDocument document)
+		public void AddNavigationInfo(NavigationBarItem[] navigation, IDocument document)
 		{
-			foreach (NavigateToItem item in navigation) {
+			foreach (NavigationBarItem item in navigation) {
 				switch (item.kind) {
 					case "class":
 						AddClass(item, document);
@@ -62,50 +62,68 @@ namespace ICSharpCode.TypeScriptBinding
 					case "module":
 						AddModule(item, document);
 						break;
+				}
+			}
+		}
+		
+		DefaultClass AddClass(NavigationBarItem item, IDocument document)
+		{
+			var defaultClass = new DefaultClass(this, item.text);
+			defaultClass.BodyRegion = item.ToRegionStartingFromOpeningCurlyBrace(document);
+			defaultClass.Region = defaultClass.BodyRegion;
+			
+			IClass parentClass = FindParentClass(defaultClass);
+			if (parentClass != null) {
+				defaultClass.FullyQualifiedName = parentClass.FullyQualifiedName + "." + defaultClass.FullyQualifiedName;
+				parentClass.InnerClasses.Add(defaultClass);
+			} else {
+				Classes.Add(defaultClass);
+			}
+			AddMethods(defaultClass, item.childItems, document);
+			return defaultClass;
+		}
+		
+		void AddMethods(IClass parent, NavigationBarItem[] childItems, IDocument document)
+		{
+			foreach (NavigationBarItem item in childItems) {
+				switch (item.kind) {
 					case "method":
 					case "constructor":
-						AddMethod(item, document);
+						AddMethod(parent, item, document);
 						break;
 				}
 			}
 		}
 		
-		DefaultClass AddClass(NavigateToItem item, IDocument document)
-		{
-			var defaultClass = new DefaultClass(this, item.GetFullName());
-			defaultClass.BodyRegion = item.ToRegionStartingFromOpeningCurlyBrace(document);
-			defaultClass.Region = defaultClass.BodyRegion;
-			
-			if (item.HasContainer()) {
-				IClass parentClass = FindParentClass(item);
-				parentClass.InnerClasses.Add(defaultClass);
-			} else {
-				Classes.Add(defaultClass);
-			}
-			return defaultClass;
-		}
-		
-		void AddInterface(NavigateToItem item, IDocument document)
+		void AddInterface(NavigationBarItem item, IDocument document)
 		{
 			DefaultClass c = AddClass(item, document);
 			c.ClassType = ClassType.Interface;
 		}
 		
-		void AddModule(NavigateToItem item, IDocument document)
+		void AddModule(NavigationBarItem item, IDocument document)
 		{
+			if (IsGlobalModule(item)) {
+				return;
+			}
+			
 			DefaultClass c = AddClass(item, document);
 			c.ClassType = ClassType.Module;
 		}
 		
-		void AddMethod(NavigateToItem item, IDocument document)
+		static bool IsGlobalModule(NavigationBarItem item)
 		{
-			IClass c = FindParentClass(item);
-			var method = new DefaultMethod(c, item.name);
-			UpdateMethodRegions(method, item, document);
-			c.Methods.Add(method);
+			return item.text == "<global>";
 		}
 		
-		void UpdateMethodRegions(DefaultMethod method, NavigateToItem item, IDocument document)
+		void AddMethod(IClass parent, NavigationBarItem item, IDocument document)
+		{
+			var method = new DefaultMethod(parent, item.text);
+			UpdateMethodRegions(method, item, document);
+			parent.Methods.Add(method);
+		}
+		
+		void UpdateMethodRegions(DefaultMethod method, NavigationBarItem item, IDocument document)
 		{
 			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			method.Region = new DomRegion(
@@ -116,27 +134,15 @@ namespace ICSharpCode.TypeScriptBinding
 			method.BodyRegion = region;
 		}
 		
-		IClass FindParentClass(NavigateToItem item)
+		IClass FindParentClass(IClass c)
 		{
-			string containerParentName = item.GetContainerParentName();
-			if (containerParentName != null) {
-				IClass parentClass = FindClass(containerParentName);
-				return FindClass(parentClass.InnerClasses, item.containerName);
-			} else {
-				return FindClass(item.containerName);
-			}
+			return Classes.FirstOrDefault(parent => IsInside(c.BodyRegion, parent.BodyRegion));
 		}
 		
-		IClass FindClass(string name)
+		bool IsInside(DomRegion childBodyRegion, DomRegion parentBodyRegion)
 		{
-			return FindClass(Classes, name);
-		}
-		
-		IClass FindClass(IList<IClass> classes, string name)
-		{
-			return classes
-				.Where(c => c.FullyQualifiedName == name)
-				.FirstOrDefault();
+			return (childBodyRegion.BeginLine >= parentBodyRegion.BeginLine) &&
+				(childBodyRegion.EndLine <= parentBodyRegion.EndLine);
 		}
 	}
 }

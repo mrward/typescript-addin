@@ -77,7 +77,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			// 1-2 seconds for the completion list to appear the first time it is triggered.
 			string fileName = host.GetFileNames().FirstOrDefault();
 			if (fileName != null) {
-				GetCompletionItems(new FileName(fileName), 1, null, false);
+				GetCompletionItems(new FileName(fileName), 1, String.Empty, false);
 			}
 		}
 		
@@ -138,12 +138,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.DefinitionResult.result;
 		}
 		
-		public NavigateToItem[] GetLexicalStructure(FileName fileName)
+		public NavigationBarItem[] GetNavigationInfo(FileName fileName)
 		{
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
-			return host.LexicalStructure.result;
+			return host.NavigationResult.result;
 		}
 		
 		public void RemoveFile(FileName fileName)

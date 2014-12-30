@@ -47,8 +47,22 @@ namespace ICSharpCode.TypeScriptBinding
 				diagnostic.ToString(),
 				column,
 				line,
-				TaskType.Error)
+				GetTaskType(diagnostic.category))
 		{
+		}
+		
+		static TaskType GetTaskType(DiagnosticCategory category)
+		{
+			switch (category) {
+				case DiagnosticCategory.Warning:
+					return TaskType.Warning;
+				case DiagnosticCategory.Error:
+					return TaskType.Error;
+				case DiagnosticCategory.Message:
+					return TaskType.Message;
+				default:
+					return TaskType.Error;
+			}
 		}
 		
 		public static TypeScriptTask Create(FileName fileName, Diagnostic diagnostic, IDocument document)

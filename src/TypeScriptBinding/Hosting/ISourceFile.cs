@@ -1,5 +1,5 @@
 ﻿//// 
-//// OutputFileType.cs
+//// ISourceFile.cs
 //// 
 //// Author:
 ////   Matt Ward <ward.matt@gmail.com>
@@ -30,9 +30,12 @@
 //
 //namespace ICSharpCode.TypeScriptBinding.Hosting
 //{
-//	public enum OutputFileType {
-//		JavaScript,
-//		SourceMap,
-//		Declaration
+//	public interface ISourceFile
+//	{
+//		SourceUnitSyntax getSourceUnit();
+//		SyntaxTree getSyntaxTree();
+//		IScriptSnapshot getScriptSnapshot();
+//		Declaration[] getNamedDeclarations();
+//		SourceFile update(IScriptSnapshot scriptSnapshot, string version, bool isOpen, TextChangeRange textChangeRange);
 //	}
 //}

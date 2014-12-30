@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,6 +33,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class NavigationResult
 	{
-		public NavigateToItem[] result { get; set; }
+		public NavigationBarItem[] result { get; set; }
 	}
 }

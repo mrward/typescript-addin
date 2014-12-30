@@ -177,5 +177,22 @@ namespace TypeScriptBinding.Tests.Parsing
 			IMethod method = c.Methods[0];
 			Assert.AreEqual("speak", method.Name);
 		}
+		
+		[Test]
+		public void Parse_EmptyStudentClassAndGlobalVariable_OneClassFoundAndNoGlobalModuleCreated()
+		{
+			string code =
+				"class Student {\r\n" +
+				"}\r\n" +
+				"\r\n" +
+				"var foo = 'abc';\r\n" +
+				"\r\n";
+			
+			Parse(code);
+			
+			IClass c = GetFirstClass();
+			Assert.AreEqual(1, CompilationUnit.Classes.Count);
+			Assert.AreEqual("Student", c.Name);
+		}
 	}
 }

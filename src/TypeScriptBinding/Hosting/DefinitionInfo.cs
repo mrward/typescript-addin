@@ -33,12 +33,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	public class DefinitionInfo
 	{
 		public string fileName { get; set; }
-		public int minChar { get; set; }
-		public int limChar { get; set; }
+		public TextSpan textSpan { get; set; }
 		public string kind { get; set; }
 		public string name { get; set; }
 		public string containerKind { get; set; }
 		public string containerName { get; set; }
+		
+		internal int minChar {
+			get { return textSpan.start; }
+		}
 		
 		public bool HasFileName()
 		{
