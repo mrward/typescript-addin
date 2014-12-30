@@ -39,7 +39,7 @@ namespace TypeScriptHosting
 {
 	public class LanguageServiceShimHost : ILanguageServiceShimHost
 	{
-		Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+		Dictionary<string, Script> scripts = new Dictionary<string, Script>(StringComparer.OrdinalIgnoreCase);
 		ILogger logger;
 		string defaultLibScriptFileName;
 		CompilerSettings compilerSettings = new CompilerSettings();
@@ -57,17 +57,15 @@ namespace TypeScriptHosting
 		
 		internal void AddFile(FilePath fileName, string text)
 		{
-			string lowercaseFileName = fileName.FullPath.ToLower();
-			if (!scripts.ContainsKey(lowercaseFileName)) {
-				scripts.Add(lowercaseFileName, new Script(lowercaseFileName, text));
+			if (!scripts.ContainsKey(fileName.FullPath)) {
+				scripts.Add(fileName, new Script(fileName, text));
 			}
 		}
 		
 		Script FindScript(FilePath fileName)
 		{
-			string matchFileName = fileName.ToLower();
 			Script script = null;
-			if (scripts.TryGetValue(matchFileName, out script)) {
+			if (scripts.TryGetValue(fileName, out script)) {
 				return script;
 			}
 			return null;
@@ -75,7 +73,7 @@ namespace TypeScriptHosting
 		
 		internal void UpdateFile(FilePath fileName, string text)
 		{
-			scripts[fileName.FullPath.ToLower()].Update(text);
+			scripts[fileName.FullPath].Update(text);
 		}
 		
 		public int position { get; set; }
@@ -187,17 +185,17 @@ namespace TypeScriptHosting
 		public string getScriptVersion(string fileName)
 		{
 			LogDebug("Host.getScriptVersion: " + fileName);
-			return scripts[fileName.ToLowerInvariant()].Version.ToString();
+			return scripts[fileName].Version.ToString();
 		}
 		
 		internal void UpdateFileName(FilePath fileName)
 		{
-			this.fileName = fileName.ToLower();
+			this.fileName = fileName;
 		}
 		
 		internal void RemoveFile(FilePath fileName)
 		{
-			scripts.Remove(fileName.ToLower());
+			scripts.Remove(fileName);
 		}
 		
 		internal IEnumerable<string> GetFileNames()
@@ -225,7 +223,7 @@ namespace TypeScriptHosting
 		{
 			log("Host.getScriptFileNames");
 			
-			string json = JsonConvert.SerializeObject(scripts.Keys.ToArray());
+			string json = JsonConvert.SerializeObject(scripts.Select(keyPair => keyPair.Value.FileName));
 			
 			log("Host.getScriptFileNames: " + json);
 			
