@@ -53,6 +53,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			get { return fileName; }
 		}
 		
+		public string FileName {
+			get { return fileName; }
+		}
+		
 		public string Source { get; private set; }
 		public int Version { get; private set; }
 		
