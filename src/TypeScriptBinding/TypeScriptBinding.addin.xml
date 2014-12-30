@@ -27,7 +27,7 @@
 		<Import file="x64/msvcr110.dll"/>
 		<Import file="x64/V8.Net.Proxy.Interface.x64.dll"/>
 		<Import file="x64/V8_Net_Proxy_x64.dll"/>
-		<Import file="x64/v8-ia32.dll"/>
+		<Import file="x64/v8-x64.dll"/>
 		<Import file="x64/vccorlib110.dll"/>
 		
 		<Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
