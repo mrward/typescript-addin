@@ -1,0 +1,13 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<PrepareForRunDependsOn>$(PrepareForRunDependsOn);MyPostBuildTarget</PrepareForRunDependsOn>
+	</PropertyGroup>
+	<ItemGroup>
+		<Copyx86Item Include="$(MSBuildProjectDirectory)\..\..\lib\V8\x86\*.*" />
+		<Copyx64Item Include="$(MSBuildProjectDirectory)\..\..\lib\V8\x64\*.*" />
+	</ItemGroup>
+	<Target Name="MyPostBuildTarget">
+		<Copy SourceFiles="@(Copyx86Item)" DestinationFolder="$(OutputPath)\x86" />
+		<Copy SourceFiles="@(Copyx64Item)" DestinationFolder="$(OutputPath)\x64" />
+	</Target>
+</Project>
