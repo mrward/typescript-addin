@@ -5,9 +5,9 @@
 	author="Matt Ward"
 	copyright="MIT"
 	url="https://github.com/mrward/typescript-addin"
-	description="Adds TypeScript support."
+	description="Adds TypeScript support. Updated to use TypeScript 1.3"
 	category="Web Development"
-	version="0.2">
+	version="0.3">
 	
 	<Runtime>
 		<Import assembly="TypeScriptBinding.dll" />
