@@ -59,6 +59,7 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			ecmaScriptTargetVersions.Add(new DisplayValue("ES3", "ECMAScript 3"));
 			ecmaScriptTargetVersions.Add(new DisplayValue("ES5", "ECMAScript 5"));
+			ecmaScriptTargetVersions.Add(new DisplayValue("ES6", "ECMAScript 6"));
 			
 			moduleKinds.Add(new DisplayValue("none", "None"));
 			moduleKinds.Add(new DisplayValue("amd", "AMD"));
