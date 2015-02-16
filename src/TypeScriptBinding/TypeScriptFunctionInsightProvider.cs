@@ -45,12 +45,12 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public IInsightItem[] ProvideInsight(ITextEditor editor)
 		{
-			SignatureInfo info = context.GetSignature(editor.FileName, editor.Caret.Offset);
-			if (info == null)
+			SignatureHelpItems helpItems = context.GetSignature(editor.FileName, editor.Caret.Offset);
+			if (helpItems == null)
 				return new TypeScriptFunctionInsightItem[0];
 			
-			return info
-				.formal
+			return helpItems
+				.items
 				.Select(item => new TypeScriptFunctionInsightItem(item))
 				.ToArray();
 		}

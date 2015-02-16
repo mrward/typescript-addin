@@ -40,6 +40,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string getLocalizedDiagnosticMessages();
 		ICancellationToken getCancellationToken();
 		string getCurrentDirectory();
-		string getDefaultLibFilename();
+		string getDefaultLibFilename(string options);
 	}
 }

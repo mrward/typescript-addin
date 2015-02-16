@@ -32,7 +32,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	public class OutputFile
 	{
 		public string name { get; set; }
-		public bool writeByteOrderMark { get; set; }
+		public bool? writeByteOrderMark { get; set; }
 		public string text { get; set; }
 	}
 }

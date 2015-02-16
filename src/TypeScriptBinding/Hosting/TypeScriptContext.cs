@@ -109,7 +109,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.CompletionEntryDetailsResult.result;
 		}
 		
-		public SignatureInfo GetSignature(FileName fileName, int offset)
+		public SignatureHelpItems GetSignature(FileName fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);

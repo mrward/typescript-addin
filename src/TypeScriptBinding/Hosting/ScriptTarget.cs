@@ -1,5 +1,5 @@
 ﻿// 
-// SpanInfo.cs
+// ScriptTarget.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,10 +30,11 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class SpanInfo
+	public enum ScriptTarget
 	{
-		public int minChar { get; set; }
-		public int limChar { get; set; }
-		public string text { get; set; }
+		ES3 = 0,
+		ES5 = 1,
+		ES6 = 2,
+		Latest = ES6,
 	}
 }

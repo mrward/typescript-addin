@@ -1,10 +1,10 @@
 ﻿// 
-// TextFileWriter.cs
+// SignatureHelpParameter.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,41 +27,14 @@
 //
 
 using System;
-using System.IO;
-using System.Text;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class TextFileWriter : ITextWriter
+	public class SignatureHelpParameter
 	{
-		StreamWriter writer;
-		
-		public TextFileWriter(string path, bool utf8)
-		{
-			writer = new StreamWriter(path, false, GetEncoding(utf8));
-		}
-		
-		Encoding GetEncoding(bool utf8)
-		{
-			if (utf8)
-				return Encoding.UTF8;
-			
-			return Encoding.ASCII;
-		}
-		
-		public void Write(string s)
-		{
-			writer.Write(s);
-		}
-		
-		public void WriteLine(string s)
-		{
-			writer.WriteLine(s);
-		}
-		
-		public void Close()
-		{
-			writer.Close();
-		}
+		public string name { get; set; }
+		public bool isOptional { get; set; }
+		public SymbolDisplayPart[] documentation { get; set; }
+		public SymbolDisplayPart[] displayParts { get; set; }
 	}
 }

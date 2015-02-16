@@ -42,7 +42,7 @@ namespace TypeScriptHosting
 		Dictionary<string, Script> scripts = new Dictionary<string, Script>(StringComparer.OrdinalIgnoreCase);
 		ILogger logger;
 		FileName defaultLibScriptFileName;
-		CompilerSettings compilerSettings = new CompilerSettings();
+		CompilerOptions compilerSettings = new CompilerOptions();
 		
 		public LanguageServiceShimHost(ILogger logger)
 		{
@@ -189,7 +189,7 @@ namespace TypeScriptHosting
 		
 		internal void UpdateCompilerSettings(ITypeScriptOptions options)
 		{
-			compilerSettings = new CompilerSettings(options);
+			compilerSettings = new CompilerOptions(options);
 		}
 		
 		public string getScriptVersion(string fileName)
@@ -252,9 +252,9 @@ namespace TypeScriptHosting
 			return null;
 		}
 		
-		public string getDefaultLibFilename()
+		public string getDefaultLibFilename(string options)
 		{
-			log("Host.getDefaultLibFilename");
+			log("Host.getDefaultLibFilename: " + options);
 			return String.Empty;
 		}
 		

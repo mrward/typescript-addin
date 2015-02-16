@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Text;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
@@ -34,12 +35,12 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptFunctionInsightItem : IInsightItem
 	{
-		FormalSignatureItemInfo itemInfo;
+		SignatureHelpItem helpItem;
 		string header;
 		
-		public TypeScriptFunctionInsightItem(FormalSignatureItemInfo itemInfo)
+		public TypeScriptFunctionInsightItem(SignatureHelpItem helpItem)
 		{
-			this.itemInfo = itemInfo;
+			this.helpItem = helpItem;
 		}
 		
 		public object Header {
@@ -53,11 +54,34 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void GenerateHeader()
 		{
-			header = itemInfo.signatureInfo;
+			header = helpItem.GetInsightHeader();
 		}
 		
 		public object Content {
-			get { return itemInfo.docComment; }
+			get {
+				if ((helpItem.documentation == null) || (helpItem.documentation.Length == 0)) {
+					return String.Empty;
+				}
+				
+				if ((helpItem.parameters != null) && (helpItem.parameters.Length > 0)) {
+					return helpItem.ToString() + GetParametersText(helpItem.parameters);
+				}
+				
+				return helpItem.ToString();
+			}
+		}
+		
+		string GetParametersText(SignatureHelpParameter[] parameters)
+		{
+			var builder = new StringBuilder();
+			foreach (SignatureHelpParameter parameter in parameters) {
+				if (parameter.documentation != null && parameter.documentation.Length > 0) {
+					builder.Append(parameter.name);
+					builder.Append(": ");
+					builder.Append(parameter.documentation[0].text);
+				}
+			}
+			return Environment.NewLine + builder.ToString();
 		}
 	}
 }
