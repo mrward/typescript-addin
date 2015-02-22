@@ -161,13 +161,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.CompilerResult.result;
 		}
 		
-		public Diagnostic[] GetSemanticDiagnostics(FileName fileName, ITypeScriptOptions options)
+		public Diagnostic[] GetDiagnostics(FileName fileName, ITypeScriptOptions options)
 		{
 			host.UpdateCompilerSettings(options);
 			host.UpdateFileName(fileName);
-			context.Run(scriptLoader.GetSemanticDiagnosticsScript());
+			context.Run(scriptLoader.GetDiagnosticsScript());
 			
-			return host.SemanticDiagnosticsResult.result;
+			return host.SemanticDiagnosticsResult.result.Concat(
+				host.SyntacticDiagnosticsResult.result)
+				.ToArray();
 		}
 		
 		public void AddFiles(IEnumerable<TypeScriptFile> files)

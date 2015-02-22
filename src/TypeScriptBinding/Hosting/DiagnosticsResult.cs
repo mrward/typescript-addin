@@ -1,10 +1,10 @@
 ﻿// 
-// SemanticDiagnosticsResult.cs
+// DiagnosticsResult.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2014 Matthew Ward
+// Copyright (C) 2014-2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,7 +30,7 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class SemanticDiagnosticsResult
+	public class DiagnosticsResult
 	{
 		public Diagnostic[] result { get; set; }
 	}

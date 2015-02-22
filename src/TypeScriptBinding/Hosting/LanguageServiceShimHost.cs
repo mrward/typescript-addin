@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013-2014 Matthew Ward
+// Copyright (C) 2013-2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -275,9 +275,17 @@ namespace TypeScriptHosting
 		public void updateSemanticDiagnosticsResult(string result)
 		{
 			log(result);
-			SemanticDiagnosticsResult = JsonConvert.DeserializeObject<SemanticDiagnosticsResult>(result);
+			SemanticDiagnosticsResult = JsonConvert.DeserializeObject<DiagnosticsResult>(result);
 		}
 		
-		internal SemanticDiagnosticsResult SemanticDiagnosticsResult { get; private set; }
+		internal DiagnosticsResult SemanticDiagnosticsResult { get; private set; }
+		
+		public void updateSyntacticDiagnosticsResult(string result)
+		{
+			log(result);
+			SyntacticDiagnosticsResult = JsonConvert.DeserializeObject<DiagnosticsResult>(result);
+		}
+		
+		internal DiagnosticsResult SyntacticDiagnosticsResult { get; private set; }
 	}
 }

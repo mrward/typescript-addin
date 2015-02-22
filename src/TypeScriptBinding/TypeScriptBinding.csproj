@@ -140,7 +140,7 @@
     <Compile Include="Hosting\ReferencesResult.cs" />
     <Compile Include="Hosting\ScriptsContainer.cs" />
     <Compile Include="Hosting\ScriptSnapshotShim.cs" />
-    <Compile Include="Hosting\SemanticDiagnosticsResult.cs" />
+    <Compile Include="Hosting\DiagnosticsResult.cs" />
     <Compile Include="Hosting\SignatureHelpItems.cs" />
     <Compile Include="Hosting\SignatureResult.cs" />
     <Compile Include="Hosting\TextChangeRange.cs" />
@@ -228,7 +228,7 @@
     <None Include="Scripts\main.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Scripts\semanticDiagnostics.js">
+    <None Include="Scripts\diagnostics.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\signature.js">

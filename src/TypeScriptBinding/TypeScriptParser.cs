@@ -100,7 +100,7 @@ namespace ICSharpCode.TypeScriptBinding
 					if (typeScriptProjectContent != null) {
 						context.AddFiles(files);
 						IDocument document = DocumentUtilitites.LoadReadOnlyDocumentFromBuffer(fileContent);
-						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, typeScriptProjectContent.Options);
+						Diagnostic[] diagnostics = context.GetDiagnostics(file, typeScriptProjectContent.Options);
 						TypeScriptService.TaskService.Update(diagnostics, file, document);
 					}
 					
