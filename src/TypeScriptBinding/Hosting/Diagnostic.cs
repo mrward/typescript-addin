@@ -35,15 +35,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 //		public SourceFile file { get; set; }
 		public int start { get; set; }
 		public int length { get; set; }
-		public string messageText { get; set; }
+		public string message { get; set; }
 		public DiagnosticCategory category { get; set; }
 		public int code { get; set; }
 		public bool? isEarly { get; set; }
 		
 		public string GetDiagnosticMessage()
 		{
-			if (!String.IsNullOrEmpty(messageText)) {
-				return messageText;
+			if (!String.IsNullOrEmpty(message)) {
+				return message;
 			}
 			return String.Format("{0}", code);
 		}
