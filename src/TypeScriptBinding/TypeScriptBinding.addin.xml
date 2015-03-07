@@ -5,9 +5,9 @@
 	author="Matt Ward"
 	copyright="MIT"
 	url="https://github.com/mrward/typescript-addin"
-	description="Adds TypeScript support. Updated to use TypeScript 1.3"
+	description="Adds TypeScript support. Updated to use TypeScript 1.4"
 	category="Web Development"
-	version="0.3">
+	version="0.4">
 	
 	<Runtime>
 		<Import assembly="TypeScriptBinding.dll" />
@@ -28,7 +28,7 @@
 		<Import file="Scripts/navigation.js"/>
 		<Import file="Scripts/references.js"/>
 		<Import file="Scripts/signature.js"/>
-		<Import file="Scripts/semanticDiagnostics.js"/>
+		<Import file="Scripts/diagnostics.js"/>
 		<Import file="Scripts/TypeScript-License.txt"/>
 		<Import file="Scripts/typescriptServices.js"/>
 	</Runtime>

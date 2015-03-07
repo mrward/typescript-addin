@@ -1,5 +1,5 @@
 ﻿// 
-// LanguageVersion.cs
+// ModuleKind.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,9 +30,10 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum LanguageVersion
+	public enum ModuleKind
 	{
-		EcmaScript3 = 0,
-		EcmaScript5 = 1,
+		None = 0,
+		CommonJS = 1,
+		AMD = 2,
 	}
 }

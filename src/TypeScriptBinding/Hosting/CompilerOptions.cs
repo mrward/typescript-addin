@@ -30,51 +30,53 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class CompilerSettings
+	public class CompilerOptions
 	{
-		public CompilerSettings(ITypeScriptOptions options)
+		public CompilerOptions(ITypeScriptOptions options)
 			: this()
 		{
 			removeComments = options.RemoveComments;
-			mapSourceFiles = options.GenerateSourceMap;
+			sourceMap = options.GenerateSourceMap;
 			noImplicitAny = options.NoImplicitAny;
-			codeGenTarget = options.GetLanguageVersion();
-			moduleGenTarget = options.GetModuleTarget();
-			outFileOption = options.GetOutputFileFullPath();
-			outDirOption = options.GetOutputDirectoryFullPath();
-			gatherDiagnostics = true;
+			target = options.GetScriptTarget();
+			module = options.GetModuleTarget();
+			@out = options.GetOutputFileFullPath();
+			outDir = options.GetOutputDirectoryFullPath();
+			emitBOM = false;
 		}
 		
-		public CompilerSettings()
+		public CompilerOptions()
 		{
-			allowAutomaticSemicolonInsertion = true;
-			outFileOption = "";
-			outDirOption = "";
-			mapRoot = "";
-			sourceRoot = "";
-			codeGenTarget = LanguageVersion.EcmaScript3;
-			moduleGenTarget = ModuleGenTarget.Unspecified;
-			noImplicitAny = true;
+			module = ModuleKind.None;
+			target = ScriptTarget.Latest;
 		}
 		
-		public bool propagateEnumConstants { get; set; }
-		public bool removeComments { get; set; }
-		public bool watch { get; set; }
-		public bool noResolve { get; set; }
-		public bool allowAutomaticSemicolonInsertion { get; set; }
-		public bool noImplicitAny { get; set; }
-		public bool noLib { get; set; }
-		public LanguageVersion codeGenTarget { get; set; }
-		public ModuleGenTarget moduleGenTarget { get; set; }
-		public string outFileOption { get; set; }
-		public string outDirOption { get; set; }
-		public bool mapSourceFiles { get; set; }
+		public bool? allowNonTsExtensions { get; set; }
+		public string charset { get; set; }
+		public int? codepage { get; set; }
+		public bool? declaration { get; set; }
+		public bool? diagnostics { get; set; }
+		public bool? emitBOM { get; set; }
+		public bool? help { get; set; }
+		public string locale { get; set; }
 		public string mapRoot { get; set; }
+		public ModuleKind? module { get; set; }
+		public bool? noEmitOnError { get; set; }
+		public bool? noErrorTruncation { get; set; }
+		public bool? noImplicitAny { get; set; }
+		public bool? noLib { get; set; }
+		public bool? noLibCheck { get; set; }
+		public bool? noResolve { get; set; }
+		public string @out { get; set; }
+		public string outDir { get; set; }
+		public bool? preserveConstEnums { get; set; }
+		public bool? removeComments { get; set; }
+		public bool? sourceMap { get; set; }
 		public string sourceRoot { get; set; }
-		public bool generateDeclarationFiles { get; set; }
-		public bool useCaseSensitiveFileResolution { get; set; }
-		public bool gatherDiagnostics { get; set; }
-		public int codepage { get; set; }
-		public bool createFileLog { get; set; }
+		public bool? suppressImplicitAnyIndexErrors { get; set; }
+		public ScriptTarget? target { get; set; }
+		public bool? version { get; set; }
+		public bool? watch { get; set; }
+//		[option: string]: string | number | boolean;
 	}
 }

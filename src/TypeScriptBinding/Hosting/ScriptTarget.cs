@@ -1,10 +1,10 @@
 ﻿// 
-// StandardOutputTextWriter.cs
+// ScriptTarget.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,24 +30,11 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class StandardOutputTextWriter : ITextWriter
+	public enum ScriptTarget
 	{
-		public void Write(string s)
-		{
-//			BuildMessageView.AppendText(s);
-		}
-		
-//		MessageViewCategory BuildMessageView {
-//			get { return TaskService.BuildMessageViewCategory; }
-//		}
-		
-		public void WriteLine(string s)
-		{
-//			BuildMessageView.AppendLine(s);
-		}
-		
-		public void Close()
-		{
-		}
+		ES3 = 0,
+		ES5 = 1,
+		ES6 = 2,
+		Latest = ES6,
 	}
 }
