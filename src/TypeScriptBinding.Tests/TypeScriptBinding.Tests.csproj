@@ -15,6 +15,8 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -66,8 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hosting\TestableProject.cs" />
-    <Compile Include="Hosting\TypeScriptCompilerArgumentsTests.cs" />
     <Compile Include="Parsing\FakeTypeScriptContextFactory.cs" />
     <Compile Include="Parsing\ParseClassTests.cs" />
     <Compile Include="Parsing\ParseTests.cs" />
@@ -97,11 +97,6 @@
       <Link>Resources\typescriptServices.js</Link>
       <LogicalName>typescriptServices.js</LogicalName>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Hosting" />
-    <Folder Include="Resources" />
-    <Folder Include="Parsing" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

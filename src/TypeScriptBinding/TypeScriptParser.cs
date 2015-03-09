@@ -76,14 +76,14 @@ namespace ICSharpCode.TypeScriptBinding
 					context.AddFile(file, content);
 					context.RunInitialisationScript();
 					
-					NavigateToItem[] navigation = context.GetLexicalStructure(file);
+					NavigationBarItem[] navigation = context.GetNavigationInfo(file);
 					var document = new ReadOnlyDocument(content);
 					var parsedDocument = new TypeScriptParsedDocument(fileName);
 					parsedDocument.AddNavigation(navigation, document);
 					
 					if (options != null) {
-						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, options);
 						context.AddFiles(files);
+						Diagnostic[] diagnostics = context.GetDiagnostics(file, options);
 						parsedDocument.AddDiagnostics(diagnostics, document);
 					}
 

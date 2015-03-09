@@ -40,5 +40,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public int start { get; set; }
 		public int length { get; set; }
+		
+		public bool isEmpty()
+		{
+			return length == 0;
+		}
 	}
 }

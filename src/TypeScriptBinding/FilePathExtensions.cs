@@ -43,5 +43,14 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			return fileName.ToString().ToLowerInvariant();
 		}
+		
+		public static string NormalizePath(this string fileName)
+		{
+			if (fileName == null) {
+				return null;
+			}
+			
+			return new FilePath(fileName).CanonicalPath;
+		}
 	}
 }

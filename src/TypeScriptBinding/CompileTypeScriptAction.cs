@@ -38,6 +38,11 @@ namespace ICSharpCode.TypeScriptBinding
 {
 	public abstract class CompileTypeScriptAction
 	{
+		protected void Report(string message)
+		{
+			progressMonitor.Log.WriteLine(message);
+		}
+
 		protected IProgressMonitor progressMonitor;
 		
 		protected IProgressMonitor GetRunProcessMonitor()
@@ -53,7 +58,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		protected void Report(string format, params object[] args)
 		{
-			progressMonitor.Log.WriteLine(format, args);
+			string message = String.Format(format, args);
+			Report(message);
 		}
 		
 		protected void ReportError(string error)

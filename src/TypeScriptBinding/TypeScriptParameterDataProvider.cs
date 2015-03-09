@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Text;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using Mono.TextEditor;
 using MonoDevelop.Ide.CodeCompletion;
@@ -36,7 +37,7 @@ namespace ICSharpCode.TypeScriptBinding
 	public class TypeScriptParameterDataProvider : ParameterDataProvider
 	{
 		TypeScriptContext context;
-		SignatureInfo signatureInfo;
+		SignatureHelpItems helpItems;
 		
 		public TypeScriptParameterDataProvider(TypeScriptContext context, int startOffset)
 			: base(startOffset)
@@ -46,9 +47,9 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public void GetSignatures(TextEditorData editor)
 		{
-			signatureInfo = context.GetSignature(editor.FileName, editor.Caret.Offset);
-			if (signatureInfo == null) {
-				signatureInfo = new SignatureInfo ();
+			helpItems = context.GetSignature(editor.FileName, editor.Caret.Offset);
+			if (helpItems == null) {
+				helpItems = new SignatureHelpItems ();
 			}
 		}
 		
@@ -62,13 +63,13 @@ namespace ICSharpCode.TypeScriptBinding
 			return GetSignatureOverload(overload).parameters.Length;
 		}
 		
-		FormalSignatureItemInfo GetSignatureOverload(int overload)
+		SignatureHelpItem GetSignatureOverload(int overload)
 		{
-			return signatureInfo.formal[overload];
+			return helpItems.items[overload];
 		}
 		
 		public override int Count {
-			get { return signatureInfo.formal.Length; }
+			get { return helpItems.items.Length; }
 		}
 		
 		public override bool AllowParameterList(int overload)
@@ -78,12 +79,38 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public override TooltipInformation CreateTooltipInformation(int overload, int currentParameter, bool smartWrap)
 		{
-			FormalSignatureItemInfo signatureOverload = GetSignatureOverload(overload);
+			SignatureHelpItem signatureOverload = GetSignatureOverload(overload);
 			
 			return new TooltipInformation {
-				SignatureMarkup = signatureOverload.signatureInfo,
-				SummaryMarkup = signatureOverload.docComment
+				SignatureMarkup = signatureOverload.GetInsightHeader (),
+				SummaryMarkup = GetSummary (signatureOverload)
 			};
+		}
+
+		string GetSummary (SignatureHelpItem helpItem)
+		{
+			if ((helpItem.documentation == null) || (helpItem.documentation.Length == 0)) {
+					return String.Empty;
+			}
+
+			if ((helpItem.parameters != null) && (helpItem.parameters.Length > 0)) {
+				return helpItem.ToString() + GetParametersText(helpItem.parameters);
+			}
+
+			return helpItem.ToString();
+		}
+
+		string GetParametersText(SignatureHelpParameter[] parameters)
+		{
+			var builder = new StringBuilder();
+			foreach (SignatureHelpParameter parameter in parameters) {
+				if (parameter.documentation != null && parameter.documentation.Length > 0) {
+					builder.Append(parameter.name);
+					builder.Append(": ");
+					builder.Append(parameter.documentation[0].text);
+				}
+			}
+			return Environment.NewLine + builder.ToString();
 		}
 	}
 }

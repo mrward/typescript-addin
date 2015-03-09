@@ -51,8 +51,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			this.emitOutput = emitOutput;
 			this.inputFileName = inputFileName;
 			
-			HasErrors = !(emitOutput.emitOutputResult == EmitOutputResult.Succeeded);
-			errorMessage = GetErrorMessage(emitOutput.emitOutputResult);
+			HasErrors = !(emitOutput.emitOutputStatus == EmitReturnStatus.Succeeded);
+			errorMessage = GetErrorMessage(emitOutput.emitOutputStatus);
 		}
 		
 		public bool HasErrors { get; set; }
@@ -62,16 +62,20 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return errorMessage;
 		}
 		
-		string GetErrorMessage(EmitOutputResult result)
+		string GetErrorMessage(EmitReturnStatus result)
 		{
 			switch (result) {
-				case EmitOutputResult.FailedBecauseOfCompilerOptionsErrors:
-					return "Compiler Options errors";
-				case EmitOutputResult.FailedBecauseOfSyntaxErrors:
-					return "Syntax errors";
-				case EmitOutputResult.FailedToGenerateDeclarationsBecauseOfSemanticErrors:
-					return "Semantic errors causing declaration generation to fail.";
-				case EmitOutputResult.Succeeded:
+				case EmitReturnStatus.AllOutputGenerationSkipped:
+					return "No .js generated because of syntax errors, nothing generated.";
+				case EmitReturnStatus.JSGeneratedWithSemanticErrors:
+					return ".js and .map generated with semantic errors.";
+				case EmitReturnStatus.DeclarationGenerationSkipped:
+					return ".d.ts generation skipped because of semantic errors or declaration emitter specific errors; Output .js with semantic errors.";
+				case EmitReturnStatus.EmitErrorsEncountered:
+					return "Emitter errors occurred during emitting process.";
+				case EmitReturnStatus.CompilerOptionsErrors:
+					return "Errors occurred in parsing compiler options, nothing generated.";
+				case EmitReturnStatus.Succeeded:
 					return String.Empty;
 				default:
 					return result.ToString();

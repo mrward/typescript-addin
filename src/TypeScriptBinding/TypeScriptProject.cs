@@ -221,22 +221,23 @@ namespace ICSharpCode.TypeScriptBinding
 			SetStringProperty(config, ModuleKindPropertyName, value);
 		}
 		
-		public LanguageVersion GetLanguageVersion()
+		public ScriptTarget GetScriptTarget()
 		{
-			if (EcmaScriptVersion == "ES3") {
-				return LanguageVersion.EcmaScript3;
+			ScriptTarget target;
+			if (Enum.TryParse(EcmaScriptVersion, true, out target)) {
+				return target;
 			}
-			return LanguageVersion.EcmaScript5;
+			return ScriptTarget.ES5;
 		}
 		
-		public ModuleGenTarget GetModuleTarget()
+		public ModuleKind GetModuleTarget()
 		{
 			if (String.Equals(ModuleKind, "amd", StringComparison.OrdinalIgnoreCase)) {
-				return ModuleGenTarget.Asynchronous;
+				return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.AMD;
 			} else if (String.Equals(ModuleKind, "commonjs", StringComparison.OrdinalIgnoreCase)) {
-				return ModuleGenTarget.Synchronous;
+				return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.CommonJS;
 			}
-			return ModuleGenTarget.Unspecified;
+			return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.None;
 		}
 		
 		public bool NoImplicitAny {

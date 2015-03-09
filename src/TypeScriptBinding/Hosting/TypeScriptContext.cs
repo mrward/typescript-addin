@@ -77,7 +77,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			// 1-2 seconds for the completion list to appear the first time it is triggered.
 			string fileName = host.GetFileNames().FirstOrDefault();
 			if (fileName != null) {
-				GetCompletionItems(fileName, 1, null, false);
+				GetCompletionItems(fileName, 1, String.Empty, false);
 			}
 		}
 		
@@ -108,7 +108,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.CompletionEntryDetailsResult.result;
 		}
 		
-		public SignatureInfo GetSignature(FilePath fileName, int offset)
+		public SignatureHelpItems GetSignature(FilePath fileName, int offset)
 		{
 			host.position = offset;
 			host.UpdateFileName(fileName);
@@ -138,12 +138,12 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.DefinitionResult.result;
 		}
 		
-		public NavigateToItem[] GetLexicalStructure(FilePath fileName)
+		public NavigationBarItem[] GetNavigationInfo(FilePath fileName)
 		{
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
-			return host.LexicalStructure.result;
+			return host.NavigationResult.result;
 		}
 		
 		public void RemoveFile(FilePath fileName)
@@ -160,13 +160,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return host.CompilerResult.result;
 		}
 		
-		public Diagnostic[] GetSemanticDiagnostics(FilePath fileName, ITypeScriptOptions options)
+		public Diagnostic[] GetDiagnostics(FilePath fileName, ITypeScriptOptions options)
 		{
 			host.UpdateCompilerSettings(options);
 			host.UpdateFileName(fileName);
-			context.Run(scriptLoader.GetSemanticDiagnosticsScript());
+			context.Run(scriptLoader.GetDiagnosticsScript());
 			
-			return host.SemanticDiagnosticsResult.result;
+			return host.SemanticDiagnosticsResult.result.Concat(
+				host.SyntacticDiagnosticsResult.result)
+				.ToArray();
 		}
 		
 		public void AddFiles(IEnumerable<TypeScriptFile> files)

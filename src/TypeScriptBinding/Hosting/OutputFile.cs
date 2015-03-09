@@ -31,15 +31,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class OutputFile
 	{
-		public OutputFile()
-		{
-			sourceMapEntries = new SourceMapEntry[0];
-		}
-		
 		public string name { get; set; }
-		public bool writeByteOrderMark { get; set; }
+		public bool? writeByteOrderMark { get; set; }
 		public string text { get; set; }
-		public OutputFileType fileType { get; set; }
-		public SourceMapEntry[] sourceMapEntries;
 	}
 }

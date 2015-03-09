@@ -1,10 +1,10 @@
 ﻿// 
-// StandardOutputTextWriter.cs
+// SignatureHelpItems.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,24 +30,17 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class StandardOutputTextWriter : ITextWriter
+	public class SignatureHelpItems
 	{
-		public void Write(string s)
+		public SignatureHelpItems()
 		{
-//			BuildMessageView.AppendText(s);
+			this.items = new SignatureHelpItem[0];
 		}
 		
-//		MessageViewCategory BuildMessageView {
-//			get { return TaskService.BuildMessageViewCategory; }
-//		}
-		
-		public void WriteLine(string s)
-		{
-//			BuildMessageView.AppendLine(s);
-		}
-		
-		public void Close()
-		{
-		}
+		public SignatureHelpItem[] items { get; set; }
+		public TextSpan applicableSpan { get; set; }
+		public int selectedItemIndex { get; set; }
+		public int argumentIndex { get; set; }
+		public int argumentCount { get; set; }
 	}
 }

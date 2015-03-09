@@ -1,5 +1,5 @@
 ﻿// 
-// LanguageVersion.cs
+// ScriptTarget.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,9 +30,11 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum LanguageVersion
+	public enum ScriptTarget
 	{
-		EcmaScript3 = 0,
-		EcmaScript5 = 1,
+		ES3 = 0,
+		ES5 = 1,
+		ES6 = 2,
+		Latest = ES6,
 	}
 }
