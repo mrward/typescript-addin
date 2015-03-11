@@ -86,70 +86,21 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			return Path.Combine(root, fileName);
 		}
-		
+
+        string ReadScript(string fileName)
+        {
+            return File.ReadAllText(fileName);
+        }
+
 		public string GetTypeScriptServicesScript()
 		{
 			return ReadScript(typeScriptServicesFileName);
-		}
-		
-		string ReadScript(string fileName)
-		{
-			return File.ReadAllText(fileName);
-		}
-		
-		public string GetMainScript()
-		{
-			return ReadScript(mainScriptFileName);
-		}
-		
-		public string GetMemberCompletionScript()
-		{
-			return ReadScript(memberCompletionScriptFileName);
-		}
-		
-		public string GetTypeScriptCompilerScript()
-		{
-			return ReadScript(typeScriptCompilerFileName);
-		}
-		
-		public string GetFunctionSignatureScript()
-		{
-			return ReadScript(signatureScriptFileName);
 		}
 		
 		public string GetLibScript()
 		{
 			return ReadScript(libScriptFileName);
 		}
-		
-		public string GetFindReferencesScript()
-		{
-			return ReadScript(findReferencesScriptFileName);
-		}
-		
-		public string GetDefinitionScript()
-		{
-			return ReadScript(definitionScriptFileName);
-		}
-		
-		public string GetNavigationScript()
-		{
-			return ReadScript(navigationScriptFileName);
-		}
-		
-		public string GetCompletionDetailsScript()
-		{
-			return ReadScript(completionDetailsScriptFileName);
-		}
-		
-		public string GetLanguageServicesCompileScript()
-		{
-			return ReadScript(languageServicesCompileScriptFileName);
-		}
-		
-		public string GetDiagnosticsScript()
-		{
-			return ReadScript(diagnosticsScriptFileName);
-		}
+
 	}
 }
