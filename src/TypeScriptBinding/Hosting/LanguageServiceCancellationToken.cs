@@ -27,6 +27,7 @@
 //
 
 using System;
+using TypeScriptLanguageService;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
