@@ -35,6 +35,8 @@ using ICSharpCode.NRefactory.TypeSystem;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Ide.TypeSystem;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptParsedDocument : ParsedDocument
@@ -78,7 +80,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddClass(NavigationBarItem item, IDocument document)
 		{
-			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
+   var navItem = new NavigationBarItemRegion(item);
+			DomRegion region = navItem.ToRegionStartingFromOpeningCurlyBrace(document);
 			var folding = new FoldingRegion(region, FoldType.Type);
 			Add(folding);
 			AddMethods(item.childItems, document);
@@ -98,7 +101,8 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddMethod(NavigationBarItem item, IDocument document)
 		{
-			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
+   var navItem = new NavigationBarItemRegion(item);
+			DomRegion region = navItem.ToRegionStartingFromOpeningCurlyBrace(document);
 			var folding = new FoldingRegion(region, FoldType.Member);
 			Add(folding);
 		}

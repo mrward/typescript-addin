@@ -60,8 +60,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			TypeScriptContext context = factory.CreateContext();
 			context.AddFile(fileName, text);
-			context.RunInitialisationScript();
-			context.GetCompletionItemsForTheFirstTime();
 			
 			cachedContexts.Add(fileName, context);
 			
@@ -102,10 +100,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			foreach (FilePath typeScriptFileName in project.GetTypeScriptFileNames()) {
 				AddFileToProjectContext(context, typeScriptFileName);
 			}
-			
-			context.RunInitialisationScript();
-			context.GetCompletionItemsForTheFirstTime();
-			
+					
 			return context;
 		}
 		

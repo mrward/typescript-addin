@@ -32,6 +32,8 @@ using ICSharpCode.TypeScriptBinding.Hosting;
 using Mono.TextEditor;
 using MonoDevelop.Ide.CodeCompletion;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptParameterDataProvider : ParameterDataProvider
@@ -79,10 +81,15 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public override TooltipInformation CreateTooltipInformation(int overload, int currentParameter, bool smartWrap)
 		{
-			SignatureHelpItem signatureOverload = GetSignatureOverload(overload);
-			
+            SignatureHelpItem signatureOverload = GetSignatureOverload(overload);
+            var info = string.Join<SymbolDisplayPart> ("", signatureOverload.prefixDisplayParts) +
+                string.Join<SignatureHelpParameter> ("", signatureOverload.parameters) +
+                string.Join<SymbolDisplayPart> ("", signatureOverload.suffixDisplayParts) +
+                (string.Join<SymbolDisplayPart> ("", signatureOverload.separatorDisplayParts))
+                .Replace(",","");
+
 			return new TooltipInformation {
-				SignatureMarkup = signatureOverload.GetInsightHeader (),
+				SignatureMarkup = info,
 				SummaryMarkup = GetSummary (signatureOverload)
 			};
 		}

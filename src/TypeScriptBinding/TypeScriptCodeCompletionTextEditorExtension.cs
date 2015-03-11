@@ -39,6 +39,8 @@ using MonoDevelop.Ide.Gui;
 using MonoDevelop.Ide.Gui.Content;
 using SearchResult = MonoDevelop.Ide.FindInFiles.SearchResult;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptCodeCompletionTextEditorExtension : CompletionTextEditorExtension
@@ -128,8 +130,13 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static SearchResult CreateSearchResult(ReferenceEntry entry)
 		{
-			var provider = new FileProvider(entry.fileName.NormalizePath(), null, entry.minChar, entry.limChar);
-			return new SearchResult(provider, entry.minChar, entry.length);
+            var provider = new FileProvider(
+                entry.fileName.NormalizePath(),
+                null,
+                entry.textSpan.start,
+                entry.textSpan.start + entry.textSpan.length
+            );
+            return new SearchResult(provider, entry.textSpan.start, entry.textSpan.length);
 		}
 		
 		public static void GoToDefinition(TextEditorData editor)
@@ -145,11 +152,11 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		static void GoToDefinition(DefinitionInfo definition)
 		{
-			if (!definition.HasFileName())
+            if (! String.IsNullOrEmpty(definition.fileName))
 				return;
 			
 			Document document = IdeApp.Workbench.OpenDocument(definition.fileName, OpenDocumentOptions.TryToReuseViewer);
-			DocumentLocation location = document.Editor.OffsetToLocation(definition.minChar);
+            DocumentLocation location = document.Editor.OffsetToLocation(definition.textSpan.start);
 			IdeApp.Workbench.OpenDocument(definition.fileName, location.Line, location.Column, OpenDocumentOptions.Default);
 		}
 	}
