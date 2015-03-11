@@ -169,9 +169,6 @@
     <Compile Include="Hosting\NavigateToItemRegion.cs" />
     <Compile Include="Hosting\NavigationBarItemRegion.cs" />
     <Compile Include="Hosting\LanguageServiceCancellationToken.cs" />
-    <Compile Include="Scripts\Types.cs">
-      <DependentUpon>Types.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\Noesis.Javascript\x86\msvcp100.dll">
@@ -198,10 +195,6 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-    <None Include="Scripts\Types.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Types.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
