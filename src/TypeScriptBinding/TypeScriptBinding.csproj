@@ -98,13 +98,13 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="V8.Net">
+      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.SharedTypes.dll</HintPath>
+    </Reference>
+    <Reference Include="V8">
       <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.dll</HintPath>
     </Reference>
-    <Reference Include="V8.Net.Proxy.Interface">
+    <Reference Include="V8.Net.Proxy">
       <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.Proxy.Interface.dll</HintPath>
-    </Reference>
-    <Reference Include="V8.Net.SharedTypes">
-      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.SharedTypes.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -198,9 +198,6 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-    <None Include="..\..\lib\V8dotnet\linux.x64\libV8_Net_Proxy.so">
-      <Link>libV8_Net_Proxy.so</Link>
-    </None>
     <None Include="Scripts\Types.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>Types.cs</LastGenOutput>
