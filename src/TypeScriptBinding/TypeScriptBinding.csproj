@@ -125,7 +125,6 @@
     <Compile Include="Hosting\LanguageServiceLogger.cs" />
     <Compile Include="Hosting\LanguageServiceCompiler.cs" />
     <Compile Include="Hosting\LanguageServiceCompilerResult.cs" />
-    <Compile Include="Hosting\ScriptsContainer.cs" />
     <Compile Include="Hosting\TypeScriptContextFactory.cs" />
     <Compile Include="Hosting\TypeScriptContextProvider.cs" />
     <Compile Include="IBuildTargetExtensions.cs" />
