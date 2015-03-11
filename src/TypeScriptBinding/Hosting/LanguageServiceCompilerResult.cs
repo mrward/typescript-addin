@@ -32,11 +32,13 @@ using System.Linq;
 
 using MonoDevelop.Core;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceCompilerResult
 	{
-		EmitOutput emitOutput;
+        EmitOutput emitOutput;
 		FilePath inputFileName;
 		string errorMessage;
 		
@@ -46,13 +48,17 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			errorMessage = ex.Message;
 		}
 		
-		public LanguageServiceCompilerResult(EmitOutput emitOutput, FilePath inputFileName)
+        public LanguageServiceCompilerResult(EmitOutput emitOutput, FilePath inputFileName)
 		{
 			this.emitOutput = emitOutput;
 			this.inputFileName = inputFileName;
 			
-			HasErrors = !(emitOutput.emitOutputStatus == EmitReturnStatus.Succeeded);
-			errorMessage = GetErrorMessage(emitOutput.emitOutputStatus);
+            HasErrors = !(emitOutput.emitSkipped == true);
+            //@TODO emitOutput must have changed to previews version
+            //it has know knowlege about the reason of the error
+            // we have two posibilites using the service with emitOutput
+            //or the compiler with EmitResult which returns also a list of Diagnostics
+//            errorMessage = GetErrorMessage(emitOutput.);
 		}
 		
 		public bool HasErrors { get; set; }

@@ -32,6 +32,8 @@ using System.IO;
 
 using MonoDevelop.Core;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceCompiler
@@ -43,10 +45,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			this.context = context;
 		}
 		
-		public LanguageServiceCompilerResult Compile(FilePath fileName, ITypeScriptOptions options)
+		public LanguageServiceCompilerResult Compile(FilePath fileName, ICompilerOptions options)
 		{
 			try {
-				EmitOutput result = context.Compile(fileName, options);
+                EmitOutput result = context.Compile(fileName, options);
 				var compilerResult = new LanguageServiceCompilerResult(result, fileName);
 				if (compilerResult.HasOutputFiles()) {
 					WriteOutputFiles(result.outputFiles);
