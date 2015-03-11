@@ -29,6 +29,8 @@
 using System;
 using MonoDevelop.Core;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class CompletionEntryDetailsProvider
