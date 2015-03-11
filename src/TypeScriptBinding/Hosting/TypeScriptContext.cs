@@ -32,59 +32,28 @@ using System.IO;
 using System.Linq;
 
 using MonoDevelop.Core;
-using Noesis.Javascript;
+
+
+using TypeScriptLanguageService;
 using TypeScriptHosting;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptContext : IDisposable
 	{
-		JavascriptContext context = new JavascriptContext();
-		LanguageServiceShimHost host;
 		IScriptLoader scriptLoader;
-		bool runInitialization = true;
+        LanguageServiceHost host = null; 
 		
 		public TypeScriptContext(IScriptLoader scriptLoader, ILogger logger)
 		{
 			this.scriptLoader = scriptLoader;
-			host = new LanguageServiceShimHost(logger);
-			host.AddDefaultLibScript(new FilePath(scriptLoader.LibScriptFileName), scriptLoader.GetLibScript());
-			context.SetParameter("host", host);
-			context.Run(scriptLoader.GetTypeScriptServicesScript());
+
+            host = (LanguageServiceHost) V8TypescriptProvider.TService().Host;
+
+            host.AddDefaultLibScript(new FilePath(scriptLoader.LibScriptFileName), scriptLoader.GetLibScript());
 		}
 		
-		public void Dispose()
-		{
-			context.Dispose();
-		}
-		
-		public void AddFile(FilePath fileName, string text)
-		{
-			host.AddFile(fileName, text);
-		}
-		
-		public void RunInitialisationScript()
-		{
-			if (runInitialization) {
-				runInitialization = false;
-				context.Run(scriptLoader.GetMainScript());
-			}
-		}
-		
-		public void GetCompletionItemsForTheFirstTime()
-		{
-			// HACK - run completion on first file so the user does not have to wait about 
-			// 1-2 seconds for the completion list to appear the first time it is triggered.
-			string fileName = host.GetFileNames().FirstOrDefault();
-			if (fileName != null) {
-				GetCompletionItems(fileName, 1, String.Empty, false);
-			}
-		}
-		
-		public void UpdateFile(FilePath fileName, string text)
-		{
-			host.UpdateFile(fileName, text);
-		}
+        #region TypeScriptLanguageService calls
 		
 		public CompletionInfo GetCompletionItems(FilePath fileName, int offset, string text, bool memberCompletion)
 		{
@@ -92,9 +61,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.UpdateFileName(fileName);
 			host.isMemberCompletion = memberCompletion;
 			
-			context.Run(scriptLoader.GetMemberCompletionScript());
-			
-			return host.CompletionResult.result;
+            return V8TypescriptProvider.TService().GetCompletionsAtPosition(fileName,offset);
 		}
 		
 		public CompletionEntryDetails GetCompletionEntryDetails(FilePath fileName, int offset, string entryName)
@@ -103,9 +70,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.UpdateFileName(fileName);
 			host.completionEntry = entryName;
 			
-			context.Run(scriptLoader.GetCompletionDetailsScript());
-			
-			return host.CompletionEntryDetailsResult.result;
+            return V8TypescriptProvider.TService().GetCompletionEntryDetails(fileName, offset, entryName);
 		}
 		
 		public SignatureHelpItems GetSignature(FilePath fileName, int offset)
@@ -113,9 +78,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
-			context.Run(scriptLoader.GetFunctionSignatureScript());
-			
-			return host.SignatureResult.result;
+            return V8TypescriptProvider.TService().GetSignatureHelpItems(fileName, offset);
 		}
 		
 		public ReferenceEntry[] FindReferences(FilePath fileName, int offset)
@@ -123,9 +86,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
-			context.Run(scriptLoader.GetFindReferencesScript());
-			
-			return host.ReferencesResult.result;
+            return V8TypescriptProvider.TService().GetReferencesAtPosition(fileName, offset);
 		}
 		
 		public DefinitionInfo[] GetDefinition(FilePath fileName, int offset)
@@ -133,43 +94,58 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
-			context.Run(scriptLoader.GetDefinitionScript());
-			
-			return host.DefinitionResult.result;
+            return V8TypescriptProvider.TService().GetDefinitionAtPosition(fileName, offset);
 		}
 		
 		public NavigationBarItem[] GetNavigationInfo(FilePath fileName)
 		{
 			host.UpdateFileName(fileName);
-			context.Run(scriptLoader.GetNavigationScript());
-			
-			return host.NavigationResult.result;
+            return V8TypescriptProvider.TService().GetNavigationBarItems(fileName);
 		}
-		
-		public void RemoveFile(FilePath fileName)
-		{
-			host.RemoveFile(fileName);
-		}
-		
-		public EmitOutput Compile(FilePath fileName, ITypeScriptOptions options)
+				
+		public EmitOutput Compile(FilePath fileName, ICompilerOptions options)
 		{
 			host.UpdateCompilerSettings(options);
 			host.UpdateFileName(fileName);
-			context.Run(scriptLoader.GetLanguageServicesCompileScript());
-			
-			return host.CompilerResult.result;
+
+            return V8TypescriptProvider.TService().GetEmitOutput(fileName);
 		}
 		
-		public Diagnostic[] GetDiagnostics(FilePath fileName, ITypeScriptOptions options)
+		public Diagnostic[] GetDiagnostics(FilePath fileName, ICompilerOptions options)
 		{
 			host.UpdateCompilerSettings(options);
 			host.UpdateFileName(fileName);
-			context.Run(scriptLoader.GetDiagnosticsScript());
-			
-			return host.SemanticDiagnosticsResult.result.Concat(
-				host.SyntacticDiagnosticsResult.result)
-				.ToArray();
+
+            var syntactic = V8TypescriptProvider.TService().GetSyntacticDiagnostics(fileName);
+            var semantic = V8TypescriptProvider.TService().GetSemanticDiagnostics(fileName);
+            var result = semantic.Concat(syntactic).ToArray();
+            return result;
 		}
+
+        #endregion
+
+
+        #region LanguageServiceHostEnvironment calls
+        public void Dispose()
+        {
+            //          context.Dispose();
+        }
+
+        public void AddFile(FilePath fileName, string text)
+        {
+            host.AddFile(fileName, text);
+        }
+
+
+        public void UpdateFile(FilePath fileName, string text)
+        {
+            host.UpdateFile(fileName, text);
+        }
+
+        public void RemoveFile(FilePath fileName)
+        {
+            host.RemoveFile(fileName);
+        }
 		
 		public void AddFiles(IEnumerable<TypeScriptFile> files)
 		{
@@ -177,5 +153,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 				AddFile(file.FileName, file.Text);
 			}
 		}
+        #endregion
+
 	}
 }
