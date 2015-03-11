@@ -37,16 +37,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string LibScriptFileName { get; }
 		
 		string GetTypeScriptServicesScript();
-		string GetMainScript();
-		string GetMemberCompletionScript();
-		string GetTypeScriptCompilerScript();
-		string GetFunctionSignatureScript();
 		string GetLibScript();
-		string GetFindReferencesScript();
-		string GetDefinitionScript();
-		string GetNavigationScript();
-		string GetCompletionDetailsScript();
-		string GetLanguageServicesCompileScript();
-		string GetDiagnosticsScript();
+
 	}
 }

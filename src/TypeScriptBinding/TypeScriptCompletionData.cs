@@ -33,6 +33,8 @@ using MonoDevelop.Core;
 using MonoDevelop.Ide.CodeCompletion;
 using MonoDevelop.Ide.Gui;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptCompletionData : CompletionData

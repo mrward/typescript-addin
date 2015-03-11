@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ICSharpCode.TypeScriptBinding</RootNamespace>
     <AssemblyName>TypeScriptBinding</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <NoWin32Manifest>False</NoWin32Manifest>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
@@ -15,6 +15,8 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -39,6 +41,17 @@
     <Optimize>True</Optimize>
     <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
     <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="Execute" command="/usr/lib/monodevelop/bin/MonoDevelop.exe" workingdir="/usr/lib/monodevelop/bin/">
+          <EnvironmentVariables>
+            <Variable name="MONODEVELOP_DEV_ADDINS" value="${TargetDir}" />
+          </EnvironmentVariables>
+        </Command>
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
@@ -71,11 +84,28 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>glib-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="Mono.Posix" />
+    <Reference Include="V8.Net">
+      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="V8.Net.Proxy.Interface">
+      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.Proxy.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="V8.Net.SharedTypes">
+      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.SharedTypes.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuildConfiguration.cs" />
@@ -87,63 +117,24 @@
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommandHandler.cs" />
     <Compile Include="GoToTypeScriptDefinitionCommandHandler.cs" />
-    <Compile Include="Hosting\ActualSignatureInfo.cs" />
     <Compile Include="Hosting\ByteOrderMark.cs" />
-    <Compile Include="Hosting\CompilerResult.cs" />
-    <Compile Include="Hosting\CompilerOptions.cs" />
-    <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
-    <Compile Include="Hosting\CompletionEntryDetails.cs" />
-    <Compile Include="Hosting\CompletionEntryDetailsResult.cs" />
-    <Compile Include="Hosting\DefinitionInfo.cs" />
-    <Compile Include="Hosting\DefinitionResult.cs" />
-    <Compile Include="Hosting\Diagnostic.cs" />
-    <Compile Include="Hosting\DiagnosticCategory.cs" />
-    <Compile Include="Hosting\EmitOutput.cs" />
-    <Compile Include="Hosting\EmitReturnStatus.cs" />
-    <Compile Include="Hosting\SignatureHelpParameter.cs" />
-    <Compile Include="Hosting\SignatureHelpItem.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />
-    <Compile Include="Hosting\ICancellationToken.cs" />
     <Compile Include="Hosting\IScriptLoader.cs" />
-    <Compile Include="Hosting\IScriptSnapshotShim.cs" />
-    <Compile Include="Hosting\LanguageServiceCancellationToken.cs" />
-    <Compile Include="Hosting\NavigationBarItem.cs" />
-    <Compile Include="Hosting\SymbolDisplayPart.cs" />
     <Compile Include="Hosting\ITypeScriptContextFactory.cs" />
     <Compile Include="Hosting\LanguageServiceNullLogger.cs" />
     <Compile Include="Hosting\LanguageServiceLogger.cs" />
     <Compile Include="Hosting\LanguageServiceCompiler.cs" />
     <Compile Include="Hosting\LanguageServiceCompilerResult.cs" />
-    <Compile Include="Hosting\ScriptTarget.cs" />
-    <Compile Include="Hosting\ModuleKind.cs" />
-    <Compile Include="Hosting\NavigateToItem.cs" />
-    <Compile Include="Hosting\NavigationInfo.cs" />
-    <Compile Include="Hosting\OutputFile.cs" />
-    <Compile Include="Hosting\ReferenceEntry.cs" />
-    <Compile Include="Hosting\ReferencesResult.cs" />
     <Compile Include="Hosting\ScriptsContainer.cs" />
-    <Compile Include="Hosting\ScriptSnapshotShim.cs" />
-    <Compile Include="Hosting\DiagnosticsResult.cs" />
-    <Compile Include="Hosting\SignatureHelpItems.cs" />
-    <Compile Include="Hosting\SignatureResult.cs" />
-    <Compile Include="Hosting\TextChangeRange.cs" />
-    <Compile Include="Hosting\TextSpan.cs" />
-    <Compile Include="Hosting\TextSpanResult.cs" />
     <Compile Include="Hosting\TypeScriptContextFactory.cs" />
     <Compile Include="Hosting\TypeScriptContextProvider.cs" />
     <Compile Include="IBuildTargetExtensions.cs" />
     <Compile Include="IProject.cs" />
-    <Compile Include="ITypeScriptOptions.cs" />
     <Compile Include="ProjectExtensions.cs" />
     <Compile Include="RegisterTypeScriptCompileOnBuildStartupHandler.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileStartupHandler.cs" />
-    <Compile Include="Hosting\CompletionEntry.cs" />
-    <Compile Include="Hosting\CompletionInfo.cs" />
-    <Compile Include="Hosting\CompletionResult.cs" />
     <Compile Include="Hosting\ScriptLoader.cs" />
-    <Compile Include="Hosting\ILanguageServiceShimHost.cs" />
     <Compile Include="Hosting\ILogger.cs" />
-    <Compile Include="Hosting\LanguageServiceShimHost.cs" />
     <Compile Include="Hosting\Script.cs" />
     <Compile Include="Hosting\TypeScriptContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -171,6 +162,17 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="TypeScriptProjectOptionsPanelWidget.cs" />
     <Compile Include="gtk-gui\ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanelWidget.cs" />
+    <Compile Include="Hosting\EmitReturnStatus.cs" />
+    <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
+    <Compile Include="Hosting\ScriptSnapshot.cs" />
+    <Compile Include="Hosting\V8TypescriptProvider.cs" />
+    <Compile Include="Hosting\LanguageServiceHost.cs" />
+    <Compile Include="Hosting\NavigateToItemRegion.cs" />
+    <Compile Include="Hosting\NavigationBarItemRegion.cs" />
+    <Compile Include="Hosting\LanguageServiceCancellationToken.cs" />
+    <Compile Include="Scripts\Types.cs">
+      <DependentUpon>Types.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\lib\Noesis.Javascript\x86\msvcp100.dll">
@@ -181,37 +183,7 @@
       <Link>msvcr100.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Scripts\compile.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\completion.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\completionDetails.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\definition.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\navigation.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\references.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="Scripts\lib.d.ts">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\main.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\diagnostics.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\signature.js">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Scripts\tsc.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Scripts\TypeScript-License.txt">
@@ -227,6 +199,22 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <None Include="..\..\lib\V8dotnet\linux.x64\libV8_Net_Proxy.so">
+      <Link>libV8_Net_Proxy.so</Link>
+    </None>
+    <None Include="Scripts\Types.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>Types.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="TypeScriptLanguageService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSharpTypeScriptLanguageService\TypeScriptLanguageService\TypeScriptLanguageService.csproj">
+      <Project>{124CE5EA-0E3B-4C66-A880-6A4062D5784A}</Project>
+      <Name>TypeScriptLanguageService</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>

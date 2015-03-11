@@ -32,6 +32,8 @@ using ICSharpCode.TypeScriptBinding.Hosting;
 using Mono.TextEditor;
 using MonoDevelop.Ide.CodeCompletion;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptCompletionItemProvider

@@ -36,11 +36,16 @@ using MonoDevelop.Core;
 using MonoDevelop.Ide;
 using MonoDevelop.Ide.Gui;
 using MonoDevelop.Projects;
+using TypeScriptHosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public static class TypeScriptService
 	{
+  static V8TypescriptProvider v8TypescriptProvider = new V8TypescriptProvider(
+           new LanguageServiceHost(new LanguageServiceLogger()),
+           new ScriptLoader().GetTypeScriptServicesScript()
+         );
 		static readonly TypeScriptContextProvider contextProvider = new TypeScriptContextProvider();
 		static TypeScriptWorkbenchMonitor workbenchMonitor;
 		static TypeScriptProjectMonitor projectMonitor;
@@ -49,6 +54,10 @@ namespace ICSharpCode.TypeScriptBinding
 		public static TypeScriptContextProvider ContextProvider {
 			get { return contextProvider; }
 		}
+
+   public static V8TypescriptProvider V8TypescriptProvider {
+       get { return v8TypescriptProvider; }
+   }
 		
 		public static void Initialize()
 		{
