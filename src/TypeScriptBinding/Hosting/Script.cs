@@ -29,6 +29,8 @@
 using System;
 using System.Collections.Generic;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class Script
@@ -75,9 +77,22 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return lineStartPositions.ToArray();
 		}
 		
-		public TextChangeRange GetTextChangeRange(IScriptSnapshotShim oldSnapshot)
+		public TextChangeRange GetTextChangeRange(IScriptSnapshot oldSnapshot)
 		{
-			return new TextChangeRange(0, oldSnapshot.getLength(), Source.Length);
+			//@TODO calculate TextChangeRange
+			// this is used by getScriptSnapshot
+			// should this be implemented in v8 to prevent
+			// function call's?
+
+			TextSpan tSpan = new TextSpan();
+			tSpan.start = 0;
+			tSpan.length = oldSnapshot.getLength();
+
+			TextChangeRange tChangeRange = new TextChangeRange();
+			tChangeRange.span = tSpan;
+			tChangeRange.newLength = Source.Length;
+
+			return tChangeRange;
 		}
 	}
 }
