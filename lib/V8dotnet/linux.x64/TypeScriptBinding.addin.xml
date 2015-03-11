@@ -1,0 +1,120 @@
+﻿<Addin
+        name="TypeScript Language Binding"
+        id="TypeScript"
+        namespace="MonoDevelop"
+        author="Matt Ward, Christian Karl Bernasko"
+        copyright="MIT"
+        url="https://github.com/mrward/typescript-addin"
+        description="Adds TypeScript support."
+        category="Language bindings"
+        version="0.3">
+
+  <Runtime>
+
+    <Import assembly="TypeScriptBinding.dll" />
+
+    <Import assembly="Newtonsoft.Json.dll" />
+
+    <Import assembly="V8.Net.dll" />
+    <Import assembly="V8.Net.Proxy.Interface.dll" />
+    <Import assembly="V8.Net.SharedTypes.dll" />
+
+
+    <Import file="msvcp100.dll"/>
+    <Import file="msvcr100.dll"/>
+
+    <Import file="libV8_Net_Proxy.so"/>
+
+    <Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
+
+
+    <Import file="Scripts/lib.d.ts"/>
+    <Import file="Scripts/TypeScript-License.txt"/>
+    <Import file="Scripts/typescriptServices.js"/>
+
+  </Runtime>
+
+  <Dependencies>
+    <Addin id="Core" version="5.0"/>
+    <Addin id="Ide" version="5.0"/>
+    <Addin id="SourceEditor2" version="5.0" />
+    <Addin id="Refactoring" version="5.0" />
+  </Dependencies>
+
+  <Extension path="/MonoDevelop/Ide/StartupHandlers">
+    <Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
+    <Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
+    <Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnSaveFileStartupHandler"/>
+  </Extension>
+
+  <Extension path="/MonoDevelop/Ide/FileTemplates">
+    <FileTemplate
+                        id="TypeScript-Empty"
+                        file="Templates/TypeScript.EmptyFile.xft.xml"/>
+  </Extension>
+
+  <Extension path="/MonoDevelop/Ide/TextEditorExtensions">
+    <Class
+                        fileExtensions=".ts"
+                        class="ICSharpCode.TypeScriptBinding.TypeScriptCodeCompletionTextEditorExtension" />
+  </Extension>
+
+  <Extension path="/MonoDevelop/Ide/Commands">
+    <Command
+                        id="MonoDevelop.TypeScriptBinding.Commands.GotoDeclaration"
+                        defaultHandler="ICSharpCode.TypeScriptBinding.GoToTypeScriptDefinitionCommandHandler"
+                        _label="_Go to Declaration"
+                        shortcut="F12"
+                        macShortcut="Meta|D"/>
+    <Command
+                        id="MonoDevelop.TypeScriptBinding.Commands.FindReferences"
+                        defaultHandler="ICSharpCode.TypeScriptBinding.FindTypeScriptReferencesCommandHandler"
+                        _label="_Find References"
+                        shortcut="Shift|F12"
+                        macShortcut="Shift|Meta|R"/>
+    <Command
+                        id="MonoDevelop.TypeScriptBinding.Commands.Rename"
+                        defaultHandler="ICSharpCode.TypeScriptBinding.RenameTypeScriptReferenceCommandHandler"
+                        _label="Re_name"
+                        _description="Rename the selection"
+                        shortcut="F2"
+                        macShortcut="Meta|R"/>
+  </Extension>
+
+  <Extension path="/MonoDevelop/SourceEditor2/ContextMenu/Editor">
+    <Condition id="FileType" fileExtensions=".ts">
+      <CommandItem
+                                id="MonoDevelop.TypeScriptBinding.Commands.GotoDeclaration"
+                                insertafter="MonoDevelop.SourceEditor.SourceEditorCommands.MarkerOperations" />
+      <CommandItem
+                                id="MonoDevelop.TypeScriptBinding.Commands.FindReferences"
+                                insertafter="MonoDevelop.TypeScriptBinding.Commands.GotoDeclaration" />
+      <CommandItem
+                                id="MonoDevelop.TypeScriptBinding.Commands.Rename"
+                                insertafter="MonoDevelop.TypeScriptBinding.Commands.FindReferences" />
+    </Condition>
+  </Extension>
+
+  <Extension path="/MonoDevelop/ProjectModel/Gui/ItemOptionPanels/Build">
+    <!--<Condition id="ActiveLanguage" value="C#">-->
+    <Section
+                        id="TypeScriptProjectOptions"
+                        _label="TypeScript"
+                        fill="true"
+                        class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"/>
+  </Extension>
+
+  <Extension name="/MonoDevelop/ProjectModel/LanguageBindings">
+    <LanguageBinding
+                        id="TypeScript"
+                        class="ICSharpCode.TypeScriptBinding.TypeScriptLanguageBinding"
+                        supportedextensions=".ts"/>
+  </Extension>
+
+  <Extension path="/MonoDevelop/TypeSystem/Parser">
+    <Parser
+                        id="TypeScriptParser"
+                        class="ICSharpCode.TypeScriptBinding.TypeScriptParser"
+                        mimeType="text/typescript, application/typescript"/>
+  </Extension>
+</Addin>

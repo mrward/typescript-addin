@@ -1,0 +1,143 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#
+
+//
+//generates content for TypeScriptProject.cs
+//
+
+ Dictionary<string, string> list = new Dictionary<string, string>()
+    {
+{"allowNonTsExtensions","bool"},
+{"charset","string"},
+{"codepage","int"},
+{"declaration","bool"},
+{"diagnostics","bool"},
+{"emitBOM","bool"},
+{"help","bool"},
+{"listFiles","bool"},
+{"locale","string"},
+{"mapRoot","string"},
+{"module","ModuleKind"},
+{"noEmit","bool"},
+{"noEmitOnError","bool"},
+{"noErrorTruncation","bool"},
+{"noImplicitAny","bool"},
+{"noLib","bool"},
+{"noLibCheck","bool"},
+{"noResolve","bool"},
+{"tsOut","string"},
+{"outDir","string"},
+{"preserveConstEnums","bool"},
+{"project","string"},
+{"removeComments","bool"},
+{"sourceMap","bool"},
+{"sourceRoot","string"},
+{"suppressImplicitAnyIndexErrors","bool"},
+{"target","ScriptTarget"},
+{"version","bool"},
+{"watch","bool"},
+{"stripInternal","bool"},
+
+    };
+
+
+
+    foreach ( var name in list){
+     var cName = name.Key.First().ToString().ToUpper() + name.Key.Substring(1);
+     if(name.Value == "string"){
+#>
+    static readonly <#=name.Value#> Default<#=cName#> = "";
+<#
+    }
+     else if(name.Value == "int"){
+#>
+    static readonly <#=name.Value#> Default<#=cName#> = 0;
+<#
+    }
+     else if(name.Value == "bool"){
+#>
+    static readonly <#=name.Value#> Default<#=cName#> = false;
+<#
+    }
+     else{
+#>
+    static readonly <#=name.Value#> Default<#=cName#> = <#=name.Value#>.;
+<#
+    }
+    }
+    foreach ( var name in list){
+    var capitalLetterName =  name.Key.First().ToString().ToUpper() + name.Key.Substring(1);
+
+#>
+        #region <#=name.Key#>
+<#
+        if(name.Value == "bool"){
+#>
+        public bool <#=name.Key#> { 
+            get { return GetBooleanProperty(<#=capitalLetterName#>PropertyName, Default<#=capitalLetterName#>); }
+            set { }
+        }
+
+        public bool Get<#=capitalLetterName#>(ProjectConfiguration config)
+        {
+            return GetBooleanProperty(config, <#=capitalLetterName#>PropertyName, Default<#=capitalLetterName#>);
+        }
+
+        public void Set<#=capitalLetterName#>(ProjectConfiguration config, bool value)
+        {
+            SetBooleanProperty(config, <#=capitalLetterName#>PropertyName, value);
+        }
+        #endregion 
+<#}#>
+<#
+        else if(name.Value == "string"){
+#>
+        public string <#=name.Key#> {
+            get { return GetStringProperty(<#=capitalLetterName#>PropertyName, Default<#=capitalLetterName#>); }
+            set { }
+        }
+
+        public string Get<#=capitalLetterName#>(ProjectConfiguration config)
+        {
+            return GetStringProperty(config, <#=capitalLetterName#>PropertyName, Default<#=capitalLetterName#>);
+        }
+
+        public void Set<#=capitalLetterName#>(ProjectConfiguration config, string value)
+        {
+            SetStringProperty(config, <#=capitalLetterName#>PropertyName, value);
+        }
+        #endregion 
+<#}#>
+<#
+        else{
+#>
+        public <#=name.Value#> <#=name.Key#> {
+            get { 
+                ModuleKind value;
+                Enum.TryParse(GetBooleanProperty(<#=capitalLetterName#>PropertyName, Default<#=capitalLetterName#>), out value);
+                return value;
+            }
+            set { }
+        }
+
+        public string Get<#=capitalLetterName#>(ProjectConfiguration config)
+        {
+            return GetStringProperty(config, <#=capitalLetterName#>PropertyName, Default<#=capitalLetterName#>);
+        }
+
+        public void Set<#=capitalLetterName#>(ProjectConfiguration config, string value)
+        {
+            SetStringProperty(config, <#=capitalLetterName#>PropertyName, value);
+        }
+        #endregion 
+<#}#>
+
+
+<#
+    }
+#>
+
