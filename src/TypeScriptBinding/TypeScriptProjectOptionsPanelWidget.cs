@@ -104,12 +104,13 @@ namespace ICSharpCode.TypeScriptBinding
 			CompileOnSave = typeScriptProject.GetCompileOnSave(configuration);
 			CompileOnBuild = typeScriptProject.GetCompileOnBuild(configuration);
 			IncludeComments = !typeScriptProject.GetRemoveComments(configuration);
-			GenerateSourceMap = typeScriptProject.GetGenerateSourceMap(configuration);
 			AllowImplicitAnyTypes = !typeScriptProject.GetNoImplicitAny(configuration);
+
 			SelectedEcmaScriptTargetVersion = GetEcmaScriptTargetVersion(typeScriptProject);
+
 			SelectedModuleKind = GetModuleKind(typeScriptProject);
-			OutputFileName = typeScriptProject.GetOutputFileName(configuration);
-			OutputDirectory = typeScriptProject.GetOutputDirectory(configuration);
+            OutputFileName = typeScriptProject.GetTsOut(configuration);
+            OutputDirectory = typeScriptProject.GetOutDir(configuration);
 
 			if (!String.IsNullOrEmpty(outputFileName)) {
 				UseOutputFileName = true;
@@ -126,7 +127,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		DisplayValue GetEcmaScriptTargetVersion(TypeScriptProject project)
 		{
-			string value = project.GetEcmaScriptVersion(configuration);
+            string value = project.GetTarget(configuration);
 			
 			DisplayValue displayValue = ecmaScriptTargetVersions.FirstOrDefault(version => version.Id.Equals(value, StringComparison.OrdinalIgnoreCase));
 			if (displayValue != null) {
@@ -138,7 +139,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		DisplayValue GetModuleKind(TypeScriptProject project)
 		{
-			string value = project.GetModuleKind(configuration);
+            string value = project.GetModule(configuration);
 			
 			DisplayValue displayValue = moduleKinds.FirstOrDefault(moduleKind => moduleKind.Id.Equals(value, StringComparison.OrdinalIgnoreCase));
 			if (displayValue != null) {
@@ -336,12 +337,12 @@ namespace ICSharpCode.TypeScriptBinding
 			typeScriptProject.SetCompileOnSave(configuration, CompileOnSave);
 			typeScriptProject.SetCompileOnBuild(configuration, CompileOnBuild);
 			typeScriptProject.SetRemoveComments(configuration, !IncludeComments);
-			typeScriptProject.SetGenerateSourceMap(configuration, GenerateSourceMap);
+            typeScriptProject.SetSourceMap(configuration, GenerateSourceMap);
 			typeScriptProject.SetNoImplicitAny(configuration, !AllowImplicitAnyTypes);
-			typeScriptProject.SetEcmaScriptVersion(configuration, SelectedEcmaScriptTargetVersion.Id);
-			typeScriptProject.SetModuleKind(configuration, SelectedModuleKind.Id);
-			typeScriptProject.SetOutputFileName(configuration, GetOutputFileName());
-			typeScriptProject.SetOutputDirectory(configuration, GetOutputDirectory());
+			typeScriptProject.SetTarget(configuration, SelectedEcmaScriptTargetVersion.Id);
+			typeScriptProject.SetModule(configuration, SelectedModuleKind.Id);
+			typeScriptProject.SetTsOut(configuration, GetOutputFileName());
+            typeScriptProject.SetOutDir(configuration, GetOutputDirectory());
 		}
 
 		string GetOutputFileName()

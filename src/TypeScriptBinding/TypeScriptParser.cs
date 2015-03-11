@@ -38,6 +38,8 @@ using MonoDevelop.Ide;
 using MonoDevelop.Ide.TypeSystem;
 using MonoDevelop.Projects;
 
+using TypeScriptLanguageService;
+
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptParser : TypeSystemParser
@@ -59,7 +61,7 @@ namespace ICSharpCode.TypeScriptBinding
 			this.contextFactory = contextFactory;
 		}
 		
-		public TypeScriptParsedDocument Parse(string fileName, string content, ITypeScriptOptions options)
+		public TypeScriptParsedDocument Parse(string fileName, string content, ICompilerOptions options)
 		{
 			return Parse(fileName, content, options, new TypeScriptFile[0]);
 		}
@@ -67,14 +69,13 @@ namespace ICSharpCode.TypeScriptBinding
 		public TypeScriptParsedDocument Parse(
 			string fileName,
 			string content,
-			ITypeScriptOptions options,
+			ICompilerOptions options,
 			IEnumerable<TypeScriptFile> files)
 		{
 			try {
 				using (TypeScriptContext context = contextFactory.CreateContext()) {
 					var file = new FilePath(fileName);
 					context.AddFile(file, content);
-					context.RunInitialisationScript();
 					
 					NavigationBarItem[] navigation = context.GetNavigationInfo(file);
 					var document = new ReadOnlyDocument(content);
@@ -109,7 +110,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public override ParsedDocument Parse(bool storeAst, string fileName, TextReader content, Project project)
 		{
-			ITypeScriptOptions options = null;
+			ICompilerOptions options = null;
 			List<TypeScriptFile> files = null;
 			DispatchService.GuiSyncDispatch(() => {
 				TypeScriptProject typeScriptProject = TypeScriptService.GetProjectForFile(fileName);
