@@ -98,13 +98,13 @@
     </Reference>
     <Reference Include="Mono.Posix" />
     <Reference Include="V8.Net">
-      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.SharedTypes.dll</HintPath>
+      <HintPath>..\CSharpTypeScriptLanguageService\V8dotnet\linux.x64\V8.Net.dll</HintPath>
     </Reference>
-    <Reference Include="V8">
-      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.dll</HintPath>
+    <Reference Include="V8.Net.Proxy.Interface">
+      <HintPath>..\CSharpTypeScriptLanguageService\V8dotnet\linux.x64\V8.Net.Proxy.Interface.dll</HintPath>
     </Reference>
-    <Reference Include="V8.Net.Proxy">
-      <HintPath>..\..\lib\V8dotnet\linux.x64\V8.Net.Proxy.Interface.dll</HintPath>
+    <Reference Include="V8.Net.SharedTypes">
+      <HintPath>..\CSharpTypeScriptLanguageService\V8dotnet\linux.x64\V8.Net.SharedTypes.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

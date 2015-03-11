@@ -1,3 +1,4 @@
 [submodule "src/CSharpTypeScriptLanguageService"]
 	path = src/CSharpTypeScriptLanguageService
 	url = git@github.com:chrisber/CSharpTypeScriptLanguageService.git
+            branch = master
