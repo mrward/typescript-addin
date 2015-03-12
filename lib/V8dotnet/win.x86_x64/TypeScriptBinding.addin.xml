@@ -1,4 +1,4 @@
-﻿<Addin
+<Addin
 	name="TypeScript Language Binding"
 	id="Typescript"
 	namespace="MonoDevelop"
@@ -12,6 +12,7 @@
   <Runtime>
 
     <Import assembly="TypeScriptBinding.dll" />
+    <Import assembly="TypeScriptLanguageService.dll" />
 
     <Import assembly="Newtonsoft.Json.dll" />
 
@@ -31,17 +32,8 @@
 
     <Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
 
-    <Import file="Scripts/compile.js"/>
-    <Import file="Scripts/completionDetails.js"/>
-    <Import file="Scripts/completion.js"/>
-    <Import file="Scripts/definition.js"/>
+
     <Import file="Scripts/lib.d.ts"/>
-    <Import file="Scripts/main.js"/>
-    <Import file="Scripts/navigation.js"/>
-    <Import file="Scripts/references.js"/>
-    <Import file="Scripts/semanticDiagnostics.js"/>
-    <Import file="Scripts/signature.js"/>
-    <Import file="Scripts/tsc.js"/>
     <Import file="Scripts/TypeScript-License.txt"/>
     <Import file="Scripts/typescriptServices.js"/>
 
