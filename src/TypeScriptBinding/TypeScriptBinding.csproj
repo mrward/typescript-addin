@@ -191,7 +191,9 @@
     <None Include="Templates\TypeScript.EmptyFile.xft.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <EmbeddedResource Include="TypeScriptBinding.addin.xml" />
+    <EmbeddedResource Include="TypeScriptBinding.addin.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>

@@ -12,6 +12,7 @@
   <Runtime>
 
     <Import assembly="TypeScriptBinding.dll" />
+    <Import assembly="TypeScriptLanguageService.dll" />
 
     <Import assembly="Newtonsoft.Json.dll" />
 
