@@ -43,15 +43,18 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <CustomCommands>
-      <CustomCommands>
-        <Command type="Execute" command="/usr/lib/monodevelop/bin/MonoDevelop.exe" workingdir="/usr/lib/monodevelop/bin/">
-          <EnvironmentVariables>
-            <Variable name="MONODEVELOP_DEV_ADDINS" value="${TargetDir}" />
-          </EnvironmentVariables>
-        </Command>
-      </CustomCommands>
-    </CustomCommands>
+<CustomCommands>
+  <CustomCommands>
+    <Command type="Execute"
+      command="/usr/lib/monodevelop/bin/MonoDevelop.exe"
+      workingdir="/usr/lib/monodevelop/bin/">
+      <EnvironmentVariables>
+        <Variable name="MONODEVELOP_DEV_ADDINS" value="${TargetDir}" />
+      </EnvironmentVariables>
+    </Command>
+  </CustomCommands>
+</CustomCommands>
+    <Externalconsole>true</Externalconsole>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.NRefactory">
@@ -164,7 +167,6 @@
     <Compile Include="Hosting\EmitReturnStatus.cs" />
     <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
     <Compile Include="Hosting\ScriptSnapshot.cs" />
-    <Compile Include="Hosting\V8TypescriptProvider.cs" />
     <Compile Include="Hosting\LanguageServiceHost.cs" />
     <Compile Include="Hosting\NavigateToItemRegion.cs" />
     <Compile Include="Hosting\NavigationBarItemRegion.cs" />
@@ -208,4 +210,14 @@
       <Name>TypeScriptLanguageService</Name>
     </ProjectReference>
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy FileWidth="120" TabsToSpaces="False" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" NewLineBeforeConstructorInitializerColon="NewLine" NewLineAfterConstructorInitializerColon="SameLine" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

@@ -64,26 +64,28 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public int[] GetLineStartPositions()
 		{
-			if (lineStartPositions.Count == 0) {
-				string[] lines = Source.Split('\r');
-				lineStartPositions.Add(0);
-				int position = 0;
-				for (int i = 0; i < lines.Length; ++i) {
-					position += lines[i].Length + 2;
-					lineStartPositions.Add(position);
-				}
-			}
+			//TODO Where do we need this? 
+//			if (lineStartPositions.Count == 0) {
+//				string[] lines;
+//				if(Environment.NewLine == "\n"){
+//					lines = Source.Split('\n');
+//				}else{
+//					lines = Source.Split('\r');
+//				}
+//				 
+//				lineStartPositions.Add(0);
+//				int position = 0;
+//				for (int i = 0; i < lines.Length; ++i) {
+//					position += lines[i].Length + 2;
+//					lineStartPositions.Add(position);
+//				}
+//			}
 			
 			return lineStartPositions.ToArray();
 		}
 		
 		public TextChangeRange GetTextChangeRange(IScriptSnapshot oldSnapshot)
 		{
-			//@TODO calculate TextChangeRange
-			// this is used by getScriptSnapshot
-			// should this be implemented in v8 to prevent
-			// function call's?
-
 			TextSpan tSpan = new TextSpan();
 			tSpan.start = 0;
 			tSpan.length = oldSnapshot.getLength();

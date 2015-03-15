@@ -32,15 +32,23 @@ using TypeScriptLanguageService;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class ScriptSnapshot : IScriptSnapshot
+	public class ScriptSnapshot : IScriptSnapshotExtension
 	{
 		ILogger logger;
 		Script script;
+
+		string source;
+		int version;
+		int[] positions;
 		
 		public ScriptSnapshot(ILogger logger, Script script)
 		{
 			this.logger = logger;
 			this.script = script;
+
+			this.source = script.Source;
+			this.version = script.Version;
+			this.positions = script.GetLineStartPositions();
 		}
 		
 		public string getText(int start, int end)
@@ -80,5 +88,27 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			logger.log(String.Format(format, args));
 		}
+
+
+		#region IScriptSnapshotExtension
+		public string ScriptSource {
+			get {
+				return this.source;
+			}
+		}
+
+		public int[] LineStartPositions {
+			get {
+				return this.positions;
+			}
+		}
+
+		public int ScriptVersion {
+			get {
+				return this.version;
+			}
+		}
+		#endregion
+
 	}
 }

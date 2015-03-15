@@ -160,13 +160,20 @@ namespace TypeScriptHosting
             return scripts.Select(keyPair => keyPair.Value.FileName).ToArray();
         }
         public string getScriptVersion(string fileName)
-        {
-            return scripts[fileName].Version.ToString();
+        {            
+			Script script;
+			if(this.scripts.TryGetValue(fileName, out script)){
+				return scripts[fileName].Version.ToString();
+			}
+			return null; 
         }
-        public IScriptSnapshot getScriptSnapshot(string fileName)
-        {
-            Script script = scripts[fileName];
-            return new ScriptSnapshot(logger, script);
+		public IScriptSnapshot getScriptSnapshot(string fileName)
+		{
+			Script script;
+			if(this.scripts.TryGetValue(fileName, out script)){
+				return new ScriptSnapshot(logger, script);
+			}
+			return null; 
         }
         public string getLocalizedDiagnosticMessages()
         {

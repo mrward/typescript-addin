@@ -41,14 +41,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TypeScriptContext : IDisposable
 	{
+		TypeScriptLanguageServices context;
 		IScriptLoader scriptLoader;
-        LanguageServiceHost host = null; 
+        LanguageServiceHost host;
+		bool runInitialization = true;
 		
 		public TypeScriptContext(IScriptLoader scriptLoader, ILogger logger)
 		{
 			this.scriptLoader = scriptLoader;
-
-            host = (LanguageServiceHost) V8TypescriptProvider.TService().Host;
+			this.host = new LanguageServiceHost(logger);
+			this.context = new TypeScriptLanguageServices(host,scriptLoader.GetTypeScriptServicesScript());
 
             host.AddDefaultLibScript(new FilePath(scriptLoader.LibScriptFileName), scriptLoader.GetLibScript());
 		}
@@ -61,7 +63,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.UpdateFileName(fileName);
 			host.isMemberCompletion = memberCompletion;
 			
-            return V8TypescriptProvider.TService().GetCompletionsAtPosition(fileName,offset);
+            return context.GetCompletionsAtPosition(fileName,offset);
 		}
 		
 		public CompletionEntryDetails GetCompletionEntryDetails(FilePath fileName, int offset, string entryName)
@@ -70,7 +72,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.UpdateFileName(fileName);
 			host.completionEntry = entryName;
 			
-            return V8TypescriptProvider.TService().GetCompletionEntryDetails(fileName, offset, entryName);
+            return context.GetCompletionEntryDetails(fileName, offset, entryName);
 		}
 		
 		public SignatureHelpItems GetSignature(FilePath fileName, int offset)
@@ -78,7 +80,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
-            return V8TypescriptProvider.TService().GetSignatureHelpItems(fileName, offset);
+            return context.GetSignatureHelpItems(fileName, offset);
 		}
 		
 		public ReferenceEntry[] FindReferences(FilePath fileName, int offset)
@@ -86,7 +88,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
-            return V8TypescriptProvider.TService().GetReferencesAtPosition(fileName, offset);
+            return context.GetReferencesAtPosition(fileName, offset);
 		}
 		
 		public DefinitionInfo[] GetDefinition(FilePath fileName, int offset)
@@ -94,13 +96,13 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
-            return V8TypescriptProvider.TService().GetDefinitionAtPosition(fileName, offset);
+            return context.GetDefinitionAtPosition(fileName, offset);
 		}
 		
 		public NavigationBarItem[] GetNavigationInfo(FilePath fileName)
 		{
 			host.UpdateFileName(fileName);
-            return V8TypescriptProvider.TService().GetNavigationBarItems(fileName);
+            return context.GetNavigationBarItems(fileName);
 		}
 				
 		public EmitOutput Compile(FilePath fileName, ICompilerOptions options)
@@ -108,7 +110,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.UpdateCompilerSettings(options);
 			host.UpdateFileName(fileName);
 
-            return V8TypescriptProvider.TService().GetEmitOutput(fileName);
+            return context.GetEmitOutput(fileName);
 		}
 		
 		public Diagnostic[] GetDiagnostics(FilePath fileName, ICompilerOptions options)
@@ -116,20 +118,40 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			host.UpdateCompilerSettings(options);
 			host.UpdateFileName(fileName);
 
-            var syntactic = V8TypescriptProvider.TService().GetSyntacticDiagnostics(fileName);
-            var semantic = V8TypescriptProvider.TService().GetSemanticDiagnostics(fileName);
+            var syntactic = context.GetSyntacticDiagnostics(fileName);
+            var semantic = context.GetSemanticDiagnostics(fileName);
             var result = semantic.Concat(syntactic).ToArray();
             return result;
+		}
+
+		public void Dispose()
+		{
+			//context._dispose();
 		}
 
         #endregion
 
 
         #region LanguageServiceHostEnvironment calls
-        public void Dispose()
-        {
-            //          context.Dispose();
-        }
+
+		public void GetCompletionItemsForTheFirstTime()
+		{
+			// HACK - run completion on first file so the user does not have to wait about 
+			// 1-2 seconds for the completion list to appear the first time it is triggered.
+			string fileName = host.GetFileNames().FirstOrDefault();
+			if (fileName != null) {
+				GetCompletionItems(fileName, 1, String.Empty, false);
+			}
+		}
+
+		public void RunInitialisationScript()
+		{
+			if (runInitialization) {
+				runInitialization = false;
+				context.CleanupSemanticCache();
+			}
+		}
+
 
         public void AddFile(FilePath fileName, string text)
         {

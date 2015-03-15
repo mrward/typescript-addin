@@ -119,7 +119,7 @@ namespace ICSharpCode.TypeScriptBinding
 			TextLocation location = document.GetLocation(diagnostic.start);
 			return new Error(
 				GetErrorType(diagnostic.category),
-				diagnostic.ToString(),
+				diagnostic.messageText,
 				location);
 		}
 

@@ -76,6 +76,7 @@ namespace ICSharpCode.TypeScriptBinding
 				using (TypeScriptContext context = contextFactory.CreateContext()) {
 					var file = new FilePath(fileName);
 					context.AddFile(file, content);
+					context.RunInitialisationScript();
 					
 					NavigationBarItem[] navigation = context.GetNavigationInfo(file);
 					var document = new ReadOnlyDocument(content);
@@ -93,6 +94,7 @@ namespace ICSharpCode.TypeScriptBinding
 				}
 			} catch (Exception ex) {
 				Console.WriteLine(ex.ToString());
+				System.Diagnostics.Debugger.Log(0, null, ex.ToString() + Environment.NewLine);
 				LoggingService.LogDebug(ex.ToString());
 			}
 			return new TypeScriptParsedDocument(fileName);
