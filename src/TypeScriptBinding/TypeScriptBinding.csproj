@@ -288,11 +288,16 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="Templates\TypescriptProject.xpt.xml" />
+    <EmbeddedResource Include="Resources\TypeScript.xshd" />
+    <EmbeddedResource Include="Resources\TypeScript.ProjectBrowser.File.png" />
+    <EmbeddedResource Include="Resources\TypeScript.Template.EmptyFile.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="liblinux\" />
     <Folder Include="libosx\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\..\lib\V8\v8dotnet_all_env\liblinux\x64\libV8_Net_Proxy.so">
