@@ -1,45 +1,5 @@
-﻿<Addin
-	name="TypeScript"
-	id="TypeScript"
-	namespace="MonoDevelop"
-	author="Matt Ward"
-	copyright="MIT"
-	url="https://github.com/mrward/typescript-addin"
-	description="Adds TypeScript support. Updated to use TypeScript 1.4"
-	category="Web Development"
-	version="0.4">
-	
-	<Runtime>
-		<Import assembly="TypeScriptBinding.dll" />
-		<Import assembly="Newtonsoft.Json.dll" />
-		
-		<Import file="msvcp100.dll"/>
-		<Import file="msvcr100.dll"/>
-		<Import file="Noesis.Javascript.dll"/>
-		
-		<Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
-		
-		<Import file="Scripts/compile.js"/>
-		<Import file="Scripts/completion.js"/>
-		<Import file="Scripts/completionDetails.js"/>
-		<Import file="Scripts/definition.js"/>
-		<Import file="Scripts/lib.d.ts"/>
-		<Import file="Scripts/main.js"/>
-		<Import file="Scripts/navigation.js"/>
-		<Import file="Scripts/references.js"/>
-		<Import file="Scripts/signature.js"/>
-		<Import file="Scripts/diagnostics.js"/>
-		<Import file="Scripts/TypeScript-License.txt"/>
-		<Import file="Scripts/typescriptServices.js"/>
-	</Runtime>
-	
-	<Dependencies>
-		<Addin id="Core" version="5.0"/>
-		<Addin id="Ide" version="5.0"/>
-		<Addin id="SourceEditor2" version="5.0" />
-		<Addin id="Refactoring" version="5.0" />
-	</Dependencies>
-	
+﻿<ExtensionModel>
+
 	<Extension path="/MonoDevelop/Ide/StartupHandlers">
 		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
 		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
@@ -116,4 +76,4 @@
 			class="ICSharpCode.TypeScriptBinding.TypeScriptParser"
 			mimeType="text/typescript, application/typescript"/>
 	</Extension>
-</Addin>
+</ExtensionModel>
