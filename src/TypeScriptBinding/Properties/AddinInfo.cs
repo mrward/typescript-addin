@@ -5,7 +5,7 @@ using Mono.Addins.Description;
 
 [assembly:Addin ("TypeScript",
 	Namespace = "MonoDevelop",
-	Version = "0.4",
+	Version = "0.5",
 	Category = "Web Development")]
 
 [assembly:AddinName ("TypeScript")]
