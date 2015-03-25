@@ -45,6 +45,10 @@
       <HintPath>..\..\lib\MonoDevelop\ICSharpCode.NRefactory.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Mono.Addins">
+      <HintPath>..\..\lib\MonoDevelop\Mono.Addins.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Mono.TextEditor">
       <HintPath>..\..\lib\MonoDevelop\Mono.TextEditor.dll</HintPath>
       <Private>False</Private>
@@ -139,6 +143,7 @@
     <Compile Include="IProject.cs" />
     <Compile Include="ITypeScriptOptions.cs" />
     <Compile Include="ProjectExtensions.cs" />
+    <Compile Include="Properties\AddinInfo.cs" />
     <Compile Include="RegisterTypeScriptCompileOnBuildStartupHandler.cs" />
     <Compile Include="RegisterTypeScriptCompileOnSaveFileStartupHandler.cs" />
     <Compile Include="Hosting\CompletionEntry.cs" />
@@ -223,6 +228,7 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="TypeScriptBindingRuntimeImports.addin.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="PostBuildEvent.proj" />
