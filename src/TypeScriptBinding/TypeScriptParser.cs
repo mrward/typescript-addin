@@ -83,7 +83,7 @@ namespace ICSharpCode.TypeScriptBinding
 					
 					if (options != null) {
 						context.AddFiles(files);
-						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(file, options);
+						Diagnostic[] diagnostics = context.GetDiagnostics(file, options);
 						parsedDocument.AddDiagnostics(diagnostics, document);
 					}
 

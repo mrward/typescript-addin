@@ -45,7 +45,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string navigationScriptFileName;
 		string completionDetailsScriptFileName;
 		string languageServicesCompileScriptFileName;
-		string semanticDiagnosticsScriptFileName;
+		string diagnosticsScriptFileName;
 		
 		public ScriptLoader()
 		{
@@ -64,7 +64,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			completionDetailsScriptFileName = GetFullPath("completionDetails.js");
 			
 			languageServicesCompileScriptFileName = GetFullPath("compile.js");
-			semanticDiagnosticsScriptFileName = GetFullPath("semanticDiagnostics.js");
+			diagnosticsScriptFileName = GetFullPath("diagnostics.js");
 			
 			typeScriptCompilerFileName = GetFullPath("tsc.js");
 			libScriptFileName = GetFullPath("lib.d.ts");
@@ -147,9 +147,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return ReadScript(languageServicesCompileScriptFileName);
 		}
 		
-		public string GetSemanticDiagnosticsScript()
+		public string GetDiagnosticsScript()
 		{
-			return ReadScript(semanticDiagnosticsScriptFileName);
+			return ReadScript(diagnosticsScriptFileName);
 		}
 	}
 }
