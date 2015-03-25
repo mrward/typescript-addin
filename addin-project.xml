@@ -4,4 +4,9 @@
     <BuildFile>src/TypeScriptBinding.sln</BuildFile>
     <BuildConfiguration>Debug</BuildConfiguration>
   </Project>
+  <Project platforms="Mac">
+    <AddinFile>src/TypeScriptBinding/bin/DebugMac/TypeScriptBinding.dll</AddinFile>
+    <BuildFile>src/TypeScriptBinding.sln</BuildFile>
+    <BuildConfiguration>DebugMac</BuildConfiguration>
+  </Project>
 </AddinProject>

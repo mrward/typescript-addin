@@ -2,12 +2,17 @@
 	<PropertyGroup>
 		<PrepareForRunDependsOn>$(PrepareForRunDependsOn);MyPostBuildTarget</PrepareForRunDependsOn>
 	</PropertyGroup>
-	<ItemGroup>
-		<Copyx86Item Include="$(MSBuildProjectDirectory)\..\..\lib\V8\x86\*.*" />
-		<Copyx64Item Include="$(MSBuildProjectDirectory)\..\..\lib\V8\x64\*.*" />
+	<ItemGroup Condition=" '$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Release'">
+		<Copyx86Item Include="$(MSBuildProjectDirectory)\..\..\lib\V8\windows\x86\*.*" />
+		<Copyx64Item Include="$(MSBuildProjectDirectory)\..\..\lib\V8\windows\x64\*.*" />
+	</ItemGroup>
+	<ItemGroup Condition=" '$(Configuration)' == 'DebugMac' Or '$(Configuration)' == 'ReleaseMac'">
+		<CopyProxyItem Include="$(MSBuildProjectDirectory)\..\..\lib\V8\mac\V8.Net.Proxy.Interface.dll" />
+		<CopyProxyItem Include="$(MSBuildProjectDirectory)\..\..\lib\V8\mac\libV8_Net_Proxy.dylib" />
 	</ItemGroup>
 	<Target Name="MyPostBuildTarget">
 		<Copy SourceFiles="@(Copyx86Item)" DestinationFolder="$(OutputPath)\x86" />
 		<Copy SourceFiles="@(Copyx64Item)" DestinationFolder="$(OutputPath)\x64" />
+		<Copy SourceFiles="@(CopyProxyItem)" DestinationFolder="$(OutputPath)" />
 	</Target>
 </Project>

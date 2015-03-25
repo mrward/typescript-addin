@@ -7,7 +7,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ICSharpCode.TypeScriptBinding</RootNamespace>
     <AssemblyName>TypeScriptBinding</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <NoWin32Manifest>False</NoWin32Manifest>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
@@ -34,6 +34,23 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>False</DebugSymbols>
+    <DebugType>None</DebugType>
+    <Optimize>True</Optimize>
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'DebugMac' ">
+    <OutputPath>bin\DebugMac\</OutputPath>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>Full</DebugType>
+    <Optimize>False</Optimize>
+    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'ReleaseMac' ">
+    <OutputPath>bin\ReleaseMac\</OutputPath>
     <DebugSymbols>False</DebugSymbols>
     <DebugType>None</DebugType>
     <Optimize>True</Optimize>
@@ -77,11 +94,21 @@
     <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
     <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Release'">
     <Reference Include="V8.Net">
-      <HintPath>..\..\lib\V8\V8.Net.dll</HintPath>
+      <HintPath>..\..\lib\V8\windows\V8.Net.dll</HintPath>
     </Reference>
     <Reference Include="V8.Net.SharedTypes">
-      <HintPath>..\..\lib\V8\V8.Net.SharedTypes.dll</HintPath>
+      <HintPath>..\..\lib\V8\windows\V8.Net.SharedTypes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'DebugMac' Or '$(Configuration)' == 'ReleaseMac'">
+    <Reference Include="V8.Net">
+      <HintPath>..\..\lib\V8\mac\V8.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="V8.Net.SharedTypes">
+      <HintPath>..\..\lib\V8\mac\V8.Net.SharedTypes.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -228,7 +255,12 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
-    <EmbeddedResource Include="TypeScriptBindingRuntimeImports.addin.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Release'">
+    <EmbeddedResource Include="RuntimeImports.Windows.addin.xml" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'DebugMac' Or '$(Configuration)' == 'ReleaseMac'">
+    <EmbeddedResource Include="RuntimeImports.Mac.addin.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="PostBuildEvent.proj" />
