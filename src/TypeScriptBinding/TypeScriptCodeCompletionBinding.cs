@@ -141,6 +141,10 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
+			if (entries == null) {
+				return new List<Reference>();
+			}
+			
 			return entries
 				.Select(entry => CreateReference(entry))
 				.ToList();
