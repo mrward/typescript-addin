@@ -74,7 +74,21 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		string GetNewName(string name)
 		{
-			return MessageService.GetTextResponse("Enter the new name", "Rename", name);
+			RenameDialog dialog = null;
+			try {
+				dialog = new RenameDialog();
+				dialog.NewName = name;
+				if (MessageService.ShowCustomDialog(dialog) == (int)Gtk.ResponseType.Ok) {
+					if (dialog.HasNewName) {
+						return dialog.NewName;
+					}
+				}
+			} finally {
+				if (dialog != null) {
+					dialog.Destroy();
+				}
+			}
+			return null;
 		}
 		
 		bool ShouldRenameReference(string newName, string name)

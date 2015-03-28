@@ -232,6 +232,8 @@
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="TypeScriptProjectOptionsPanelWidget.cs" />
     <Compile Include="gtk-gui\ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanelWidget.cs" />
+    <Compile Include="RenameDialog.cs" />
+    <Compile Include="gtk-gui\ICSharpCode.TypeScriptBinding.RenameDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\compile.js">
