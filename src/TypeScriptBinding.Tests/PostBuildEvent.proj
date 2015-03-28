@@ -10,6 +10,10 @@
 		<CopyProxyItem Include="$(MSBuildProjectDirectory)\..\..\lib\V8\mac\V8.Net.Proxy.Interface.dll" />
 		<CopyProxyItem Include="$(MSBuildProjectDirectory)\..\..\lib\V8\mac\libV8_Net_Proxy.dylib" />
 	</ItemGroup>
+	<ItemGroup Condition=" '$(Configuration)' == 'DebugLinux' Or '$(Configuration)' == 'ReleaseLinux'">
+		<CopyProxyItem Include="$(MSBuildProjectDirectory)\..\..\lib\V8\linux\V8.Net.Proxy.Interface.dll" />
+		<CopyProxyItem Include="$(MSBuildProjectDirectory)\..\..\lib\V8\linux\libV8_Net_Proxy.so" />
+	</ItemGroup>
 	<Target Name="MyPostBuildTarget">
 		<Copy SourceFiles="@(Copyx86Item)" DestinationFolder="$(OutputPath)\x86" />
 		<Copy SourceFiles="@(Copyx64Item)" DestinationFolder="$(OutputPath)\x64" />

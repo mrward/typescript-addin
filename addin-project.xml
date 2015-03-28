@@ -9,4 +9,9 @@
     <BuildFile>src/TypeScriptBinding.sln</BuildFile>
     <BuildConfiguration>DebugMac</BuildConfiguration>
   </Project>
+  <Project platforms="Linux">
+    <AddinFile>src/TypeScriptBinding/bin/DebugLinux/TypeScriptBinding.dll</AddinFile>
+    <BuildFile>src/TypeScriptBinding.sln</BuildFile>
+    <BuildConfiguration>DebugLinux</BuildConfiguration>
+  </Project>
 </AddinProject>

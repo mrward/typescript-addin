@@ -1,0 +1,29 @@
+﻿<ExtensionModel>
+
+	<Runtime>
+		<Import assembly="TypeScriptBinding.dll" />
+		<Import assembly="Newtonsoft.Json.dll" />
+		
+		<Import assembly="V8.Net.dll"/>
+		<Import assembly="V8.Net.SharedTypes.dll"/>
+		<Import assembly="V8.Net.Proxy.Interface.dll"/>
+		
+		<Import file="libV8_Net_Proxy.so"/>
+		
+		<Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
+		
+		<Import file="Scripts/compile.js"/>
+		<Import file="Scripts/completion.js"/>
+		<Import file="Scripts/completionDetails.js"/>
+		<Import file="Scripts/definition.js"/>
+		<Import file="Scripts/lib.d.ts"/>
+		<Import file="Scripts/main.js"/>
+		<Import file="Scripts/navigation.js"/>
+		<Import file="Scripts/references.js"/>
+		<Import file="Scripts/signature.js"/>
+		<Import file="Scripts/diagnostics.js"/>
+		<Import file="Scripts/TypeScript-License.txt"/>
+		<Import file="Scripts/typescriptServices.js"/>
+	</Runtime>
+	
+</ExtensionModel>
