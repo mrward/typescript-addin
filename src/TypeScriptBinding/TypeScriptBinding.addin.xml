@@ -1,5 +1,45 @@
 ﻿<ExtensionModel>
 
+	<Runtime>
+		<Import assembly="TypeScriptBinding.dll" />
+		<Import assembly="Newtonsoft.Json.dll" />
+
+		<!-- V8dotnet begin-->
+		<Import assembly="V8.Net.dll" />
+		<Import assembly="V8.Net.Proxy.Interface.dll" />
+		<Import assembly="V8.Net.SharedTypes.dll" />
+
+		<!-- dll map -->
+		<Import file="V8.Net.Proxy.Interface.dll.config"/>
+
+		<!-- V8dotnet Linux -->
+		<Import file="liblinux/x64/libV8_Net_Proxy.so"/>
+		<Import file="liblinux/x86/libV8_Net_Proxy.so"/>
+
+		<!-- V8dotnet OSX -->
+		<Import file="libosx/x86/libV8_Net_Proxy.dylib"/>
+
+		<!-- V8dotnet Windows -->
+		<Import file="V8_Net_Proxy.dll"/>
+
+		<!-- V8dotnet end-->
+
+		<Import file="Templates/TypeScript.EmptyFile.xft.xml"/>
+		
+		<Import file="Scripts/compile.js"/>
+		<Import file="Scripts/completion.js"/>
+		<Import file="Scripts/completionDetails.js"/>
+		<Import file="Scripts/definition.js"/>
+		<Import file="Scripts/lib.d.ts"/>
+		<Import file="Scripts/main.js"/>
+		<Import file="Scripts/navigation.js"/>
+		<Import file="Scripts/references.js"/>
+		<Import file="Scripts/signature.js"/>
+		<Import file="Scripts/diagnostics.js"/>
+		<Import file="Scripts/TypeScript-License.txt"/>
+		<Import file="Scripts/typescriptServices.js"/>
+	</Runtime>
+
 	<Extension path="/MonoDevelop/Ide/StartupHandlers">
 		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
 		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
