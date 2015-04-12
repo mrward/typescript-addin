@@ -278,15 +278,6 @@
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' == 'Debug' Or '$(Configuration)' == 'Release'">
-    <EmbeddedResource Include="RuntimeImports.Windows.addin.xml" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' == 'DebugMac' Or '$(Configuration)' == 'ReleaseMac'">
-    <EmbeddedResource Include="RuntimeImports.Mac.addin.xml" />
-  </ItemGroup>
-  <ItemGroup Condition=" '$(Configuration)' == 'DebugLinux' Or '$(Configuration)' == 'ReleaseLinux'">
-    <EmbeddedResource Include="RuntimeImports.Linux.addin.xml" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="liblinux\" />

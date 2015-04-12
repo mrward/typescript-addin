@@ -10,10 +10,6 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
-		DebugMac|Any CPU = DebugMac|Any CPU
-		ReleaseMac|Any CPU = ReleaseMac|Any CPU
-		DebugLinux|Any CPU = DebugLinux|Any CPU
-		ReleaseLinux|Any CPU = ReleaseLinux|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
@@ -24,21 +20,5 @@ Global
 		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.DebugMac|Any CPU.Build.0 = DebugMac|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.DebugMac|Any CPU.ActiveCfg = DebugMac|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.ReleaseMac|Any CPU.Build.0 = ReleaseMac|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.ReleaseMac|Any CPU.ActiveCfg = ReleaseMac|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.DebugLinux|Any CPU.Build.0 = DebugLinux|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.DebugLinux|Any CPU.ActiveCfg = DebugLinux|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
-		{6F22CECC-2ABA-4D5D-A3F8-1C4F4A46C915}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.ReleaseLinux|Any CPU.Build.0 = ReleaseLinux|Any CPU
-		{94BBCA55-A20E-4782-93B0-3566D185F7C1}.ReleaseLinux|Any CPU.ActiveCfg = ReleaseLinux|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,17 +1,7 @@
 <AddinProject appVersion="5.0">
-  <Project platforms="Win32">
+  <Project platforms="Linux Mac Win32">
     <AddinFile>src/TypeScriptBinding/bin/Debug/TypeScriptBinding.dll</AddinFile>
     <BuildFile>src/TypeScriptBinding.sln</BuildFile>
     <BuildConfiguration>Debug</BuildConfiguration>
-  </Project>
-  <Project platforms="Mac">
-    <AddinFile>src/TypeScriptBinding/bin/DebugMac/TypeScriptBinding.dll</AddinFile>
-    <BuildFile>src/TypeScriptBinding.sln</BuildFile>
-    <BuildConfiguration>DebugMac</BuildConfiguration>
-  </Project>
-  <Project platforms="Linux">
-    <AddinFile>src/TypeScriptBinding/bin/DebugLinux/TypeScriptBinding.dll</AddinFile>
-    <BuildFile>src/TypeScriptBinding.sln</BuildFile>
-    <BuildConfiguration>DebugLinux</BuildConfiguration>
   </Project>
 </AddinProject>
