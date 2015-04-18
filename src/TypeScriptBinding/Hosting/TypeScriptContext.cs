@@ -32,7 +32,6 @@ using System.IO;
 using System.Linq;
 
 using MonoDevelop.Core;
-using Noesis.Javascript;
 using TypeScriptHosting;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
