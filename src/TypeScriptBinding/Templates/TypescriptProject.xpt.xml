@@ -1,0 +1,94 @@
+﻿<?xml version="1.0"?>
+<Template originator   = "Christian Karl Bernasko">
+	
+	<!-- Template Header -->
+	<TemplateConfiguration>
+		<_Name>TypeScript HTML App</_Name>
+		<_Category>Web</_Category>
+		<_Description>Creates a new TypeScript HTML project.</_Description>
+		<LanguageName>C#</LanguageName>
+		<DefaultFilename>TypeScriptHTMLApp</DefaultFilename>
+		<GroupId>md-typeScript-library</GroupId>
+	</TemplateConfiguration>
+	
+	<!-- Actions -->
+	<Actions>
+		<Open filename = "app.ts"/>
+	</Actions>
+	
+	<!-- Template Content -->
+	<Combine name = "${ProjectName}" directory = ".">
+		<Options>
+			<StartupProject>${ProjectName}</StartupProject>
+		</Options>
+		
+		<Project name = "${ProjectName}" directory = ".">
+			<Options Target="Library" LanguageName="TypeScript"/>
+			<Files>
+				<File name="app.ts">
+<![CDATA[
+class Greeter {
+	element: HTMLElement;
+	span: HTMLElement;
+	timerToken: number;
+
+	constructor(element: HTMLElement) {
+		this.element = element;
+		this.element.innerHTML += "The time is: ";
+		this.span = document.createElement('span');
+		this.element.appendChild(this.span);
+		this.span.innerText = new Date().toUTCString();
+	}
+
+	start() {
+		this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
+	}
+
+	stop() {
+		clearTimeout(this.timerToken);
+	}
+
+}
+
+window.onload = () => {
+	var el = document.getElementById('content');
+	var greeter = new Greeter(el);
+	greeter.start();
+};
+]]>
+				</File>
+				<File name="app.css" AddStandardHeader="false">
+<![CDATA[
+body {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+span {
+    font-style: italic;
+}
+
+]]>
+				</File>
+
+				<File name="index.html" AddStandardHeader="false">
+<![CDATA[
+<!DOCTYPE html>
+	<html lang="en">
+		<head>
+			<meta charset="utf-8" />
+			<title>TypeScript HTML App</title>
+			<link rel="stylesheet" href="app.css" type="text/css" />
+			<script src="app.js"></script>
+		</head>
+		<body>
+			<h1>TypeScript HTML App</h1>
+
+			<div id="content"></div>
+		</body>
+	</html>
+]]>
+				</File>
+			</Files>
+		</Project>
+	</Combine>
+</Template>
