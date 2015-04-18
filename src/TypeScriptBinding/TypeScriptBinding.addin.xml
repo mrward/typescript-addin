@@ -95,12 +95,13 @@
 	</Extension>
 	
 	<Extension path="/MonoDevelop/ProjectModel/Gui/ItemOptionPanels/Build">
-		<!--<Condition id="ActiveLanguage" value="C#">-->
-		<Section
-			id="TypeScriptProjectOptions"
-			_label="TypeScript"
-			fill="true"
-			class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"/>
+		<Condition id="ItemType" value="Project">
+			<Section
+				id="TypeScriptProjectOptions"
+				_label="TypeScript"
+				fill="true"
+				class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"/>
+		</Condition>
 	</Extension>
 	
 	<Extension name="/MonoDevelop/ProjectModel/LanguageBindings">
