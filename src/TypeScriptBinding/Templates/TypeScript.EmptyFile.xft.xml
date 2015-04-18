@@ -7,7 +7,7 @@
 
 	<TemplateConfiguration>
 		<_Name>Empty TypeScript File</_Name>
-		<Icon>md-html-file-icon</Icon>
+		<Icon>md-typescript-file-empty</Icon>
 		<_Category>Web</_Category>
 		<_Description>Creates an empty TypeScript file.</_Description>
 		<DefaultFilename>EmptyTypeScriptFile</DefaultFilename>

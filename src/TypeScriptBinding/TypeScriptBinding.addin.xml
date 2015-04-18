@@ -40,6 +40,26 @@
 		<Import file="Scripts/typescriptServices.js"/>
 	</Runtime>
 
+
+	<Extension path="/MonoDevelop/Core/StockIcons">
+		<StockIcon
+			stockid="md-typescript-file-empty" 
+			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.Template.EmptyFile.png" />
+		<StockIcon
+			stockid="md-typescript-file-browser"
+			resource="ICSharpCode.TypeScriptBinding.Resources.TypeScript.ProjectBrowser.File.png" />
+	</Extension>
+
+	<Extension path="/MonoDevelop/Core/MimeTypes">
+		<MimeType id="text/x-typescript" description="Typescript template" icon="md-typescript-file-browser" isText="true">
+			<File pattern="*.ts,*.d.ts" />
+		</MimeType>
+	</Extension>
+
+	<Extension path="/MonoDevelop/Ide/FileFilters">
+		<FileFilter id="Typescript" insertbefore="AllFiles" _label="Typescript Source Files" extensions="*.ts" />
+	</Extension>
+
 	<Extension path="/MonoDevelop/Ide/StartupHandlers">
 		<Class class="ICSharpCode.TypeScriptBinding.InitializeTypeScriptServiceStartupHandler" />
 		<Class class="ICSharpCode.TypeScriptBinding.RegisterTypeScriptCompileOnBuildStartupHandler"/>
@@ -50,6 +70,10 @@
 		<FileTemplate
 			id="TypeScript-Empty"
 			file="Templates/TypeScript.EmptyFile.xft.xml"/>
+	</Extension>
+
+	<Extension path = "/MonoDevelop/Ide/ProjectTemplates">
+		<ProjectTemplate  id = "TypeScriptHTMLApp" resource = "ICSharpCode.TypeScriptBinding.Templates.TypescriptProject.xpt.xml"/>
 	</Extension>
 	
 	<Extension path="/MonoDevelop/Ide/TextEditorExtensions">
@@ -115,6 +139,6 @@
 		<Parser
 			id="TypeScriptParser"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptParser"
-			mimeType="text/typescript, application/typescript"/>
+			mimeType="text/x-typescript, application/typescript"/>
 	</Extension>
 </ExtensionModel>
