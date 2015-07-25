@@ -58,25 +58,35 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public bool? diagnostics { get; set; }
 		public bool? emitBOM { get; set; }
 		public bool? help { get; set; }
+		public bool? inlineSourceMap { get; set; }
+		public bool? inlineSources { get; set; }
+		public bool? listFiles { get; set; }
 		public string locale { get; set; }
 		public string mapRoot { get; set; }
 		public ModuleKind? module { get; set; }
+		public NewLineKind? newLine { get; set; }
+		public bool? noEmit { get; set; }
+		public bool? noEmitHelpers { get; set; }
 		public bool? noEmitOnError { get; set; }
 		public bool? noErrorTruncation { get; set; }
 		public bool? noImplicitAny { get; set; }
 		public bool? noLib { get; set; }
-		public bool? noLibCheck { get; set; }
 		public bool? noResolve { get; set; }
 		public string @out { get; set; }
 		public string outDir { get; set; }
 		public bool? preserveConstEnums { get; set; }
+		public string project { get; set; }
 		public bool? removeComments { get; set; }
+		public string rootDir { get; set; }
 		public bool? sourceMap { get; set; }
 		public string sourceRoot { get; set; }
 		public bool? suppressImplicitAnyIndexErrors { get; set; }
 		public ScriptTarget? target { get; set; }
 		public bool? version { get; set; }
 		public bool? watch { get; set; }
+		public bool? solatedModules { get; set; }
+		public bool? experimentalDecorators { get; set; }
+		public bool? emitDecoratorMetadata { get; set; }
 //		[option: string]: string | number | boolean;
 	}
 }

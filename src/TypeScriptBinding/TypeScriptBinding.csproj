@@ -104,8 +104,6 @@
     <Compile Include="FileProjectItemExtensions.cs" />
     <Compile Include="FindTypeScriptReferencesCommand.cs" />
     <Compile Include="GoToTypeScriptDefinitionCommand.cs" />
-    <Compile Include="Hosting\ActualSignatureInfo.cs" />
-    <Compile Include="Hosting\ByteOrderMark.cs" />
     <Compile Include="Hosting\CompilerResult.cs" />
     <Compile Include="Hosting\CompilerOptions.cs" />
     <Compile Include="Hosting\CompletionEntryDetailsProvider.cs" />
@@ -116,7 +114,7 @@
     <Compile Include="Hosting\Diagnostic.cs" />
     <Compile Include="Hosting\DiagnosticCategory.cs" />
     <Compile Include="Hosting\EmitOutput.cs" />
-    <Compile Include="Hosting\EmitReturnStatus.cs" />
+    <Compile Include="Hosting\NewLineKind.cs" />
     <Compile Include="Hosting\SignatureHelpParameter.cs" />
     <Compile Include="Hosting\SignatureHelpItem.cs" />
     <Compile Include="Hosting\GeneratedTypeScriptFile.cs" />

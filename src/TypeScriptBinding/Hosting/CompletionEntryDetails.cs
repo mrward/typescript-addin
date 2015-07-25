@@ -34,7 +34,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public CompletionEntryDetails()
 		{
 			this.name = "";
-			this.type = "";
 			this.kind = "";
 			this.kindModifiers = "";
 			this.displayParts = new SymbolDisplayPart[0];
@@ -42,7 +41,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		}
 		
 		public string name { get; set; }
-		public string type { get; set; }
 		public string kind { get; set; }            // see ScriptElementKind
 		public string kindModifiers { get; set; }   // see ScriptElementKindModifier, comma separated
 		public SymbolDisplayPart[] displayParts { get; set; }
@@ -50,7 +48,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public override string ToString()
 		{
-			return string.Format("[CompletionEntryDetails Name={0}, Type={1}, Kind={2}]", name, type, kind);
+			return string.Format("[CompletionEntryDetails Name={0}, Kind={1}]", name, kind);
 		}
 	}
 }

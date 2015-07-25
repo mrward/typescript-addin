@@ -32,32 +32,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceNullLogger : ILogger
 	{
-		public bool information()
-		{
-			return false;
-		}
-		
-		public bool debug()
-		{
-			return false;
-		}
-		
-		public bool warning()
-		{
-			return false;
-		}
-		
-		public bool error()
-		{
-			return false;
-		}
-		
-		public bool fatal()
-		{
-			return false;
-		}
-		
 		public void log(string s)
+		{
+		}
+		
+		public void trace(string s)
+		{
+		}
+		
+		public void error(string s)
 		{
 		}
 	}

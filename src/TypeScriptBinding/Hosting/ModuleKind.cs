@@ -35,5 +35,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		None = 0,
 		CommonJS = 1,
 		AMD = 2,
+		UMD = 3,
+		System = 4,
 	}
 }

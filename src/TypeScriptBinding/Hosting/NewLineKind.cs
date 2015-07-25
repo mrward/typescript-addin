@@ -1,10 +1,10 @@
 ﻿// 
-// ByteOrderMark.cs
+// NewLineKind.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,10 +30,9 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum ByteOrderMark {
-		None,
-		Utf8,
-		Utf16BigEndian,
-		Utf16LittleEndian,
+	public enum NewLineKind
+	{
+		CarriageReturnLineFeed = 0,
+		LineFeed = 1,
 	}
 }

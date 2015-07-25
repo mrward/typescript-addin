@@ -41,6 +41,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string name { get; set; }
 		public string kind { get; set; }            // see ScriptElementKind
 		public string kindModifiers { get; set; }   // see ScriptElementKindModifier, comma separated
+		public string sortText { get; set; }
 		
 		public override string ToString()
 		{

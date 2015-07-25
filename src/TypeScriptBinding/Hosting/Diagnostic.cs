@@ -38,7 +38,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string message { get; set; }
 		public DiagnosticCategory category { get; set; }
 		public int code { get; set; }
-		public bool? isEarly { get; set; }
 		
 		public string GetDiagnosticMessage()
 		{
