@@ -35,11 +35,13 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string getCompilationSettings();
 		string getScriptFileNames();
 		string getScriptVersion(string fileName);
-		bool getScriptIsOpen(string fileName);
 		IScriptSnapshotShim getScriptSnapshot(string fileName);
 		string getLocalizedDiagnosticMessages();
 		ICancellationToken getCancellationToken();
 		string getCurrentDirectory();
 		string getDefaultLibFilename(string options);
+		string getNewLine();
+		string getProjectVersion();
+		bool useCaseSensitiveFileNames();
 	}
 }

@@ -34,7 +34,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		string getText(int start, int end);
 		int getLength();
-		string getLineStartPositions();
 		
 		/**
 		 * Returns a JSON-encoded value of the type:
@@ -43,5 +42,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		 * Or undefined value if there was no change.
 		 */
 		string getChangeRange(IScriptSnapshotShim oldSnapshot);
+		
+		void dispose();
 	}
 }

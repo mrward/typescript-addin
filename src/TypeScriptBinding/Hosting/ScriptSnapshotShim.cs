@@ -52,18 +52,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return script.Source.Length;
 		}
 		
-		public string getLineStartPositions()
-		{
-			Log("ScriptSnapshotShim.getLineStartPositions");
-			
-			int[] positions = script.GetLineStartPositions();
-			string json = JsonConvert.SerializeObject(positions);
-			
-			//Log("ScriptSnapshotShim.getLineStartPositions: {0}", json);
-			
-			return json;
-		}
-		
 		public string getChangeRange(IScriptSnapshotShim oldSnapshot)
 		{
 			Log("ScriptSnapshotShim.getChangeRange");
@@ -84,6 +72,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		void Log(string format, params object[] args)
 		{
 			logger.log(String.Format(format, args));
+		}
+		
+		public void dispose()
+		{
+			Log("ScriptSnapshotShim.dispose()");
 		}
 	}
 }

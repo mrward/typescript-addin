@@ -38,6 +38,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		}
 		
 		public bool isMemberCompletion { get; set; }
+		public bool isNewIdentifierLocation { get; set; } // true when the current location also allows for a new identifier
 		public CompletionEntry[] entries;
 	}
 }

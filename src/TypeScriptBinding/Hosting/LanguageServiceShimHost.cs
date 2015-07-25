@@ -129,34 +129,19 @@ namespace TypeScriptHosting
 		
 		internal NavigationResult NavigationResult { get; private set; }
 		
-		public bool information()
-		{
-			return logger.information();
-		}
-		
-		public bool debug()
-		{
-			return logger.debug();
-		}
-		
-		public bool warning()
-		{
-			return logger.warning();
-		}
-		
-		public bool error()
-		{
-			return logger.error();
-		}
-		
-		public bool fatal()
-		{
-			return logger.fatal();
-		}
-		
 		public void log(string s)
 		{
 			logger.log(s);
+		}
+		
+		public void trace(string s)
+		{
+			logger.trace(s);
+		}
+		
+		public void error(string s)
+		{
+			logger.error(s);
 		}
 		
 		void LogDebug(string format, params object[] args)
@@ -166,9 +151,7 @@ namespace TypeScriptHosting
 		
 		void LogDebug(string s)
 		{
-			if (debug()) {
-				log(s);
-			}
+			log(s);
 		}
 		
 		public string getCompilationSettings()
@@ -208,15 +191,6 @@ namespace TypeScriptHosting
 			log("Host.getScriptSnapshot: " + fileName);
 			Script script = scripts[fileName];
 			return new ScriptSnapshotShim(logger, script);
-		}
-		
-		public bool getScriptIsOpen(string fileName)
-		{
-			log("Host.getScriptIsOpen: " + fileName);
-			if (defaultLibScriptFileName.Equals(new FilePath(fileName))) {
-				return false;
-			}
-			return true;
 		}
 		
 		public string getScriptFileNames()
@@ -277,5 +251,23 @@ namespace TypeScriptHosting
 		}
 		
 		internal DiagnosticsResult SyntacticDiagnosticsResult { get; private set; }
+		
+		public string getNewLine()
+		{
+			return Environment.NewLine;
+		}
+		
+		int projectVersion;
+		
+		public string getProjectVersion()
+		{
+			projectVersion++;
+			return projectVersion.ToString();
+		}
+		
+		public bool useCaseSensitiveFileNames()
+		{
+			return false;
+		}
 	}
 }

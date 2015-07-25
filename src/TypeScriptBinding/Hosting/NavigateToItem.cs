@@ -39,6 +39,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string kind { get; set; }
 		public string kindModifiers { get; set; }
 		public string matchKind { get; set; }
+		public bool isCaseSensitive { get; set; }
 		public string fileName { get; set; }
 		public TextSpan textSpan { get; set; }
 		public string containerName { get; set; }
