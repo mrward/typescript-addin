@@ -84,7 +84,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public ScriptTarget? target { get; set; }
 		public bool? version { get; set; }
 		public bool? watch { get; set; }
-		public bool? solatedModules { get; set; }
+		public bool? isolatedModules { get; set; }
 		public bool? experimentalDecorators { get; set; }
 		public bool? emitDecoratorMetadata { get; set; }
 //		[option: string]: string | number | boolean;
