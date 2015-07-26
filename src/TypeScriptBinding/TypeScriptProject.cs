@@ -235,10 +235,9 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public ModuleKind GetModuleTarget()
 		{
-			if (String.Equals(ModuleKind, "amd", StringComparison.OrdinalIgnoreCase)) {
-				return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.AMD;
-			} else if (String.Equals(ModuleKind, "commonjs", StringComparison.OrdinalIgnoreCase)) {
-				return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.CommonJS;
+			ModuleKind moduleKind;
+			if (Enum.TryParse (ModuleKind, true, out moduleKind)) {
+				return moduleKind;
 			}
 			return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.None;
 		}

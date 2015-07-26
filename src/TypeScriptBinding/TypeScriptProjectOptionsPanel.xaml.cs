@@ -64,6 +64,8 @@ namespace ICSharpCode.TypeScriptBinding
 			moduleKinds.Add(new DisplayValue("none", "None"));
 			moduleKinds.Add(new DisplayValue("amd", "AMD"));
 			moduleKinds.Add(new DisplayValue("commonjs", "CommonJS"));
+			moduleKinds.Add(new DisplayValue("system", "System"));
+			moduleKinds.Add(new DisplayValue("umd", "UMD"));
 			
 			DataContext = this;
 		}
