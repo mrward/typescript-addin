@@ -103,6 +103,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 			
 			context.RunInitialisationScript();
+			context.UpdateOptions(project);
 			context.GetCompletionItemsForTheFirstTime();
 			
 			return context;

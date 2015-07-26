@@ -178,5 +178,10 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 				AddFile(file.FileName, file.Text);
 			}
 		}
+		
+		public void UpdateOptions(ITypeScriptOptions options)
+		{
+			host.UpdateCompilerSettings(options);
+		}
 	}
 }
