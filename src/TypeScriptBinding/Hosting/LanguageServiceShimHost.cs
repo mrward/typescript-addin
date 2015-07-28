@@ -33,6 +33,7 @@ using System.Linq;
 using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using MonoDevelop.Core;
+using MonoDevelop.SourceEditor;
 using Newtonsoft.Json;
 
 namespace TypeScriptHosting
@@ -254,7 +255,7 @@ namespace TypeScriptHosting
 		
 		public string getNewLine()
 		{
-			return Environment.NewLine;
+			return DefaultSourceEditorOptions.Instance.DefaultEolMarker;
 		}
 		
 		int projectVersion;
