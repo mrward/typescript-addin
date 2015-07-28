@@ -9,7 +9,7 @@ using Mono.Addins.Description;
 	Category = "Web Development")]
 
 [assembly:AddinName ("TypeScript")]
-[assembly:AddinDescription ("Adds TypeScript support. Updated to use TypeScript 1.4")]
+[assembly:AddinDescription ("Adds TypeScript support. Updated to use TypeScript 1.5.3")]
 
 [assembly:AddinDependency ("Core", "5.0")]
 [assembly:AddinDependency ("Ide", "5.0")]
