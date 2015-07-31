@@ -36,7 +36,7 @@ using MonoDevelop.Core;
 using MonoDevelop.SourceEditor;
 using Newtonsoft.Json;
 
-namespace TypeScriptHosting
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceShimHost : ILanguageServiceShimHost
 	{

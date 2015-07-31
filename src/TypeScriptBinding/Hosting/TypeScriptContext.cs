@@ -32,7 +32,6 @@ using System.IO;
 using System.Linq;
 
 using MonoDevelop.Core;
-using TypeScriptHosting;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
@@ -40,6 +39,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		JavascriptContext context = new JavascriptContext();
 		LanguageServiceShimHost host;
+		TypeScriptProject project;
 		IScriptLoader scriptLoader;
 		bool runInitialization = true;
 		
@@ -87,6 +87,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public CompletionInfo GetCompletionItems(FilePath fileName, int offset, string text, bool memberCompletion)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			host.isMemberCompletion = memberCompletion;
@@ -98,6 +99,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public CompletionEntryDetails GetCompletionEntryDetails(FilePath fileName, int offset, string entryName)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			host.completionEntry = entryName;
@@ -109,6 +111,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public SignatureHelpItems GetSignature(FilePath fileName, int offset)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
@@ -119,6 +122,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public ReferenceEntry[] FindReferences(FilePath fileName, int offset)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
@@ -129,6 +133,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public DefinitionInfo[] GetDefinition(FilePath fileName, int offset)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
@@ -139,6 +144,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public NavigationBarItem[] GetNavigationInfo(FilePath fileName)
 		{
+			UpdateCompilerSettings();
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
@@ -177,9 +183,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 		}
 		
-		public void UpdateOptions(ITypeScriptOptions options)
+		public void UseProjectForOptions(TypeScriptProject project)
 		{
-			host.UpdateCompilerSettings(options);
+			this.project = project;
+		}
+
+		void UpdateCompilerSettings()
+		{
+			if (project != null) {
+				host.UpdateCompilerSettings(project);
+			}
 		}
 	}
 }
