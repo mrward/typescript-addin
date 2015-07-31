@@ -41,6 +41,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	{
 		JavascriptContext context = new JavascriptContext();
 		LanguageServiceShimHost host;
+		TypeScriptProject project;
 		IScriptLoader scriptLoader;
 		bool runInitialization = true;
 		
@@ -88,6 +89,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public CompletionInfo GetCompletionItems(FileName fileName, int offset, string text, bool memberCompletion)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			host.isMemberCompletion = memberCompletion;
@@ -99,6 +101,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public CompletionEntryDetails GetCompletionEntryDetails(FileName fileName, int offset, string entryName)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			host.completionEntry = entryName;
@@ -110,6 +113,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public SignatureHelpItems GetSignature(FileName fileName, int offset)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
@@ -120,6 +124,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public ReferenceEntry[] FindReferences(FileName fileName, int offset)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
@@ -130,6 +135,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public DefinitionInfo[] GetDefinition(FileName fileName, int offset)
 		{
+			UpdateCompilerSettings();
 			host.position = offset;
 			host.UpdateFileName(fileName);
 			
@@ -140,6 +146,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public NavigationBarItem[] GetNavigationInfo(FileName fileName)
 		{
+			UpdateCompilerSettings();
 			host.UpdateFileName(fileName);
 			context.Run(scriptLoader.GetNavigationScript());
 			
@@ -178,9 +185,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 		}
 		
-		public void UpdateOptions(ITypeScriptOptions options)
+		public void UseProjectForOptions(TypeScriptProject project)
 		{
-			host.UpdateCompilerSettings(options);
+			this.project = project;
+		}
+
+		void UpdateCompilerSettings()
+		{
+			if (project != null) {
+				host.UpdateCompilerSettings(project);
+			}
 		}
 	}
 }
