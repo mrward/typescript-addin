@@ -35,7 +35,7 @@ using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using Newtonsoft.Json;
 
-namespace TypeScriptHosting
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceShimHost : ILanguageServiceShimHost
 	{
