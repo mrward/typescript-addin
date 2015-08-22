@@ -92,14 +92,14 @@ namespace ICSharpCode.TypeScriptBinding
 					context.AddFile(fileName, fileContent.Text);
 					context.RunInitialisationScript();
 					
-					NavigateToItem[] navigation = context.GetLexicalStructure(fileName);
+					NavigationBarItem[] navigation = context.GetNavigationInfo(fileName);
 					var unresolvedFile = new TypeScriptUnresolvedFile(fileName);
 					unresolvedFile.AddNavigation(navigation, fileContent);
 					
 					if (project != null) {
 						context.AddFiles(files);
 						var document = new TextDocument(fileContent);
-						Diagnostic[] diagnostics = context.GetSemanticDiagnostics(fileName, project.GetOptions());
+						Diagnostic[] diagnostics = context.GetDiagnostics(fileName, project.GetOptions());
 						TypeScriptService.TaskService.Update(diagnostics, fileName, document);
 					}
 					

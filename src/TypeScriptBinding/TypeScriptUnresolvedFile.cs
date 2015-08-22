@@ -75,15 +75,15 @@ namespace ICSharpCode.TypeScriptBinding
 			return null;
 		}
 		
-		public void AddNavigation(NavigateToItem[] navigation, ITextSource textSource)
+		public void AddNavigation(NavigationBarItem[] navigation, ITextSource textSource)
 		{
 			IDocument document = new TextDocument(textSource);
 			AddNavigationInfo(navigation, document);
 		}
 		
-		public void AddNavigationInfo(NavigateToItem[] navigation, IDocument document)
+		public void AddNavigationInfo(NavigationBarItem[] navigation, IDocument document)
 		{
-			foreach (NavigateToItem item in navigation) {
+			foreach (NavigationBarItem item in navigation) {
 				switch (item.kind) {
 					case "class":
 						AddClass(item, document);
@@ -94,52 +94,70 @@ namespace ICSharpCode.TypeScriptBinding
 					case "module":
 						AddModule(item, document);
 						break;
-					case "method":
-					case "constructor":
-						AddMethod(item, document);
-						break;
 				}
 			}
 		}
 		
-		TypeScriptUnresolvedTypeDefinition AddClass(NavigateToItem item, IDocument document)
+		TypeScriptUnresolvedTypeDefinition AddClass(NavigationBarItem item, IDocument document)
 		{
-			var defaultClass = new TypeScriptUnresolvedTypeDefinition(item.GetFullName()) {
+			var defaultClass = new TypeScriptUnresolvedTypeDefinition(item.text) {
 				UnresolvedFile = this
 			};
 			defaultClass.BodyRegion = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			defaultClass.Region = defaultClass.BodyRegion;
 			
-			if (item.HasContainer()) {
-				TypeScriptUnresolvedTypeDefinition parentClass = FindParentClass(item);
+			TypeScriptUnresolvedTypeDefinition parentClass = FindParentClass(defaultClass);
+			if (parentClass != null) {
+				defaultClass.Namespace = parentClass.FullName;
 				parentClass.NestedTypes.Add(defaultClass);
 			} else {
 				typeDefinitions.Add(defaultClass);
 			}
+			AddMethods(defaultClass, item.childItems, document);
 			return defaultClass;
 		}
 		
-		void AddInterface(NavigateToItem item, IDocument document)
+		void AddMethods(TypeScriptUnresolvedTypeDefinition parent, NavigationBarItem[] childItems, IDocument document)
+		{
+			foreach (NavigationBarItem item in childItems) {
+				switch (item.kind) {
+					case "method":
+					case "constructor":
+						AddMethod(parent, item, document);
+						break;
+				}
+			}
+		}
+		
+		void AddInterface(NavigationBarItem item, IDocument document)
 		{
 			TypeScriptUnresolvedTypeDefinition c = AddClass(item, document);
 			c.Kind = TypeKind.Interface;
 		}
 		
-		void AddModule(NavigateToItem item, IDocument document)
+		void AddModule(NavigationBarItem item, IDocument document)
 		{
+			if (IsGlobalModule(item)) {
+				return;
+			}
+			
 			TypeScriptUnresolvedTypeDefinition c = AddClass(item, document);
 			c.Kind = TypeKind.Module;
 		}
 		
-		void AddMethod(NavigateToItem item, IDocument document)
+		static bool IsGlobalModule(NavigationBarItem item)
 		{
-			TypeScriptUnresolvedTypeDefinition c = FindParentClass(item);
-			var method = new DefaultUnresolvedMethod(c, item.name);
-			UpdateMethodRegions(method, item, document);
-			c.Members.Add(method);
+			return item.text == "<global>";
 		}
 		
-		void UpdateMethodRegions(DefaultUnresolvedMethod method, NavigateToItem item, IDocument document)
+		void AddMethod(TypeScriptUnresolvedTypeDefinition parent, NavigationBarItem item, IDocument document)
+		{
+			var method = new DefaultUnresolvedMethod(parent, item.text);
+			UpdateMethodRegions(method, item, document);
+			parent.Members.Add(method);
+		}
+		
+		void UpdateMethodRegions(DefaultUnresolvedMethod method, NavigationBarItem item, IDocument document)
 		{
 			DomRegion region = item.ToRegionStartingFromOpeningCurlyBrace(document);
 			method.Region = new DomRegion(
@@ -150,28 +168,17 @@ namespace ICSharpCode.TypeScriptBinding
 			method.BodyRegion = region;
 		}
 		
-		TypeScriptUnresolvedTypeDefinition FindParentClass(NavigateToItem item)
+		TypeScriptUnresolvedTypeDefinition FindParentClass(TypeScriptUnresolvedTypeDefinition c)
 		{
-			string containerParentName = item.GetContainerParentName();
-			if (containerParentName != null) {
-				TypeScriptUnresolvedTypeDefinition parentClass = FindClass(containerParentName);
-				return FindClass(parentClass.NestedTypes, item.containerName);
-			} else {
-				return FindClass(item.containerName);
-			}
+			return typeDefinitions
+				.OfType<TypeScriptUnresolvedTypeDefinition>()
+				.FirstOrDefault(parent => IsInside(c.BodyRegion, parent.BodyRegion));
 		}
 		
-		TypeScriptUnresolvedTypeDefinition FindClass(string name)
+		bool IsInside(DomRegion childBodyRegion, DomRegion parentBodyRegion)
 		{
-			return FindClass(typeDefinitions, name);
-		}
-		
-		TypeScriptUnresolvedTypeDefinition FindClass(IList<IUnresolvedTypeDefinition> classes, string name)
-		{
-			return classes
-				.Where(c => c.FullName == name)
-				.Select(c => (TypeScriptUnresolvedTypeDefinition)c)
-				.FirstOrDefault();
+			return (childBodyRegion.BeginLine >= parentBodyRegion.BeginLine) &&
+				(childBodyRegion.EndLine <= parentBodyRegion.EndLine);
 		}
 	}
 }

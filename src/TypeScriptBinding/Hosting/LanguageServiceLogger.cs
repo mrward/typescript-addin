@@ -33,34 +33,19 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceLogger : ILogger
 	{
-		public bool information()
-		{
-			return true;
-		}
-		
-		public bool debug()
-		{
-			return true;
-		}
-		
-		public bool warning()
-		{
-			return true;
-		}
-		
-		public bool error()
-		{
-			return true;
-		}
-		
-		public bool fatal()
-		{
-			return true;
-		}
-		
 		public void log(string s)
 		{
 			LoggingService.Debug(s);
+		}
+		
+		public void trace(string s)
+		{
+			LoggingService.Debug(s);
+		}
+		
+		public void error(string s)
+		{
+			LoggingService.Error(s);
 		}
 	}
 }

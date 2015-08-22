@@ -1,5 +1,5 @@
 ﻿// 
-// EmitOutputResult.cs
+// SymbolDisplayPart.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,11 +30,9 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum EmitOutputResult
+	public class SymbolDisplayPart
 	{
-		Succeeded,
-		FailedBecauseOfSyntaxErrors,
-		FailedBecauseOfCompilerOptionsErrors,
-		FailedToGenerateDeclarationsBecauseOfSemanticErrors
+		public string text { get; set; }
+		public string kind { get; set; }
 	}
 }

@@ -224,22 +224,22 @@ namespace ICSharpCode.TypeScriptBinding
 			SetStringProperty(buildConfig, ModuleKindPropertyName, value);
 		}
 		
-		public LanguageVersion GetLanguageVersion()
+		public ScriptTarget GetScriptTarget()
 		{
-			if (EcmaScriptVersion == "ES3") {
-				return LanguageVersion.EcmaScript3;
+			ScriptTarget target;
+			if (Enum.TryParse(EcmaScriptVersion, true, out target)) {
+				return target;
 			}
-			return LanguageVersion.EcmaScript5;
+			return ScriptTarget.ES5;
 		}
 		
-		public ModuleGenTarget GetModuleTarget()
+		public ModuleKind GetModuleTarget()
 		{
-			if (String.Equals(ModuleKind, "amd", StringComparison.OrdinalIgnoreCase)) {
-				return ModuleGenTarget.Asynchronous;
-			} else if (String.Equals(ModuleKind, "commonjs", StringComparison.OrdinalIgnoreCase)) {
-				return ModuleGenTarget.Synchronous;
+			ModuleKind moduleKind;
+			if (Enum.TryParse (ModuleKind, true, out moduleKind)) {
+				return moduleKind;
 			}
-			return ModuleGenTarget.Unspecified;
+			return ICSharpCode.TypeScriptBinding.Hosting.ModuleKind.None;
 		}
 		
 		public bool NoImplicitAny {

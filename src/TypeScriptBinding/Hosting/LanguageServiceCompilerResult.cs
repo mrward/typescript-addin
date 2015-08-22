@@ -51,8 +51,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			this.emitOutput = emitOutput;
 			this.inputFileName = inputFileName;
 			
-			HasErrors = !(emitOutput.emitOutputResult == EmitOutputResult.Succeeded);
-			errorMessage = GetErrorMessage(emitOutput.emitOutputResult);
+			HasErrors = emitOutput.emitSkipped;
+			errorMessage = "Emit skipped";
 		}
 		
 		public bool HasErrors { get; set; }
@@ -60,22 +60,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string GetError()
 		{
 			return errorMessage;
-		}
-		
-		string GetErrorMessage(EmitOutputResult result)
-		{
-			switch (result) {
-				case EmitOutputResult.FailedBecauseOfCompilerOptionsErrors:
-					return "Compiler Options errors";
-				case EmitOutputResult.FailedBecauseOfSyntaxErrors:
-					return "Syntax errors";
-				case EmitOutputResult.FailedToGenerateDeclarationsBecauseOfSemanticErrors:
-					return "Semantic errors causing declaration generation to fail.";
-				case EmitOutputResult.Succeeded:
-					return String.Empty;
-				default:
-					return result.ToString();
-			}
 		}
 		
 		public IEnumerable<GeneratedTypeScriptFile> GetGeneratedFiles()

@@ -33,11 +33,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public interface ILogger
 	{
-		bool information();
-		bool debug();
-		bool warning();
-		bool error();
-		bool fatal();
 		void log(string s);
+		void trace(string s);
+		void error(string s);
 	}
 }

@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -52,25 +52,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			return script.Source.Length;
 		}
 		
-		public string getLineStartPositions()
+		public string getChangeRange(IScriptSnapshotShim oldSnapshot)
 		{
-			Log("ScriptSnapshotShim.getLineStartPositions");
+			Log("ScriptSnapshotShim.getChangeRange");
 			
-			int[] positions = script.GetLineStartPositions();
-			string json = JsonConvert.SerializeObject(positions);
-			
-			//Log("ScriptSnapshotShim.getLineStartPositions: {0}", json);
-			
-			return json;
-		}
-		
-		public string getTextChangeRangeSinceVersion(int scriptVersion)
-		{
-			Log("ScriptSnapshotShim.getTextChangeRangeSinceVersion: version={0}", scriptVersion);
-			if (script.Version == scriptVersion)
+			var old = oldSnapshot as ScriptSnapshotShim;
+			if ((old != null) && (script.Version == old.script.Version)) {
 				return null;
+			}
 			
-			TextChangeRange textChangeRange = script.GetTextChangeRangeSinceVersion(scriptVersion);
+			TextChangeRange textChangeRange = script.GetTextChangeRange(oldSnapshot);
 			string json = JsonConvert.SerializeObject(textChangeRange);
 			
 			Log("ScriptSnapshotShim.getTextChangeRangeSinceVersion: json: {0}", json);
@@ -81,6 +72,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		void Log(string format, params object[] args)
 		{
 			logger.log(String.Format(format, args));
+		}
+		
+		public void dispose()
+		{
+			Log("ScriptSnapshotShim.dispose()");
 		}
 	}
 }

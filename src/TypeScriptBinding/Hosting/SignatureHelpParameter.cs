@@ -1,10 +1,10 @@
 ﻿// 
-// ActualSignatureInfo.cs
+// SignatureHelpParameter.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,11 +30,11 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class ActualSignatureInfo
+	public class SignatureHelpParameter
 	{
-		public int parameterMinChar { get; set; }
-		public int parameterLimChar { get; set; }
-		public bool currentParameterIsTypeParameter { get; set; }
-		public int currentParameter { get; set; }
+		public string name { get; set; }
+		public bool isOptional { get; set; }
+		public SymbolDisplayPart[] documentation { get; set; }
+		public SymbolDisplayPart[] displayParts { get; set; }
 	}
 }

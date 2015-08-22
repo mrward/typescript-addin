@@ -32,6 +32,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class SignatureResult
 	{
-		public SignatureInfo result { get; set; }
+		public SignatureHelpItems result { get; set; }
 	}
 }

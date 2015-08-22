@@ -149,6 +149,10 @@ namespace ICSharpCode.TypeScriptBinding
 			
 			ReferenceEntry[] entries = context.FindReferences(editor.FileName, editor.Caret.Offset);
 			
+			if (entries == null) {
+				return new List<SearchResultMatch>();
+			}
+			
 			return entries
 				.Select(entry => CreateSearchResultMatch(entry))
 				.ToList();
@@ -159,7 +163,7 @@ namespace ICSharpCode.TypeScriptBinding
 			ITextSource textSource = SD.FileService.GetFileContent(entry.fileName);
 			var document = new ReadOnlyDocument(textSource, entry.fileName);
 			TextLocation start = document.GetLocation(entry.minChar);
-			TextLocation end = document.GetLocation(entry.limChar);
+			TextLocation end = document.GetLocation(entry.minChar + entry.length);
 			IHighlighter highlighter = SD.EditorControlService.CreateHighlighter(document);
 			return SearchResultMatch.Create(document, start, end, highlighter);
 		}
@@ -170,7 +174,7 @@ namespace ICSharpCode.TypeScriptBinding
 			UpdateContext(context, editor);
 			
 			DefinitionInfo[] definitions = context.GetDefinition(editor.FileName, editor.Caret.Offset);
-			if (definitions.Length > 0) {
+			if ((definitions != null) && (definitions.Length > 0)) {
 				GoToDefinition(definitions[0]);
 			}
 		}

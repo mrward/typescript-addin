@@ -32,6 +32,8 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class TextChangeRange
 	{
+		public static TextChangeRange unchanged = new TextChangeRange(new TextSpan(0, 0), 0);
+		
 		public TextChangeRange(int start, int length, int newLength)
 			: this(new TextSpan(start, length), newLength)
 		{
@@ -45,5 +47,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public TextSpan span { get; set; }
 		public int newLength { get; set; }
+		
+		public TextSpan newSpan()
+		{
+			return new TextSpan(span.start, newLength);
+		}
+		
+		public bool isUnchanged()
+		{
+			return span.isEmpty() && newLength == 0;
+		}
 	}
 }

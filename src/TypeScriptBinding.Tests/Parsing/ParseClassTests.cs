@@ -181,6 +181,23 @@ namespace TypeScriptBinding.Tests.Parsing
 		}
 		
 		[Test]
+		public void Parse_EmptyStudentClassAndGlobalVariable_OneClassFoundAndNoGlobalModuleCreated()
+		{
+			string code =
+				"class Student {\r\n" +
+				"}\r\n" +
+				"\r\n" +
+				"var foo = 'abc';\r\n" +
+				"\r\n";
+			
+			Parse(code);
+			
+			IUnresolvedTypeDefinition c = GetFirstClass();
+			Assert.AreEqual(1, ParseInfo.UnresolvedFile.TopLevelTypeDefinitions.Count);
+			Assert.AreEqual("Student", c.Name);
+		}
+		
+		[Test]
 		public void Parse_EmptyStudentClass_FileNameSetForClass()
 		{
 			string code =

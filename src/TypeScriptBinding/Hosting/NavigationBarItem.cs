@@ -1,10 +1,10 @@
 ﻿// 
-// NavigateToItem.cs
+// NavigationBarItem.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2014 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -35,42 +35,54 @@ using ICSharpCode.SharpDevelop.Editor;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class NavigateToItem
+	public class NavigationBarItem
 	{
-		public string name { get; set; }
+		public NavigationBarItem()
+		{
+			text = "";
+			kind = "";
+			kindModifiers = "";
+			spans = new TextSpan[0];
+			childItems = new NavigationBarItem[0];
+		}
+		
+		public string text { get; set; }
 		public string kind { get; set; }
 		public string kindModifiers { get; set; }
-		public string matchKind { get; set; }
-		public bool isCaseSensitive { get; set; }
-		public string fileName { get; set; }
-		public TextSpan textSpan { get; set; }
-		public string containerName { get; set; }
-		public string containerKind { get; set; }
+		public TextSpan[] spans { get; set; }
+		public NavigationBarItem[] childItems { get; set; }
+		public int indent { get; set; }
+		public bool bolded { get; set; }
+		public bool grayed { get; set; }
 		
 		internal int minChar {
-			get { return textSpan.start; }
+			get {
+				if (HasSpans) {
+					return spans[0].start;
+				}
+				return 0;
+			}
+		}
+		
+		internal bool HasSpans {
+			get { return (spans != null) && (spans.Length > 0); }
 		}
 		
 		internal int limChar {
-			get { return minChar + length; }
+			get {
+				if (HasSpans) {
+					TextSpan span = spans[0];
+					return span.start + span.length;
+				}
+				return 0;
+			}
 		}
 		
-		internal int length {
-			get { return textSpan.length; }
-		}
-		
-		public DomRegion ToRegion(IDocument document)
-		{
-			TextLocation start = document.GetLocation(minChar);
-			TextLocation end = document.GetLocation(limChar);
-			return new DomRegion(start, end);
-		}
-		
-		public DomRegion ToRegionStartingFromOpeningCurlyBrace(IDocument document)
+		internal DomRegion ToRegionStartingFromOpeningCurlyBrace(IDocument document)
 		{
 			int startOffset = GetOpeningCurlyBraceOffsetForRegion(document);
-			TextLocation start = document.GetLocation(startOffset);
-			TextLocation end = document.GetLocation(limChar);
+			TextLocation  start = document.GetLocation(startOffset);
+			TextLocation  end = document.GetLocation(limChar);
 			return new DomRegion(start, end);
 		}
 		
@@ -85,28 +97,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			}
 			
 			return minChar;
-		}
-		
-		public bool HasContainer()
-		{
-			return !String.IsNullOrEmpty(containerName);
-		}
-		
-		public string GetFullName()
-		{
-			if (HasContainer()) {
-				return String.Format("{0}.{1}", containerName, name);
-			}
-			return name;
-		}
-		
-		public string GetContainerParentName()
-		{
-			int dotPosition = containerName.IndexOf('.');
-			if (dotPosition > 0) {
-				return containerName.Substring(0, dotPosition);
-			}
-			return null;
 		}
 	}
 }

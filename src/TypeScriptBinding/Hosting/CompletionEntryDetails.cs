@@ -34,22 +34,21 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public CompletionEntryDetails()
 		{
 			this.name = "";
-			this.type = "";
 			this.kind = "";
-			this.fullSymbolName = "";
-			this.docComment = "";
+			this.kindModifiers = "";
+			this.displayParts = new SymbolDisplayPart[0];
+			this.documentation = new SymbolDisplayPart[0];
 		}
 		
 		public string name { get; set; }
-		public string type { get; set; }
 		public string kind { get; set; }            // see ScriptElementKind
 		public string kindModifiers { get; set; }   // see ScriptElementKindModifier, comma separated
-		public string fullSymbolName { get; set; }
-		public string docComment { get; set; }
+		public SymbolDisplayPart[] displayParts { get; set; }
+		public SymbolDisplayPart[] documentation { get; set; }
 		
 		public override string ToString()
 		{
-			return string.Format("[CompletionEntryDetails Name={0}, Type={1}, Kind={2}, DocComment={3}]", name, type, kind, docComment);
+			return string.Format("[CompletionEntryDetails Name={0}, Kind={1}]", name, kind);
 		}
 	}
 }

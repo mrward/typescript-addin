@@ -1,5 +1,5 @@
 ﻿// 
-// ModuleGenTarget.cs
+// ModuleKind.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
@@ -30,10 +30,12 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum ModuleGenTarget
+	public enum ModuleKind
 	{
-		Unspecified = 0,
-		Synchronous = 1,
-		Asynchronous = 2,
+		None = 0,
+		CommonJS = 1,
+		AMD = 2,
+		UMD = 3,
+		System = 4,
 	}
 }

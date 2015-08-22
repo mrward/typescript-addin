@@ -1,4 +1,4 @@
 ﻿
 ls.refresh(true);
-var structure = ls.getScriptLexicalStructure(host.fileName);
-host.updateLexicalStructure(structure);
+var items = ls.getNavigationBarItems(host.fileName);
+host.updateNavigationBarItems(items);

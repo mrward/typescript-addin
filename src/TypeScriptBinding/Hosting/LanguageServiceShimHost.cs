@@ -4,7 +4,7 @@
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2013 Matthew Ward
+// Copyright (C) 2013-2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -35,14 +35,14 @@ using ICSharpCode.TypeScriptBinding;
 using ICSharpCode.TypeScriptBinding.Hosting;
 using Newtonsoft.Json;
 
-namespace TypeScriptHosting
+namespace ICSharpCode.TypeScriptBinding.Hosting
 {
 	public class LanguageServiceShimHost : ILanguageServiceShimHost
 	{
-		Dictionary<string, Script> scripts = new Dictionary<string, Script>();
+		Dictionary<string, Script> scripts = new Dictionary<string, Script>(StringComparer.OrdinalIgnoreCase);
 		ILogger logger;
 		FileName defaultLibScriptFileName;
-		CompilerSettings compilerSettings = new CompilerSettings();
+		CompilerOptions compilerSettings = new CompilerOptions();
 		
 		public LanguageServiceShimHost(ILogger logger)
 		{
@@ -57,9 +57,8 @@ namespace TypeScriptHosting
 		
 		internal void AddFile(FileName fileName, string text)
 		{
-			string lowercaseFileName = fileName.ToLower();
-			if (!scripts.ContainsKey(lowercaseFileName)) {
-				scripts.Add(lowercaseFileName, new Script(lowercaseFileName, text));
+			if (!scripts.ContainsKey(fileName)) {
+				scripts.Add(fileName, new Script(fileName, text));
 			}
 		}
 		
@@ -75,9 +74,8 @@ namespace TypeScriptHosting
 		
 		Script FindScript(FileName fileName)
 		{
-			string matchFileName = fileName.ToLower();
 			Script script = null;
-			if (scripts.TryGetValue(matchFileName, out script)) {
+			if (scripts.TryGetValue(fileName, out script)) {
 				return script;
 			}
 			return null;
@@ -85,7 +83,7 @@ namespace TypeScriptHosting
 		
 		internal void UpdateFile(string fileName, string text)
 		{
-			scripts[fileName.ToLowerInvariant()].Update(text);
+			scripts[fileName].Update(text);
 		}
 		
 		public int position { get; set; }
@@ -133,50 +131,27 @@ namespace TypeScriptHosting
 		
 		internal DefinitionResult DefinitionResult { get; private set; }
 		
-		public void updateLexicalStructure(string structure)
+		public void updateNavigationBarItems(string items)
 		{
-			LogDebug(structure);
-			LexicalStructure = JsonConvert.DeserializeObject<NavigationResult>(structure);
+			LogDebug(items);
+			NavigationResult = JsonConvert.DeserializeObject<NavigationResult>(items);
 		}
 		
-		internal NavigationResult LexicalStructure { get; private set; }
-		
-		//public void updateOutliningRegions(string regions)
-		//{
-		//	LogDebug(regions);
-		//	OutlingRegions = new NavigationInfo(regions);
-		//}
-		
-		//internal NavigationInfo OutlingRegions { get; private set; }
-		
-		public bool information()
-		{
-			return logger.information();
-		}
-		
-		public bool debug()
-		{
-			return logger.debug();
-		}
-		
-		public bool warning()
-		{
-			return logger.warning();
-		}
-		
-		public bool error()
-		{
-			return logger.error();
-		}
-		
-		public bool fatal()
-		{
-			return logger.fatal();
-		}
+		internal NavigationResult NavigationResult { get; private set; }
 		
 		public void log(string s)
 		{
 			logger.log(s);
+		}
+		
+		public void trace(string s)
+		{
+			logger.trace(s);
+		}
+		
+		public void error(string s)
+		{
+			logger.error(s);
 		}
 		
 		void LogDebug(string format, params object[] args)
@@ -186,9 +161,7 @@ namespace TypeScriptHosting
 		
 		void LogDebug(string s)
 		{
-			if (debug()) {
-				log(s);
-			}
+			log(s);
 		}
 		
 		public string getCompilationSettings()
@@ -199,23 +172,23 @@ namespace TypeScriptHosting
 		
 		internal void UpdateCompilerSettings(ITypeScriptOptions options)
 		{
-			compilerSettings = new CompilerSettings(options);
+			compilerSettings = new CompilerOptions(options);
 		}
 		
-		public int getScriptVersion(string fileName)
+		public string getScriptVersion(string fileName)
 		{
 			LogDebug("Host.getScriptVersion: " + fileName);
-			return scripts[fileName.ToLowerInvariant()].Version;
+			return scripts[fileName].Version.ToString();
 		}
 		
 		internal void UpdateFileName(FileName fileName)
 		{
-			this.fileName = fileName.ToLower();
+			this.fileName = fileName;
 		}
 		
 		internal void RemoveFile(FileName fileName)
 		{
-			scripts.Remove(fileName.ToLower());
+			scripts.Remove(fileName);
 		}
 		
 		internal IEnumerable<string> GetFileNames()
@@ -230,64 +203,21 @@ namespace TypeScriptHosting
 			return new ScriptSnapshotShim(logger, script);
 		}
 		
-		public bool getScriptIsOpen(string fileName)
-		{
-			log("Host.getScriptIsOpen: " + fileName);
-			if (defaultLibScriptFileName.Equals(new FileName(fileName))) {
-				return false;
-			}
-			return true;
-		}
-		
-		public ILanguageServicesDiagnostics getDiagnosticsObject()
-		{
-			log("Host.getDiagnosticsObject");
-			return new LanguageServicesDiagnostics(logger);
-		}
-		
 		public string getScriptFileNames()
 		{
 			log("Host.getScriptFileNames");
 			
-			string json = JsonConvert.SerializeObject(scripts.Keys.ToArray());
+			string json = JsonConvert.SerializeObject(scripts.Select(keyPair => keyPair.Value.FileName));
 			
 			log("Host.getScriptFileNames: " + json);
 			
 			return json;
 		}
 		
-		public ByteOrderMark getScriptByteOrderMark(string fileName)
+		public string getCurrentDirectory()
 		{
-			log("Host.getScriptByteOrderMark: " + fileName);
-			return ByteOrderMark.None;
-		}
-		
-		public string resolveRelativePath(string path, string directory)
-		{
-			log("Host.resolveRelativePath: " + fileName);
-			
-			if (System.IO.Path.IsPathRooted(path) || String.IsNullOrEmpty(directory)) {
-				return path;
-			}
-			return System.IO.Path.Combine(path, directory);
-		}
-		
-		public bool fileExists(string path)
-		{
-			log("Host.fileExists: " + path);
-			return File.Exists(path);
-		}
-		
-		public bool directoryExists(string path)
-		{
-			log("Host.directoryExists: " + path);
-			return Directory.Exists(path);
-		}
-		
-		public string getParentDirectory(string path)
-		{
-			log("Host.getParentDirectory: " + path);
-			return Path.GetDirectoryName(path);
+			log("Host.getCurrentDirectory");
+			return String.Empty;
 		}
 		
 		public string getLocalizedDiagnosticMessages()
@@ -296,10 +226,16 @@ namespace TypeScriptHosting
 			return null;
 		}
 		
-		public string ResolvePath(string path)
+		public string getDefaultLibFilename(string options)
 		{
-			log("ResolvePath: '" + path + "'");
-			return path;
+			log("Host.getDefaultLibFilename: " + options);
+			return String.Empty;
+		}
+		
+		public ICancellationToken getCancellationToken()
+		{
+			log("Host.getCancellationToken");
+			return new LanguageServiceCancellationToken();
 		}
 		
 		public void updateCompilerResult(string result)
@@ -313,9 +249,35 @@ namespace TypeScriptHosting
 		public void updateSemanticDiagnosticsResult(string result)
 		{
 			log(result);
-			SemanticDiagnosticsResult = JsonConvert.DeserializeObject<SemanticDiagnosticsResult>(result);
+			SemanticDiagnosticsResult = JsonConvert.DeserializeObject<DiagnosticsResult>(result);
 		}
 		
-		internal SemanticDiagnosticsResult SemanticDiagnosticsResult { get; private set; }
+		internal DiagnosticsResult SemanticDiagnosticsResult { get; private set; }
+		
+		public void updateSyntacticDiagnosticsResult(string result)
+		{
+			log(result);
+			SyntacticDiagnosticsResult = JsonConvert.DeserializeObject<DiagnosticsResult>(result);
+		}
+		
+		internal DiagnosticsResult SyntacticDiagnosticsResult { get; private set; }
+		
+		public string getNewLine()
+		{
+			return Environment.NewLine;
+		}
+		
+		int projectVersion;
+		
+		public string getProjectVersion()
+		{
+			projectVersion++;
+			return projectVersion.ToString();
+		}
+		
+		public bool useCaseSensitiveFileNames()
+		{
+			return false;
+		}
 	}
 }

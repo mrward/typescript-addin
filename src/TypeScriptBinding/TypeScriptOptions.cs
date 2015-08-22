@@ -45,7 +45,7 @@ namespace ICSharpCode.TypeScriptBinding
 			ModuleKind = options.ModuleKind;
 			EcmaScriptVersion = options.EcmaScriptVersion;
 			ModuleTarget = options.GetModuleTarget();
-			LanguageVersion = options.GetLanguageVersion();
+			ScriptTarget = options.GetScriptTarget();
 			OutputFileName = options.GetOutputFileFullPath();
 			OutputDirectory = options.GetOutputDirectoryFullPath();
 		}
@@ -57,15 +57,15 @@ namespace ICSharpCode.TypeScriptBinding
 		public string EcmaScriptVersion { get; set; }
 		public string OutputFileName { get; set; }
 		public string OutputDirectory { get; set; }
-		public ModuleGenTarget ModuleTarget { get; set; }
-		public LanguageVersion LanguageVersion { get; set; }
+		public ModuleKind ModuleTarget { get; set; }
+		public ScriptTarget ScriptTarget { get; set; }
 		
-		public LanguageVersion GetLanguageVersion()
+		public ScriptTarget GetScriptTarget()
 		{
-			return LanguageVersion;
+			return ScriptTarget;
 		}
 		
-		public ModuleGenTarget GetModuleTarget()
+		public ModuleKind GetModuleTarget()
 		{
 			return ModuleTarget;
 		}

@@ -67,7 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Hosting\TypeScriptCompilerArgumentsTests.cs" />
     <Compile Include="Parsing\ParseClassTests.cs" />
     <Compile Include="Parsing\ParseTests.cs" />
     <Compile Include="Parsing\ParseTestScriptLoader.cs" />
@@ -98,7 +97,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Hosting" />
     <Folder Include="Resources" />
     <Folder Include="Parsing" />
   </ItemGroup>
