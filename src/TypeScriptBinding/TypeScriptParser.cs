@@ -100,7 +100,7 @@ namespace ICSharpCode.TypeScriptBinding
 						context.AddFiles(files);
 						var document = new TextDocument(fileContent);
 						Diagnostic[] diagnostics = context.GetDiagnostics(fileName, project.GetOptions());
-						TypeScriptService.TaskService.Update(diagnostics, fileName, document);
+						TypeScriptService.TaskService.Update(diagnostics, fileName);
 					}
 					
 					return new ParseInformation(unresolvedFile, fileContent.Version, true);

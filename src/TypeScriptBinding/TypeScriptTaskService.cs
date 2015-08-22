@@ -35,19 +35,28 @@ using ICSharpCode.NRefactory.Editor;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Gui;
+using ICSharpCode.SharpDevelop.Workbench;
 using ICSharpCode.TypeScriptBinding.Hosting;
 
 namespace ICSharpCode.TypeScriptBinding
 {
 	public class TypeScriptTaskService
 	{
-		public void Update(Diagnostic[] diagnostics, FileName fileName, IDocument document)
+		public void Update(Diagnostic[] diagnostics, FileName fileName)
 		{
 			SD.MainThread.InvokeIfRequired(() => {
 				ClearTasksForFileName(fileName);
 				
+				IViewContent view = FileService.GetOpenFile(fileName);
+				if (view == null)
+					return;
+				
+				ITextEditor textEditor = view.GetService<ITextEditor>();
+				if (textEditor == null)
+					return;
+				
 				List<TypeScriptTask> tasks = diagnostics
-					.Select(diagnostic => TypeScriptTask.Create(fileName, diagnostic, document))
+					.Select(diagnostic => TypeScriptTask.Create(fileName, diagnostic, textEditor.Document))
 					.ToList();
 				
 				TaskService.AddRange(tasks);
