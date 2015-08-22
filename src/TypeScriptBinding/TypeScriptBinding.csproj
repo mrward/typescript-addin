@@ -166,7 +166,6 @@
     <Compile Include="TypeScriptCodeCompletionBinding.cs" />
     <Compile Include="TypeScriptCompletionItem.cs" />
     <Compile Include="TypeScriptCompletionItemProvider.cs" />
-    <Compile Include="TypeScriptCompilationUnit.cs" />
     <Compile Include="TypeScriptFile.cs" />
     <Compile Include="TypeScriptFileExtensions.cs" />
     <Compile Include="TypeScriptFormattingStrategy.cs" />
@@ -178,7 +177,6 @@
     <Compile Include="TypeScriptParser.cs" />
     <Compile Include="TypeScriptParserService.cs" />
     <Compile Include="TypeScriptProject.cs" />
-    <Compile Include="TypeScriptProjectContent.cs" />
     <Compile Include="TypeScriptProjectMonitor.cs" />
     <Compile Include="TypeScriptProjectOpenConditionEvaluator.cs" />
     <Compile Include="TypeScriptProjectOptionsPanel.xaml.cs">
