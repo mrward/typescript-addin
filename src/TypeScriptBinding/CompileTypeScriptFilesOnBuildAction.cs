@@ -40,11 +40,13 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public void CompileFiles(IBuildTarget buildTarget)
 		{
+			List<TypeScriptProject> projects = GetTypeScriptProjects (buildTarget).ToList ();
+			if (!projects.Any ())
+				return;
+			
 			using (IProgressMonitor progressMonitor = GetRunProcessMonitor()) {
-				foreach (TypeScriptProject project in buildTarget.GetTypeScriptProjects()) {
-					if (project.CompileOnBuild) {
-						CompileFiles(project);
-					}
+				foreach (TypeScriptProject project in projects) {
+					CompileFiles(project);
 				}
 			}
 		}
@@ -83,6 +85,13 @@ namespace ICSharpCode.TypeScriptBinding
 		void ReportCompileStarting(TypeScriptProject project)
 		{
 			Report("Compiling TypeScript files for project: {0}", project.Name);
+		}
+
+		IEnumerable<TypeScriptProject> GetTypeScriptProjects (IBuildTarget buildTarget)
+		{
+			return buildTarget.GetTypeScriptProjects ()
+				.Where (project => project.CompileOnBuild)
+				.Where (project => project.HasTypeScriptFiles ());
 		}
 	}
 }
