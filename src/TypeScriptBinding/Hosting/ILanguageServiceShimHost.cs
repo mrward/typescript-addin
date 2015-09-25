@@ -43,5 +43,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		string getNewLine();
 		string getProjectVersion();
 		bool useCaseSensitiveFileNames();
+		string getModuleResolutionsForFile(string fileName);
 	}
 }
