@@ -155,6 +155,8 @@
     <Compile Include="Hosting\Diagnostic.cs" />
     <Compile Include="Hosting\DiagnosticCategory.cs" />
     <Compile Include="Hosting\EmitOutput.cs" />
+    <Compile Include="Hosting\JsxEmit.cs" />
+    <Compile Include="Hosting\ModuleResolutionKind.cs" />
     <Compile Include="Hosting\NewLineKind.cs" />
     <Compile Include="Hosting\SignatureHelpParameter.cs" />
     <Compile Include="Hosting\SignatureHelpItem.cs" />

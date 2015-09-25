@@ -1,10 +1,10 @@
 ﻿// 
-// LanguageServiceCancellationToken.cs
+// JsxEmit.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2014 Matthew Ward
+// Copyright (C) 2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,15 +30,10 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public class LanguageServiceCancellationToken : ICancellationToken
+	public enum JsxEmit
 	{
-		public bool isCancellationRequested()
-		{
-			return false;
-		}
-		
-		public void throwIfCancellationRequested()
-		{
-		}
+		None = 0,
+		Preserve = 1,
+		React = 2
 	}
 }

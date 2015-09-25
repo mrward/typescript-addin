@@ -270,5 +270,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			return false;
 		}
+		
+		public string getModuleResolutionsForFile(string fileName)
+		{
+			log("Host.getModuleResolutionsForFile: " + fileName);
+			return null;
+		}
 	}
 }
