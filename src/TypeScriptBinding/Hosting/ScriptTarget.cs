@@ -35,6 +35,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		ES3 = 0,
 		ES5 = 1,
 		ES6 = 2,
-		Latest = ES6,
+		ES2015 = ES6,
+		Latest = ES6
 	}
 }
