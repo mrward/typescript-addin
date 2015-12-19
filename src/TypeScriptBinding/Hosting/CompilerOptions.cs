@@ -91,7 +91,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public bool? experimentalDecorators { get; set; }
 		public bool? experimentalAsyncFunctions { get; set; }
 		public bool? emitDecoratorMetadata { get; set; }
-		public ModuleResolutionKind moduleResolution { get; set; }
+		public ModuleResolutionKind? moduleResolution { get; set; }
 //		[option: string]: string | number | boolean;
 	}
 }

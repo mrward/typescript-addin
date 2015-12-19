@@ -35,7 +35,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 //		public SourceFile file { get; set; }
 		public int start { get; set; }
 		public int length { get; set; }
-		public string message { get; set; }
+		public string message { get; set; } // messageText?
 		public DiagnosticCategory category { get; set; }
 		public int code { get; set; }
 		
