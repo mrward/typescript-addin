@@ -36,5 +36,9 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		{
 			return false;
 		}
+		
+		public void throwIfCancellationRequested()
+		{
+		}
 	}
 }

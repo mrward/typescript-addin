@@ -37,5 +37,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		AMD = 2,
 		UMD = 3,
 		System = 4,
+		ES6 = 5,
+		ES2015 = ES6,
 	}
 }

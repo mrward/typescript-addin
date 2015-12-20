@@ -53,14 +53,15 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		
 		public bool? allowNonTsExtensions { get; set; }
 		public string charset { get; set; }
-		public int? codepage { get; set; }
 		public bool? declaration { get; set; }
 		public bool? diagnostics { get; set; }
 		public bool? emitBOM { get; set; }
 		public bool? help { get; set; }
+		public bool? init { get; set; }
 		public bool? inlineSourceMap { get; set; }
 		public bool? inlineSources { get; set; }
 		public bool? listFiles { get; set; }
+		public JsxEmit? jsx { get; set; }
 		public string locale { get; set; }
 		public string mapRoot { get; set; }
 		public ModuleKind? module { get; set; }
@@ -73,6 +74,7 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public bool? noLib { get; set; }
 		public bool? noResolve { get; set; }
 		public string @out { get; set; }
+		public string outFile { get; set; }
 		public string outDir { get; set; }
 		public bool? preserveConstEnums { get; set; }
 		public string project { get; set; }
@@ -80,13 +82,16 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 		public string rootDir { get; set; }
 		public bool? sourceMap { get; set; }
 		public string sourceRoot { get; set; }
+		public bool? suppressExcessPropertyErrors { get; set; }
 		public bool? suppressImplicitAnyIndexErrors { get; set; }
 		public ScriptTarget? target { get; set; }
 		public bool? version { get; set; }
 		public bool? watch { get; set; }
 		public bool? isolatedModules { get; set; }
 		public bool? experimentalDecorators { get; set; }
+		public bool? experimentalAsyncFunctions { get; set; }
 		public bool? emitDecoratorMetadata { get; set; }
+		public ModuleResolutionKind? moduleResolution { get; set; }
 //		[option: string]: string | number | boolean;
 	}
 }

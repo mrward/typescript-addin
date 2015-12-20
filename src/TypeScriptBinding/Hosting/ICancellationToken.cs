@@ -33,5 +33,6 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 	public interface ICancellationToken
 	{
 		bool isCancellationRequested();
+		void throwIfCancellationRequested();
 	}
 }

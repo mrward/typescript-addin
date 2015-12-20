@@ -1,10 +1,10 @@
 ﻿// 
-// ScriptTarget.cs
+// JsxEmit.cs
 // 
 // Author:
 //   Matt Ward <ward.matt@gmail.com>
 // 
-// Copyright (C) 2014 Matthew Ward
+// Copyright (C) 2015 Matthew Ward
 // 
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,12 +30,10 @@ using System;
 
 namespace ICSharpCode.TypeScriptBinding.Hosting
 {
-	public enum ScriptTarget
+	public enum JsxEmit
 	{
-		ES3 = 0,
-		ES5 = 1,
-		ES6 = 2,
-		ES2015 = ES6,
-		Latest = ES6
+		None = 0,
+		Preserve = 1,
+		React = 2
 	}
 }
