@@ -36,10 +36,11 @@ namespace ICSharpCode.TypeScriptBinding
 	{
 		public bool IsValid(object caller, Condition condition)
 		{
-			if (ProjectService.CurrentProject == null)
+			var currentProject = ProjectService.CurrentProject as MSBuildBasedProject;
+			if (currentProject == null)
 				return false;
 			
-			var project = new TypeScriptProject(ProjectService.CurrentProject);
+			var project = new TypeScriptProject(currentProject);
 			return project.HasTypeScriptFiles();
 		}
 	}

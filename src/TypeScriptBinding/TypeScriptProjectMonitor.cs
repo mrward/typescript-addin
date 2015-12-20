@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Linq;
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Project;
@@ -49,7 +50,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void SolutionLoaded(object sender, SolutionEventArgs e)
 		{
-			foreach (IProject project in e.Solution.Projects) {
+			foreach (IProject project in e.Solution.Projects.OfType<MSBuildBasedProject>()) {
 				CreateTypeScriptContextIfProjectHasTypeScriptFiles(project);
 			}
 		}
@@ -87,7 +88,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		void AddTypeScriptFileToContext(IProject project, FileName fileName)
 		{
-			if (TypeScriptParser.IsTypeScriptFileName(fileName)) {
+			if (TypeScriptParser.IsTypeScriptFileName(fileName) && project is MSBuildBasedProject) {
 				var typeScriptProject = new TypeScriptProject(project);
 				TypeScriptService.ContextProvider.AddFileToProjectContext(typeScriptProject, fileName);
 			}

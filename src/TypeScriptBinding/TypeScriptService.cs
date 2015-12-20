@@ -85,6 +85,7 @@ namespace ICSharpCode.TypeScriptBinding
 				.OpenSolution
 				.Projects
 				.Where(project => project.IsFileInProject(fileName))
+				.Where(project => project is MSBuildBasedProject)
 				.Select(project => new TypeScriptProject(project))
 				.FirstOrDefault();
 		}

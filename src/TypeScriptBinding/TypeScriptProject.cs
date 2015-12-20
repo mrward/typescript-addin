@@ -58,7 +58,10 @@ namespace ICSharpCode.TypeScriptBinding
 		public TypeScriptProject(IProject project)
 		{
 			this.project = project;
-			this.msbuildProject = (MSBuildBasedProject)project;
+			var msbuildBasedProject = project as MSBuildBasedProject;
+			if (msbuildBasedProject != null) {
+				this.msbuildProject = msbuildBasedProject;
+			}
 		}
 		
 		public ITypeScriptOptions GetOptions()
