@@ -14,6 +14,8 @@ This addin provides [TypeScript](http://www.typescriptlang.org/) support in Mono
 8. Find References.
 9. Go to Definition.
 
+For more detailed look at the features please read the [TypeScript Support in Xamarin Studio blog post](http://lastexitcode.com/blog/2015/04/01/TypeScriptSupportInXamarinStudio/)
+
 ## Requirements
 
  * MonoDevelop 5.0 or Xamarin Studio 5.0
@@ -38,4 +40,4 @@ The addin is available from the [MonoDevelop addin repository](http://addins.mon
 
 ## How it works
 
-The addin  glues together the TypeScript language services and MonoDevelop using [V8.NET](http://v8dotnet.codeplex.com/) as the bridge between them. JavaScript code is executed by V8 and uses the TypeScript language services to get information about the TypeScript files in the project. This information is delivered to the C# host class which interacts with MonoDevelop.
+The addin glues together the TypeScript language services and MonoDevelop using [V8.NET](http://v8dotnet.codeplex.com/) as the bridge between them. JavaScript code is executed by V8 and uses the TypeScript language services to get information about the TypeScript files in the project. This information is delivered to the C# host class which interacts with MonoDevelop.
