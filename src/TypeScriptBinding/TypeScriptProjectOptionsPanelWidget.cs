@@ -51,7 +51,7 @@ namespace ICSharpCode.TypeScriptBinding
 		string outputDirectory = String.Empty;
 		Project project;
 		bool dirty;
-		DotNetProjectConfiguration configuration;
+		ProjectConfiguration configuration;
 		
 		public TypeScriptProjectOptionsPanelWidget (Project project)
 		{
@@ -98,7 +98,7 @@ namespace ICSharpCode.TypeScriptBinding
 			moduleComboBox.Active = 0;
 		}
 		
-		public void Load(DotNetProjectConfiguration configuration)
+		public void Load(ProjectConfiguration configuration)
 		{
 			this.configuration = configuration;
 			

@@ -44,7 +44,7 @@ namespace ICSharpCode.TypeScriptBinding
 		
 		public override void LoadConfigData()
 		{
-			widget.Load((DotNetProjectConfiguration)CurrentConfiguration);
+			widget.Load((ProjectConfiguration)CurrentConfiguration);
 		}
 		
 		public override void ApplyChanges()
