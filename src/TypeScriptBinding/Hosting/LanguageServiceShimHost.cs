@@ -276,5 +276,11 @@ namespace ICSharpCode.TypeScriptBinding.Hosting
 			log("Host.getModuleResolutionsForFile: " + fileName);
 			return null;
 		}
+		
+		public bool directoryExists(string directoryName)
+		{
+			log("Host.directoryExists: " + directoryName);
+			return true;
+		}
 	}
 }
