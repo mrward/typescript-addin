@@ -103,8 +103,8 @@
 				class="ICSharpCode.TypeScriptBinding.TypeScriptProjectOptionsPanel"/>
 		</Condition>
 	</Extension>
-	
-	<Extension name="/MonoDevelop/ProjectModel/LanguageBindings">
+
+	<Extension path="/MonoDevelop/ProjectModel/LanguageBindings">
 		<LanguageBinding
 			id="TypeScript"
 			class="ICSharpCode.TypeScriptBinding.TypeScriptLanguageBinding"
