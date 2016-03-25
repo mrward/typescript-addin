@@ -80,5 +80,20 @@ namespace ICSharpCode.TypeScriptBinding
 		{
 			context.UpdateFile(fileName, TypeScriptService.GetFileContents(fileName));
 		}
+
+		protected void ReloadFiles(LanguageServiceCompilerResult result)
+		{
+			foreach (GeneratedTypeScriptFile file in result.GetGeneratedFiles()) {
+				ReloadFile(file.FileName);
+			}
+		}
+
+		void ReloadFile(FilePath file)
+		{
+			Document doc = IdeApp.Workbench.GetDocument(file);
+			if (doc != null && !doc.IsDirty) {
+				doc.Reload();
+			}
+		}
 	}
 }

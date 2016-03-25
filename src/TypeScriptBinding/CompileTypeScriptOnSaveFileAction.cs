@@ -49,6 +49,8 @@ namespace ICSharpCode.TypeScriptBinding
 				if (result.HasErrors) {
 					Report(result.GetError());
 				}
+
+				ReloadFiles(result);
 				
 				ReportCompileFinished(result.HasErrors);
 			}
