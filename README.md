@@ -1,6 +1,8 @@
-# TypeScript Addin for MonoDevelop and Xamarin Studio
+# TypeScript Addin for MonoDevelop and Xamarin Studio 5
 
-This addin provides [TypeScript](http://www.typescriptlang.org/) support in MonoDevelop and Xamarin Studio.
+This addin provides [TypeScript](http://www.typescriptlang.org/) support in MonoDevelop and Xamarin Studio 5.
+
+MonoDevelop and Xamarin Studio 6 are not supported.
 
 ## Features
 
